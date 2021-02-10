@@ -1,0 +1,129 @@
+\usepackage[spanish]{babel}% idioma español
+\usepackage[utf8]{inputenc}% para escribir correctamente acentos
+\usepackage{float}
+\usepackage{array}
+\usepackage{caption}
+
+%\captionsetup[subfigure]{justification=centering}
+\usepackage{subcaption}
+\usepackage[onehalfspacing]{setspace} %cambiar interlineado
+\usepackage{amsmath}% para hacer referencia a una ecuación incluyendo la sección donde se encuentra
+\numberwithin{equation}{section}
+\usepackage{amssymb} %fuente especial para matemáticas
+\usepackage[colorlinks=true,breaklinks=true]{hyperref} %para poder navegar a travez de nuestras referencias dentro de nuestro documento. Este hipertexto estará resaltado con color
+\usepackage{xcolor} % con las siguientes líneas podemos definir el color de las referencias
+\usepackage{tikz}
+\definecolor{c1}{rgb}{0,0,1} % azul
+\usepackage{lipsum}
+\definecolor{c2}{rgb}{0,0.3,0.9} % azul clarito
+\definecolor{c3}{rgb}{0.3,0,0.9} % rojo azuloso
+\hypersetup{ linkcolor={c1}, citecolor={c2}, urlcolor={c3} } % especificamos el color para cada tipo de referencia (imágenes o ecuaciones, citas bibliográficas y paginas de internet
+\usepackage{graphicx} % incluir imágenes.
+\usepackage{natbib}% paquete para hacer referencias a la bibliografía
+\usepackage[nottoc]{tocbibind} %mostrar la bibliografía en la tabla de contenido
+\usepackage{enumerate} %para opciones de enumeración de listas (viñetas y todo eso) \usepackage{todonotes} %para poner notas en el documento, las cuales no se veran en el archivo final.
+%\usepackage{fancyhdr} %para tener encabezados bonitos en nuestro documento
+\usepackage{titlesec}
+% configuracion de paquetes  -------------- 
+\addto\captionsspanish{
+\renewcommand{\partname}{Fase}
+%\renewcommand{\chaptername}{Definición de la problemática y planteo de solucion}
+%\renewcommand{\thepart}{}
+}
+\usepackage{minted}
+\usepackage{geometry}
+
+
+
+\setlength{\textwidth}{150mm}
+\setlength{\textheight}{240mm}
+%\setlength{\oddsidemargin}{6mm}
+%\setlength{\evensidemargin}{28mm}
+%\setlength{\topmargin}{-5mm}
+
+
+\usepackage{sidecap}
+
+
+\titleformat{\chapter}[display] { \normalfont} { \partname \ \thepart - capítulo \thechapter:  \chaptername}{-6ex} % sep
+{
+  \rule{\textwidth}{1pt}
+  \vspace{-2ex}
+  \bfseries
+  \centering
+  \Huge
+} % before-code
+[
+  \vspace{-3ex}%
+ % \rule{\textwidth}{0.2pt}
+] 
+
+\titlespacing{\chapter}{0pt}{-40pt}{2cm}
+
+
+\titleformat{\section}[block]
+{\normalfont\bfseries}
+{}{0.0pt}{\large{\thesection}  }
+
+\titlespacing{\section}{0pc}{1.2ex plus .9ex minus .2ex}{.2ex}
+
+
+
+
+\usetikzlibrary{matrix,arrows,positioning,shadows,shadings,backgrounds,calc,shapes, tikzmark}
+\usepackage{tcolorbox,empheq} 
+\tcbuselibrary{skins,breakable,listings,theorems}
+
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+%\newcounter{ns}
+%\addtocounter{ns}{1} 
+
+%\setcounter{secnumdepth}{2} %para que ponga 1.1.1.1 en subsubsecciones
+%\setcounter{tocdepth}{3} % para que ponga subsubsecciones en el indice
+\usepackage{wrapfig}
+\usepackage{multirow} 
+\usepackage{multicol} 
+\usepackage{appendix}
+
+\usepackage[flushleft]{threeparttable}
+\usepackage{listings}
+
+\usemintedstyle{arduino}
+
+
+
+
+
+%\AtBeginEnvironment{subappendices}{
+%	\renewcommand{\chaptername}{Desarrollo de software realizado al terminar la fase 2}
+%	\chapter*{Desarrollo de software realizado al terminar la fase 2}
+	
+	
+%	\counterwithin{figure}{section}
+%	\counterwithin{table}{section}
+%}
+
+
+
+\titleformat{\chapter}[display] { \normalfont} { \partname \ \thepart - capítulo \thechapter:  \chaptername}{-6ex} % sep
+{
+	\rule{\textwidth}{1pt}
+	\vspace{-2ex}
+	\bfseries
+	\centering
+	\Huge
+} % before-code
+[
+\vspace{-3ex}%
+% \rule{\textwidth}{0.2pt}
+] 
+%\usepackage[dvips]{graphicx}
+
+\title{sistema de posicionamiento}
+\author{Gaston Valdez}
+
+
+\renewcommand{\listingscaption}{codigo}

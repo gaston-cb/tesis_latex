@@ -1,0 +1,79 @@
+\documentclass[a4paper,openany,oneside]{book}
+
+
+\include{paquetes_tesis} 
+
+
+\begin{document}
+
+% modificar tabla de contenidos 
+\addtocontents{toc}{\hspace{-7.5mm} \textbf{Capítulos}}
+\addtocontents{toc}{\hfill \textbf{Página} \par}
+\addtocontents{toc}{\vspace{-2mm} \hspace{-7.5mm} \hrule }
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\contentsname}{Índice}
+% fin modificacion tabla de contenidos  
+
+
+\frontmatter
+\include{portada/portada}
+
+\tableofcontents 
+
+\mainmatter 
+%----------------- primera fase -----------------%
+
+
+\part{Definición del proyecto}
+
+\include{parte_1/cap1/cap1}
+
+\include{parte_1/cap2/cap2}
+
+\include{parte_1/cap3/cap3}
+%-----------------fin primera fase --------------%
+
+%-----------------segunda fase ------------------%
+\part{ Desarrollo de software y redes TCP/IP, Interfaz PC- usuario }
+
+
+\include{parte_2/redes/redes}
+\include{parte_2/Interfaz de usuario/interfazUser}
+\include{parte_2/soft_micro/soft_micro.tex}
+
+
+%-----------fin segunda fase---------------------% 
+
+% tercera fase 
+\part{Física de los satelites y sistemas de coordenadas astronómicas}
+\include{parte_3/ley_kepler/ley_kepler.tex}
+\include{parte_3/sist_coord/sist_cord}
+
+% cuarta fase 
+\part{Sistema electrónico de posicionamiento - Construcción de prototipo y resultados}
+
+%\backmatter 
+%apendices 
+\renewcommand{\appendixname}{Apéndice}
+\renewcommand{\appendixtocname}{Apéndice}
+\renewcommand{\appendixpagename}{Apéndice}
+
+
+
+\appendix
+\clearpage
+\addappheadtotoc
+\appendixpage
+\appendixtitletocon
+\include{Apéndice/ComSPII2C/comspii2c}
+\include{Apéndice/ard_uno/ard_uno}
+%bibliografia  
+
+%	
+	
+	
+\end{document}
+
+
+
+

@@ -1,0 +1,1297 @@
+\renewcommand{\chaptername}{Software del microcontrolador}
+\graphicspath{{parte_2/soft_micro/}}
+\chapter{Software del Microcontrolador} 
+\markright{Software del microcontrolador}
+\begin{center}
+	\begin{tcolorbox}[colback=gray!5!white, %Color del fondo
+		colframe=gray!75!black,
+		title= \center{\Large{Resumen}} ]
+		Se describe todo el proceso realizado,para programar el software para el microcontrolador ATmega328P seleccionado, bajo el entorno arduino, y todas sus librerias. Además, se muestra como deben interconectarse los componentes,y los circuitos correspondientes para realizar las pruebas sobre cada parte del software. Para cada parte del software desarrollado, se han realizado las correspondientes pruebas, y se presentan los resultados en cada sección. Luego una vez, realizadas todas las pruebas, se procede a unir todo el software, y se realiza una prueba final, y se convalidan los resultados.La versión de software presentada en este capítulo, no es la versión final, sino que se agregan más funcionalidades en la siguiente fase(fase 3).   
+		 
+	\end{tcolorbox}
+\end{center}    
+\section{Introdución} 
+	En este capítulo, se aborda una parte del desarrollo de software de todo el proyecto. La parte restante, se aborda en las fases tres y cuatro respectivamente. El software debe ser capaz de responder a los requerimientos planteados en la tabla \ref{tab:requerimientos}. En esta parte del trabajo, dividimos la programación en varias etapas:  	
+	\begin{enumerate}
+		\item Control de posición
+		\item Autocalibración
+		\item Scheduler o planificación 
+		\item Conexión del dispositivo a la red. Conectar con Gpredict y stellarium
+	\end{enumerate}
+	Una vez resueltos, todos los puntos anteriores, se pasa a unir todo el código desarrollado a lo largo de las presentes secciones de este capítulo. Luego, se deja comentado dentro del código aquellas partes que se desarrollen mas adelante a lo largo de este texto. La parte que resta es la transformación de coordenadas, de coordenadas ecuatoriales a coordenadas locales horizontales.  El código en su versión final se muestra en el apéndice.   
+
+\section{Diagrama del sistema} 
+
+En base a los componentes seleccionados, en el capítulo \ref{cap:cap3_sel_hw}, estos deben interconectarse entre si, mediante sus protocolos de comunicación. El sistema de control, se compone del  diagrama en bloques mostrado en la figura \ref{fig:sistema_general}.  
+\begin{figure}[ht]
+	\centering 
+	\includegraphics{sistema_general} 
+	\caption{Diagrama general del sistema de control} 
+	\label{fig:sistema_general}
+\end{figure}
+
+Este diagrama en bloques muestra cual es el protocolo de comunicación utilizado por cada dispositivo. La conexión entre el bus SPI soportada por el microcontrolador y el chip ethernet, es el modo 0(ver apéndice \ref{AP:protSerial}), y la conexión con el display es mediante el protocolo SPI(descripto en el apéndice \ref{AP:protSerial}). El bloque de drivers de motores, son dos controladores de motores, y dos encoders, pero se ha puesto una única caja, ya que el sistema de control es el mismo en ambos motores. 
+
+\section{Esquema eléctrico de los componentes}
+El lenguaje de programación del entorno arduino es C/C++, y se desarrolla una parte en C y otra parte en C++. El software, debe comunicarse con el display LCD(ver figura \ref{fig:LCD_r}) mediante el protocolo I2C. Este protocolo esta descripto en el apéndice \ref{AP:protSerial}, y con el chip W5100(ver figura \ref{fig:chip_ethernet}) mediante el protocolo SPI(ver apéndice \ref{AP:protSerial}). Por ende, antes de empezar a realizar cualquier tipo de programación, se deben conectar los componentes entre si, para poder realizar la programación, y las pruebas. No se ha utilizado ningún simulador, ya que se disponen de los materiales y componentes, e instrumental necesario para realizar la medición sobre los elementos directamente.  
+
+Antes, de realizar cualquier conexión, se realiza un análisis de los pines disponibles en la placa de desarrollo Arduino Uno, para realizar el desarrollo sin cambiar los pines físicos a lo largo de este trabajo. En primer lugar, se consideran los pines que deben ser utilizados para conectar el chip ethernet. Este debe poseer cinco pines, de los cuales, tres son obligatorios, y no pueden cambiarse desde el software, ya que utiliza el puerto SPI físico del microcontrolador que esta en la placa, estos son los pines 11,12 y 13 respectivamente. El pin de Slave Select, y reset, pueden elegirse indistintamente usando cualquier puerto digital. La conexión del LCD, requiere de comunicación I2C, el cual utiliza dos pines de la placa de desarrollo. Estos pines son los llamados A4 y A5 dentro de la placa.Además, de estos, se requiere cuatro pines adicionales, para controlar el sentido de giro de cada motor(dos pines para cada motor). Estos, deben poseer modulación por ancho de pulso, para poder realizar un control de velocidad en proximos desarrollos de este dispositivo. En este informe, solo se realizará un control de tipo ON/OFF. Los pines disponibles que poseen modulación de ancho de pulso son los pines 9-10, 5 y 6. Luego de estos pines, se deben seleccionar dos pines adicionales, para poder medir la posición angular de la antena,de estos pines se eligen los pines A0 y A1 respectivamente. A continuación, se deja la imagen de cuales son aquellos puertos que se han seleccionado.   
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{pines_ard_uno}
+	\caption{Pines seleccionados sobre la placa de desarrollo arduino UNO para realizar el prototipo}
+	\label{fig:pin_select_ard_uno}
+\end{figure}
+
+
+Una vez, definidos los puertos a utilizar, se deben conectar los componentes a la placa de desarrollo. Esta conexión, se realiza usando cables denominados ''dupont''en una protoboard. 
+Para saber como se deben conectar el display LCD y el ethernet Shield W5100, se deben conocer su disposición de pines,o en lenguaje de la jerga electrónica, se debe conocer el "pinout" de cada componente. La explicación de cada pin disponible de cada dispositivo,se muestra en el apéndice \ref{AP:protSerial}. Se muestra el pinout  de cada dispositivo en la figura \ref{fig:pinoutlcdeth}: 
+
+\setlength{\textwidth}{190mm}
+
+\begin{figure}[ht]
+%	\centering
+%	\hspace{-20mm}
+	\begin{subfigure}{0.5\textwidth}
+		\centering	
+		\includegraphics[height=6.3cm]{pinout LCD}
+		\caption{Pinout Display LCD }		
+	\end{subfigure}
+	\hspace{-30mm}
+	\begin{subfigure}{0.5\textwidth}		
+		\centering
+		 
+		\includegraphics[height=6.3cm]{pinoutW5100}
+		\caption{Pinout chip ethernet W5100}	
+	\end{subfigure}
+	
+	\caption{Pinout de ambos componentes, para poder realizar la conexión con la placa de desarrollo de Arduino Uno}
+	\label{fig:pinoutlcdeth}
+\end{figure}
+\setlength{\textwidth}{150mm}
+
+  
+Para realizar las conexiones, revisando el diagrama de conexiones dentro del apéndice \ref{AP:protSerial}, se deben conocer cuales son los pines que corresponden a las señales SPI e I2C dentro de la placa de desarrollo. Observando el manual y la hoja de datos, obtenemos que los pines de la placa de desarrollo son los siguientes: 
+\begin{itemize}
+	\item Chip W5100 
+	\begin{itemize}
+		\item Pin 13  SCK 
+		\item Pin 12  MISO 
+		\item Pin 11  MOSI 
+		\item Pin 4   Slave Select(SS)
+		\item Pin 3   Reset 	
+	\end{itemize}
+	\item Display LCD   
+	\begin{itemize} 
+		\item Pin A5  SCL
+		\item Pin A4  SDA
+	\end{itemize}  
+\end{itemize}  
+
+Por último, ya que no se dispone de la conexión al motor aún, se prueban conectando en los pines A1 y A0, dos potenciometros,de 10Kohms cada uno, ya que cada motor tiene adosado un potenciometro que es utilizado como encoder. Para conocer si el sentido de giro es correcto, en los pines 5,6,9 y 10, se conecta una resistencia y un led,estos led tiene por finalidad, mostrar si el motor gira en sentido correcto, pero estos no se muestran en el esquemático. El esquema de conexiones se muestra en la figura \ref{fig:esq_completo}. 
+
+A continuación se deja una imagen del armado del circuito en una protoboard, en ella, se incluyen las resistencias y diodos led que no se encuentran en la imagen \ref{fig:esq_completo}. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.08]{protoboard_1}
+	\caption{Imagén del protoboard armado para realizar las primeras pruebas con el software.}
+	\label{fig:proto_1}
+\end{figure}
+
+\begin{figure}[p]
+	\centering 
+	\includegraphics[angle=90,scale=0.8]{esquemáticoCircuito}
+	\caption{Esquema de conexiones entre la placa de desarrollo y los periféricos utilizados} 
+	\label{fig:esq_completo} 
+\end{figure}
+
+Donde se ha conectado los diodos led y los potenciometros de la siguiente manera: 
+\begin{itemize}
+	\label{item:prototipo_leds_pote}
+	\item led rojo: puerto 9 
+	\item led verde: puerto 10 
+	\item led amarillo: puerto 6 
+	\item led azul(el led transparente de la imagen): puerto 5 
+	\item potenciometro azul: puerto A0 
+	\item potenciometro gris: puerto A1 
+	
+\end{itemize}
+
+
+\section{Diagrama general del software}
+
+El software, debe cumplir los requerimientos presentados en el capítulo inicial del presente documento. En principio, deberia tener la capacidad de realizar la autocalibración, al inicio de su programa. Por otro lado, en caso  de que no se este siguiendo ningún satélite o estrella, debería tener la capacidad de volver a la posición de equilibrio de la antena. Esta posición de equilibrio se denomina cenit. 
+
+Cada uno de los motores de la antena, posee adosado un potenciometro, que gira con el motor, esto funciona como un sistema de encoders, para medir la posición angular en base a la tensión. Esta tensión, se mide sobre los pines A0 y A1 de la placa de desarrollo principal. Esta medida, debe actuar sobre los pines 5 y 6 para un eje, y sobre los pines 10 y 9 para el otro eje. Además, debe saber el sentido de giro al prender el led 5 y 6, o 10 y 9. El sentido de giro debe obtenerse de la función de autocalibración.  
+
+El sistema de control, es del tipo ON/OFF, el cual mide la posición y apaga el motor cuando llega a la posición indicada. Son dos controles independientes para cada motor. El estado de apagado, es equivalente a ponera a nivel bajo los puertos 5 y 6, o 9 y 10, según  de que eje se trate. Esta posición a la que debe moverse la antena, viene dada a través de la red, a partir de los programas presentados en el capítulo anterior. 
+
+Además, el software debe informar en todo momento al usuario de su estado (medida angular en ambos ejes, si esta en el cenit, debe escribir la palabra cenit),y la dirección IP asignada por la red, por medio del display LCD.  
+
+Por lo expuesto en los parrafos anteriores de la presente sección, debe realizarse un sistema temporizado, que lea los puertos analógicos A0 y A1, y realizar una acción de control en base a su valor. La acción de control es encender el/los motores en un determinado sentido de giro, y apagarlo cuando llegue a esta. Además, en caso que no este realizando ningún seguimiento, se debe verificar que la antena se encuentre en el cenit. Esto debe realizarse, ya que podrian existir vientos, y/o condiciones climáticas adversas que puedan mover la antena de su posición de equilibrio(el cenit). 
+
+
+Por lo expuesto en parrafos anteriores, se desarrolla el diagrama de software en la figura  \ref{fig:software_diagrama_general}. En este diagrama, se muestra el software desarrollado en el microcontrolador, y como actuan los distintos puertos del microcontrolador con el hardware. El driver de cada motor, en la figura, se realiza en la fase 4, y es un diseño de hardware. Los encoders 1 y 2 respectivamente, son potenciometros adosados al eje de cada motor. Estos potenciometros son de 10Kohms cada uno. Las coordenadas angulares, se denominan angulo de azimut y altura respectivamnte, en astronomía de posición, y por eso se le dió ese nombre. En el capítulo \ref{cap:sist_cord} se tiene una descripción mas detallada de este tipo de coordenadas. 
+
+En la figura se observan dos recuadros, uno denominado "POLLING", y otro denominado "ISR - Esquema de tiempos". El cuadro de POLLING indica que el puerto SPI se mira todo el tiempo, para conocer si existe uno de los programas de la PC(Gpredict, o Stellarium) quiere realizar un movimiento sobre la antena. 
+
+
+\begin{figure}[ht!]
+	\raggedleft
+	\includegraphics[width=\linewidth]{software_diagrama_general}
+	\caption{Diagrama general con las partes de software y hardware}
+	\label{fig:software_diagrama_general}
+\end{figure}
+
+
+\vspace{20mm}
+
+El cuadro donde dice "Buffer", son las variables globales que interactuan con las funciones de el programa. Estas variables globales son: 
+\begin{itemize}
+	\item mover\_posicion\_az y mover\_posicion\_h: referencia para el control de posición, obtenida a travès de los programas Gpredict o Stellarium.  
+	\item altura:Posición del ángulo de altura de la antena. 
+	\item azimuth:Posición del ángulo de azimuth de la antena
+	\item movimiento\_motor\_1$[2]$  y movimiento\_motor\_2$[2]$: en esta se guarda el sentido de giro de cada motor. Dado, que se requieren dos pines para controlar el sentido del motor, y el software debe guardar el sentido de giro, al encender un puerto u otro, estos se guardan en esta variable de tipo vector, siendo: 
+		\begin{itemize}
+			\item movimiento\_motor\_1$[0]$: Guarda el pin correspondiente al sentido de giro de azimuth, sentido Oeste - Este 
+			\item movimiento\_ motor\_1$[1]$ : idem, salvo que el sentido es contrario.  
+			\item movimiento\_motor\_2$[0]$: Guarda el puerto correspondiente al sentido de giro desde el plano del suelo hasta llegar a 90° respecto a este. 
+			\item movimiento\_motor\_2$[1]$ : Idem, pero guarda el puerto correspondiente al sentido contrario. (a 90° respecto del suelo, hacia el plano del suelo). 			
+		\end{itemize}
+	
+\end{itemize}  
+
+
+
+En este diagrama, se han puesto las funciones principales. Cada función, se compone de distintas variables que sirven de soporte al programa en general. Estas no se han graficado en el diagrama de la figura \ref{fig:software_diagrama_general}. Estas funciones,que sirven de soporte a cada función, se muestran a lo largo del presente capítulo. 
+
+
+%
+%\setlength{\textheight}{260mm}
+%\setlength{\textheight}{220mm}
+
+El orden del trabajo sobre el software es primero realizar la función de autocalibración. La función de autocalibración, implica que debe llamar a la función mover\_antena(n\_motor,sentido\_giro). En esta sección, se desarrollan ambas funciones. Una vez obtenida y realizada las pruebas sobre la función de autocalibración, se procede a realizar el sistema de control. Esto debe realizarse de esta manera, ya que si no estan calibrados los sentidos de giro del motor, el control no sabra de que forma actuar sobre ellos. Después se continúa con la lectura de los programas Gpredict y Stellarium respectivamente. Luego de esto, se realiza el esquema de polling y el esquema de tiempos o planificación. En la jerga de programación, se denomina "programación por scheduler". Luego en la siguiente fase(fase 3), se desarrolla la teoria de coordenadas, y se implementa la función de transformación de coordenadas. La función que escribe en el display, se desarrolla en la parte final del presente capítulo. 
+
+
+
+% diagrama de software 
+
+
+
+
+%
+\section{Función de autocalibración}
+Esta función, es la primera función a desarrollar. Se supone que el lector posee conocimientos basicos de programación en C/C++, y como debe preparar el entorno para el desarrollo. El entorno elegido es visual Studio Code con el pluggin de PlatformIO. En el apéndice se encuentra como instalarlo y empezar a utilizarlo. 
+
+Antes de realizar la programación, se realiza un archivo, denominado "pinout\_ard\_uno.h", el cual tendrá todas las definiciones de puertos, mostrada en la figura \ref{fig:pin_select_ard_uno}. El archivo contiene las sentencias mostradas en el código \ref{cod:pinout_ard_uno.h}: 
+
+
+\begin{listing}[ht]
+
+	\begin{minted}[linenos=true,frame=single,highlightcolor = black ,highlightlines={19-20}]{C++}
+/**** PINES PARA EL CONTROL DE LOS MOTORES  ***/
+		
+// motor de cenit 
+#define MOTOR_1_S1  5
+#define MOTOR_1_S2  6
+// motor de azimuth 
+#define MOTOR_2_S1  9 
+#define MOTOR_2_S2  10 
+		
+/* PINES ETHERNET */
+ #define PINSS 4
+ #define PINRESET 3  
+		
+/* PINES ENCODERS*/
+ #define PINENCODERAZ A0   //MEDIDA DE AZIMUTH 
+ #define PINENCODERH  A1   //MEDIDA DE ALTURA 
+		
+// flags para utilizar depuracioon 
+ #define TIMER_CLOCKS 0 // para depurar las aplicaciones sin timers establecidos  
+ #define DEBUG  1      // depuración de aplicaciones usando puerto serie .  
+		
+\end{minted}
+	\vspace{-5mm}
+	\caption{definición de los puertos del microcontrolador. El nombre del archivo es "pinout\_ard\_uno.h".}
+	\label{cod:pinout_ard_uno.h} 
+\end{listing}
+Donde las variables \mintinline{C++}{TIMERS_CLOCKS} y \mintinline{C++}{DEBUG}(resaltadas en la \ref{cod:pinout_ard_uno.h}) son utilizados para realizar compilaciones condicionales, mientras se desarrolla.Las compilaciones condicionales se explican en el apéndice \ref{ap:ard_uno_env} .
+ 
+Una vez definido los puertos, para realizar esta función de autocalibración, debe conocer cual es el sentido de giro, al poner en estado alto, el pin 10 y 9, o 6 y 5, y guardar este resultado. Para realizar esto, cada motor que mueve la antena, tiene adosado un potenciometro. El giro de este potenciometro, nos indica la medida angular. Un potenciometro, consta de tres pines, donde uno esta conectado a la fuente de tension, otro a tierra, y el del medio se dirige al pin A0 o A1 del microcontrolador. Al girar este, cambia su resistencia entre el punto medio y tierra, cambiando al tensión, y esta tensión es la que se mide desde el microcontrolador. A continuación, se deja la imagén de un potenciometro, y sus conexiones: 
+%\setlength{\textheight}{260mm} 
+
+\begin{SCfigure}[50][h]
+	\centering
+	\vspace{-20mm}
+	\caption{Vista de un potenciometro, y sus respectivas conexiones de tensión, y con el microcontrolador.}	
+	\includegraphics[height=3.2cm]{pote}
+%	\begin{minipage}
+	\label{fig:pot}	
+%	\end{minipage}
+	%\caption{Vista de un potenciometro, y sus respectivas conexiones de tensión, y con el microcontrolador.}	
+\end{SCfigure}
+\vspace{30mm}
+
+%\setlength{\textheight}{240mm}
+
+Como se observa en la figura(\ref{fig:pot}), la salida de tensión(pin 2 de la figura), con respecto a GND, cambía, cuando se gira el eje del potenciometro. Esta tensión, es la que se mide el conversor analógico digital del microcontrolador atMEGA328p. El conversor analógico-digital se explica en el apendice \ref{ap:ard_uno_env}   
+
+Para poder realizar la autocalibración, se debe definir, si la tensión en un extremo de la posición de la antena, es maxima, y en el otro extremo es mínima. Con esto, el software se dará cuenta, en que sentido se esta moviendo la antena(esta definición debe realizarse en ambos ejes de la antena). El software se dará cuenta, ya que podra revisar si la tensión de entrada, esta aumentando o disminuyendo, y en base a esto, se asignan los sentidos de giro dentro de las variables movimiento\_motor\_1 y movimiento\_motor\_2. 
+
+Los sentidos de giro de máxima y mínima tensión, se deben definir sobre los ejes de la antena. Estos ejes se mueven como muestra la siguiente figura: 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=5cm]{mov_antena}
+	\caption{Movimientos que puede realizar la antena usando sus dos motores.}	
+\end{figure}
+
+
+La antena, solo tiene movilidad ESTE- OESTE, apuntando hacia el sur. Por este motivo, definimos que la mínima tensión esta dada en el oeste, y la máxima tension en el este,donde se define 0° en el OESTE, y 180° en el ESTE, en sentido antihorario. En sentido del eje horizontal, definimos la mínima tensión, a 90° respecto al piso, y máxima tensión cuando la antena se encuentre a 0° del plano del suelo. Utilizamos esta convención para realizar la medida sobre el ángulo de altura. Además, debe definirse a que eje del movimiento de la antena, corresponde a cada puerto. Siguiendo el código \ref{cod:pinout_ard_uno.h}, se observa que se define el puerto A0 para el ángulo azimutal y el puerto A1, para el ángulo de altura. Las definiciones de tensión y puertos, se resumen en la siguiente tabla: 
+\begin{table}[ht]
+	\centering 
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Eje & Puerto & punto de máxima tensión & punto de mínima tensión\\ 
+		\hline
+		azimuth &A0 & Este(180º) & Oeste(0º) 	 \\    
+		\hline
+		altura  &A1 &  paralelo al suelo& 90º respecto al suelo  \\
+		\hline
+	\end{tabular}
+	\caption{Definición de sistema de coordenadas para la antena}
+	\label{tab:def_sist_coord}
+\end{table}
+
+Por lo expuesto en los parrafos anteriores, la función de autocalibración debe realizar los siguientes pasos: 
+
+\begin{enumerate}
+	\item Poner en alto, los pines 5 y 10 respectivamente, y los pines 6 y 9 en bajo  
+	\item Tomar el dato de los puertos analógicos-digitales de los pines A0 y A1. 
+	\item Guardar este dato, y compararlo con el próximo. Si es mayor, gira en un sentido u otro. Esto debe realizarse para ambos ejes. 
+	\item Esperar que llegue al final de su recorrido la antena(ambos ejes). Luego guarda el valor final. Se da cuenta, que llega a su recorrido final, si las últimas tres muestras son identicas
+   \item invertir los pines del paso 1, y realizar los pasos 2 y 3 respectivamente, pero ahora, guarda el segundo valor final. Luego se comparan ambos, y el programa, puede saber en que sentido giraron los motores. Con estos valores, se calcula la resolución angular del apuntador. 
+\end{enumerate}
+
+Esta función,se debe realizar al iniciar el equipo.  
+
+Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciometros la posición actual, y las guarde en la variable azimuth y altura, respectivamente. Para estas funcion, se han creado dos archivos: uno denominado "lectura\_encoders.cpp" y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo "lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en "lectura\_encoders.h". 
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame= single]{C++}
+#include "Arduino.h" 
+#include "../pinout_ard_uno.h"
+// variables tipo buffer 
+int azimuth ; 
+int altura ;
+void leer_antena() ; 
+
+extern enum _state_antena 
+{
+	AUTOCAL ,  
+	NO_AUTOCAL, 
+} antena ;
+
+void leer_encoders()
+{
+	azimuth = analogRead(PINENCODERAZ) ; 
+	altura  = analogRead(PINENCODERH) ; 
+	if (antena==AUTOCAL) 
+	{
+		return;
+	}
+	//transformacion de coordenada---> retornar la transformación
+}
+
+	\end{minted}
+\caption{archivo lectura\_encoders.cpp. }
+\label{cod:lectura_encoders.cpp}
+\end{listing}
+
+La única función definida en este archivo es \mintinline[style=arduino,escapeinside=||] {C++}
+{|\textcolor{orange}{leer\_encoders()}|} es devolver el valor leido por el conversor analógico digital, cuando se esta autocalibrando. Esta función se muestra en el código \ref{cod:lectura_encoders.cpp}. Si no se esta autocalibrando, deberá devolver las coordenadas correspondientes. En este caso, esta parte, se va programar en la próxima sección. 
+
+Una vez realizado el proceso de lectura de los encoders por parte del microcontrolador, ahora resta la función de autocalibración.  Esta esta divida en dos archivos, uno denominado ''control\_motores.h'' y ''control\_motores.cpp''. 
+
+Esta función de autocalibración, debe ser capaz de mover los motores, por ende, se crea la funcion \mintinline{C++}{"mover_antena(char n_motor,sentido)} , donde n\_motor es el motor de azimuth si n\_motor es uno, o el motor de altura si toma el valor 2. Esta variable define el número de motor. Los sentidos, se definen  como 0,1, o 2 respectivamente, siendo: 
+\begin{itemize}
+	\item sentido = 0 :  Apagar motor 
+	\item sentido = 1 :  Encender el puerto  \mintinline[style=arduino]{C++}{MOTOR_1_S1}(ver código \ref{cod:pinout_ard_uno.h}, idem para las otras variables mencionadas) en alto y \mintinline{C++}{MOTOR_1_S2} en estado bajo si el número de motor es 1, si el número de motor es 2,se definen en alto el puerto  \mintinline{C++}{MOTOR_2_S1} y en bajo el puerto 
+	\mintinline{C++}{MOTOR_2_S2} 
+	\item sentido = 2: define los puertos en forma inversa al sentido que los define sentido = 1 
+\end{itemize}
+ 
+Una vez, se ha definido la función \textbf{mover\_antena(char n\_motor,char sentido)}, se pasa a realizar la función de autocalibración.  El código de la función de mover\_antena(char n\_motor,n\_antena),se observa en el apéndice x1  
+
+La función de autocalibración, utiliza las funciones leer\_encoders y mover\_antena, y funciones auxilares. Estas funciones son: 
+
+\begin{itemize}
+	\item \textbf{assign\_value\_autocal()}  
+	\item \textbf{mover\_antena(char n\_motor, char sentido)}   
+	\item \textbf{function\_compare\_autocalibracion()}  
+	\item \textbf{assignar\_sentidos\_motores()}
+\end{itemize}
+
+Además, utiliza variables auxiliares. Estas se denominan: 
+\begin{itemize}
+	\item ult4ad[4]: guarda los ultimos cuatro valores leidos del encoder. En ult4ad[0] y ult4ad[1] guarda los ultimos dos valores del angulo de azimuth, y en ult4ad[2] y ult4ad[3] guarda los dos últimos valores del angulo de altura. 
+	\item estado\_autocalibracion[2]: guarda el sentido(1,2, o 0) del motor en el estado actual. El valor de estado\_autocalibracion[0] corresponde al motor de azimut, y el otro al valor de sentido del motor de altura 
+	\item calibracion\_encoders[4]: guarda los valores maximos y minimos leidos por los encoders. calibracion\_encoders[0] y calibracion\_encoders[1] corresponden a los valores del encoder correspondiente al ángulo de azimuth. Los otros dos, corresponden al valor del ángulo de altura.   
+\end{itemize}
+
+No se mostrará todo código desarrollado para esta función de autocalibración. En su lugar, se da el diagrama de flujo del funcionamiento de esta función en la figura \ref{fig:flujo_autocalibracion}. La función assignar\_sentidos\_motores() se encarga de guardar los sentidos dentro de la variables buffer motor\_asignacion\_1 y motor\_asignacion\_2, según los criterios de la sección anterior. 
+\begin{figure}[ht]
+	\centering
+	\includegraphics{flujo_autocal} ; 
+	\caption{Diagrama de flujo de la función de autocalibración.}
+	\label{fig:flujo_autocalibracion}
+\end{figure}
+
+La idea del algoritmo es la siguiente: 
+\begin{enumerate}
+	\item LLamar a la función assign\_value\_autocal(). Esta lee los encoders, y pone el sentido = 1 en ambos motores. 
+	\item Luego espera un segundo. signa los valores correspondientes dentro de las variables. Luego le asigna el sentido 1 a cada motor. Además, asigna los valores de calibracion\_encoders[0] y  calibracion\_encoders[1] en uno. 
+	\item LLama a la función de comparación function\_compare\_autocalibracion(). Esta función, es la encargada de realizar las comparaciones y cambiar el estado de calibracion\_encoders[0] o calibracion\_encoders[1], cuando cambia por primera vez, se cambia a 2, y la tercera vez, cambia a cero. La comparación debe realizarse cada un segundo, para que la antena, tenga el tiempo suficiente de moverse.  
+	\item assignar\_sentidos\_motores(): Toma los valores de calibracion\_encoders, y los compara. En base a eso, asigna los sentidos dentro de las variables asignacion\_motor\_1 y asignacion\_motor\_2 respectivamente. 
+\end{enumerate}
+
+
+La función de comparación, en primer lugar lee los valores actuales de los encoders, y luego los compara con los anteriores para saber si el valor actual es igual al anterior. Luego, borra los valores actuales, y los pasa como valores antiguos, y los compara con los que siguen. Los códigos de programación, se encuentran en el apéndice.  
+
+Luego, la función de autocalibración, viene definida de la siguiente manera: 
+
+\begin{listing}[h]
+	\begin{minted}[linenos,frame=single]{Arduino}
+void autocalibracion()
+{
+assign_value_autocal() ;
+delay(1000) ; 
+function_compare_autocalibracion() ; 
+while (estado_autocalibracion[0]!=0 || estado_autocalibracion[1]!= 0)
+{
+  delay(1000) ;     
+  function_compare_autocalibracion() ;             
+}
+//ASIGNACIÓN DE MOTORES 
+assignar_sentidos_motores() ; 
+#if DEBUG==1
+// depuración por puerto serie . 
+Serial.print("calibracion encoders az: ");                   
+Serial.print(calibracion_encoders[0]); Serial.print(" ");
+Serial.println(calibracion_encoders[1]) ;
+Serial.print("calibracion encoders h: ") ;
+Serial.print(calibracion_encoders[2]); Serial.print(" ");
+Serial.println(calibracion_encoders[3]) ;
+Serial.print("movimiento_motor_1: ") ; 
+Serial.print(movimiento_motor_1[0],DEC) ; Serial.print(" "); 
+Serial.println(movimiento_motor_1[1],DEC) ;
+Serial.print("movimiento_motor_2: ");
+Serial.print(movimiento_motor_2[0],DEC); 
+Serial.print(" ");
+Serial.print(movimiento_motor_2[1],DEC); 			
+
+#endif    	
+}
+\end{minted}
+\caption{Código de la función de autocalibración. Esta definido en el archivo "control\_motores.cpp"}
+\label{cod:autocalibracion}
+
+\end{listing}
+
+\subsection{resultados de la función de autocalibración}
+
+Para revisar los resultados de la función de autocalibración, se ha definido una bandera de compilación denominada \mintinline{C++}{DEBUG} donde, se van a imprimir los resultados por puerto serie. 
+
+El prototopo armado es el de la figura \ref{fig:proto_1}, y las conexiones del potenciometro y los diodos leds, se encuentran debajo de la imagen.  
+%
+%Para probar la función, se ponen los potenciometros, en un extremo, luego en el otro, y luego en el medio. Luego se giran, hacia la derecha, o izquierda, y luego se giran en sentido contrario. Se registran los resultados en el puerto serie, y observando que los diodos leds, se encuentren apagados al finalizar la prueba. Los resultados arrojados por el puerto serie se resumen en la siguiente tabla. 
+
+Para realizar la prueba del programa, se pone el potenciometro en una posición inicial, y luego se gira el potenciometro. Hay tres posiciones iniciales, que empiece en uno de los dos extremos, o que empiece en un punto medio. Si empiezan en un extremo, solo se debería girar una vez hacia el otro extremo. Si empieza en un punto medio, se debe girar dos veces, una para un extremo, y luego hacia el otro extremo. Para realizar esta prueba, dentro del código \ref{cod:pinout_ard_uno.h} se pone la bandera DEBUG en 1, y se utiliza el código mostrado en \ref{cod:autocalibracion}. Este código arroja los resultados por el puerto serie. Estos resultados, se resumen en la siguiente tabla,donde el sentido viene dado, por los potenciometros vistos de frente.   
+
+\renewcommand{\arraystretch}{1.5} 
+\begin{table}[ht]
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline 
+		\multicolumn{7}{|c|}{motor 1} \\
+		\hline 
+		\multirow{2}{*}{posición inicial} & 
+		\multirow{2}{*}{primer giro} &\multirow{2}{*}{segundo giro} & \multicolumn{2}{l|}{calibracion\_encoders}& \multicolumn{2}{l|}{asignacion\_motor\_1} \\ \cline{4-7} 
+		   & & & índice 0 &índice 1 &índice 0 &  índice 1 \\
+		 \hline 
+	      punto medio & giro derecha & giro izquierda & 1023 & 1 & 1 & 2 \\
+	     \hline 
+		 punto medio & giro izquierda & giro derecha & 0 & 1018 & 2 & 1 \\
+		 \hline 	
+		extremo izquierdo & giro derecha & x & 0 & 1007 & 2 & 1 \\
+		\hline 
+	    extremo derecho & giro izquierda & x & 1023 & 1 & 1 & 2 \\
+		\hline 	
+		\hline
+		
+		%\hline 
+		\multicolumn{7}{|c|}{motor 2} \\
+		\hline 
+		
+		\multirow{2}{*}{posición inicial} & 
+		\multirow{2}{*}{primer giro} &\multirow{2}{*}{segundo giro} & \multicolumn{2}{l|}{calibracion\_encoders}& \multicolumn{2}{l|}{asignacion\_motor\_2} \\ \cline{4-7} 
+	%	\hline 
+		   & & & índice 2 &índice 3 &índice 0 &  índice 1 \\ 
+		\hline 
+		 punto medio & giro derecha & giro izquierda & 898 & 1 & 2 & 1  \\
+		\hline 
+		 punto medio & giro izquierda & giro derecha & 17 & 1023 & 1 &2  \\
+		\hline 	
+		 extremo izquierdo & giro derecha & x & 0 & 1023 & 1 &2  \\
+		\hline 
+		 extremo derecho & giro izquierda & x & 1023 & 1 & 2 & 1 \\
+		\hline
+		\end{tabular}
+	\caption{Resultados de la función de autocalibración.}
+	\label{tab:resultados_autocalibracion}
+\end{table}
+
+Al analizar la tabla anterior, se observa, que la función de autocalibración, responde correctamente para ambos motores. Por ejemplo, la primer fila del motor 1, se empieza del punto medio,con el sentido siendo 1(ver seccion anterior), y se gira el potenciometro hacia la derecha, y guarda el valor leido del conversor A/D:1023 en este caso. Cambia de sentido,con el valor de sentido 2, y se gira el potenciometro hacia el otro extremo. En este caso, el valor leido es 1. Luego, el sentido Oeste - Este es el sentido con valor 1, ya que el primer giro, aumentó la tensión. Luego al invertir los puertos, se gira hacia el otro lado, y se observa, que la tensión disminuye. Esto indica que el sentido de giro es en el sentido este - oeste. Luego el valor guardado del sentido Oeste - Este debe ser 1, y el sentido contrario, debe ser 2. Se analiza de la misma manera los restantes, y se observa que el comportamiento es el esperado. 
+
+Cabe destacar, que el giro de los potenciometros se ha realizado de forma manual. Los potenciometros que van a usarse, estan adosado al eje de la antena, y estos realizan el movimiento, a medida que gira el/los motores.  
+
+\section{Control de la posición}
+El control de la posición, consta en leer la posición enviada desde el software Gpredict o Stellarium, y mover la antena hacia esa posición. Además, si no recibe, ninguna posición de estos programas, el software, debe ser capaz de regresar a la posición de equilibrio, o denominada cenit. Esta posición es equivalente a 90º en posición azimutal y 90º respecto del suelo. 
+
+Recordando, que cada motor, tiene adosado un potenciometro, que es utilizado como encoder, se procedió a medir el potenciometro. Este potenciometro se encuentra adosado a cada motor, y deben medirse, para conocer la variación de la tensión en función del ángulo. 
+
+Para realizar esta medición, se ha realizado un script en el lenguaje python, que se conecta al microcontrolador,y un programa sobre el microcontrolador. El microcontrolador, envía los datos leidos del potenciometro, y el script, los guarda en un archivo de texto. Ambos programas se encuentran en el anexo del presente capítulo.
+
+Una vez creados ambos programas, sobre el microcontrolador, y sobre la pc(script en python), se conecto el punto medio del potenciometro al microcontrolador, y se realizó el giro del motor con una fuente de laboratorio. Ambos motores, se girán de tal manera que la antena, tenga su recorrido completo en ambos ejes. La tensión de la fuente fue de 24 V. Estos datos, se registrarón cada 1 milisegundo. Los resultados fueron los siguientes: 
+
+
+\begin{figure}[ht]
+    \hspace{-10mm}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth,height=7cm]{medidas_cenit} 
+		\caption{Encoder de altura} 
+		\label{subfig:altura} 
+	\end{subfigure}
+	\hspace{10mm}	
+	\begin{subfigure}[t]{0.5\textwidth}
+		\includegraphics[width=\textwidth,height=7cm]{medidas_azimut}
+		\caption{Encoder azimut}  
+		\label{subfig:azimut} 
+	\end{subfigure}
+	\caption{Medidas realizadas sobre los encoders de la antena en función del tiempo.}
+\end{figure}
+
+
+Se observa en el ángulo de altura(ver figura \ref{subfig:altura}), que el potenciometro responde de forma lineal en función del tiempo, mientras que el ángulo de azimuth, utiliza una serie de pulsos para medir la posición angular(ver figura  \ref{subfig:azimut}). Este último, será reemplazado por un potenciometro comercial en la fase 4. Esté, será de tipo lineal. 
+
+De la función de autocalibración, obtenemos los valores máximos y mínimos del conversor A/D sobre el eje de altura, e idem cuando se adicione el potenciometro en el eje de azimut. A partir de estos puntos, obtenemos la relación entre la tensión leida y los angulos. Es decir, obtenemos una relación lineal entre la tensión del potenciometro y el ángulo de la antena. En el microcontrolador, se usan los valores leidos del conversor analógico digital, para la programación.
+
+Dado que el potenciometro es lineal, puede construirse la ecuación de una recta, a partir de dos puntos. Estos dos puntos, son los valores máximos y mínimos del conversor A/D, y los ángulos máximos y mínimos de la antena. La convención utilizada para los ángulos se encuentra en la tabla \ref{tab:def_sist_coord}. 
+
+Para el ángulo de azimut, se tienen los puntos $p_1 = (0^\circ,\min\{calibracion\_encoders[0],calibracion\_encoders[1]\})$ y  $p_2=(180^\circ,\max\{calibracion\_encoders[0],calibracion\_encoders[1]\})$. Al tener dos puntos, se puede armar la ecuación de una recta, en terminos de $\theta_{az} = f(AD_0)$, siendo $\theta_{az}$ el ángulo de azimut. La ecuación de la recta, viene dada por:  
+
+\begin{equation}
+	\theta_{az} = \frac{\Delta \theta_{az}}{\Delta A_d}(AD_0 - \min\{  \text{calibracion\_encoders}[0],\text{calibracion\_encoders}[1]\}) 
+\end{equation}
+Siendo: 
+\vspace{-2mm}
+\begin{flalign*}
+	& AD_0:\text{Valor leido por el conversor Analogico digital del puerto 0} &  \\
+	&\Delta\theta_{az} = 180^\circ - 0^\circ & \\
+	&y_1 =\max\{calibracion\_encoders[0],calibracion\_encoders[1]\}& \\ &y_2 =\min\{calibracion\_encoders[0],calibracion\_encoders[1]\} & \\
+	&\Delta A_d = y_2 - y_1 & 
+\end{flalign*}
+
+
+Para el eje de altura, se realiza un procedimiennto similar al anterior,se obtiene la ecuación de la altura en función del valor leido de tensión. Denominando $\theta_h$ al ángulo de altura,se obtiene la siguiente ecuación  
+
+\begin{equation}
+	\theta_h = \frac{\Delta \theta_h}{\Delta A_d}(AD_1 - \max\{  \text{calibracion\_encoders}[0],\text{calibracion\_encoders}[1]\}) 
+\end{equation}
+Siendo: 
+\vspace{-2mm}
+\begin{flalign*}
+	& AD_1:\text{Valor leido por el conversor Analogico digital del puerto 1} &  \\
+	&\Delta\theta_h = 90^\circ - 0^\circ & \\
+	&y_1 =\min\{calibracion\_encoders[0],calibracion\_encoders[1]\}& \\ &y_2 =\max\{calibracion\_encoders[0],calibracion\_encoders[1]\} & \\
+	&\Delta A_d = y_2 - y_1 & 
+\end{flalign*}
+
+Las ecuaciones mostradas anterioremente, se implementan dentro de la función \mintinline{c++}{leer_encoders.} 
+
+Además de esto, se debe calcular la resolución angular del dispositivo para cada eje. Esta viene dada por las pendientes de las rectas anteriores, multiplicadas por 1, ya que es el mínimo valor de cuenta que posee el conversor analógico digital. Las resoluciones, son entonces: 
+\begin{equation}
+	\begin{split}
+		res_h &= \frac{ \Delta\theta_h}{\Delta A_d}  1 = \frac{ \Delta\theta_h}{\Delta A_d} \\  
+		res_{az} &= \frac{ \Delta\theta_h}{\Delta A_d}  1 = \frac{ \Delta\theta_h}{\Delta A_d}   	
+	\end{split}
+\end{equation}
+
+
+El esquema de control se muestra en la figura  \ref{fig:sist_control_real}. 
+
+En esta parte, se programa el recuadro de la parte "control\_motores(ref1,ref2)" de la figura \ref{fig:sist_control_real}. El control, mira una señal de error, donde la señal de error en la figura viene dada por $e[k]$. Hay dos señales de error, estas las denominados $e_1 $ y $e_2$ .Estas señales de error vienen dadas por: 
+\begin{equation}
+	\begin{split}
+		e_1[k]&=ref_1 - \text{azimut}  \\
+	    e_2[k]&=ref_2 - \text{altura}  
+	\end{split}
+\end{equation}
+
+\begin{figure}[pt]
+	\hspace{-30mm}
+	\includegraphics{control_realimentado}
+	\caption{Sistema de control microcontrolado implementado en este trabajo.}
+	\label{fig:sist_control_real}
+\end{figure}
+
+ En base a esta señal de error, que es entrada para el bloque "control ON/OFF", decide hacia donde debe moverse el motor. El sistema se para siempre que la señal de error sea menor que la resolución de cada eje. Este sistema en proximas versiones, se va a cambiar el bloque "controlONOFF" por un controlador denominado PID. 
+
+ El control ON/OFF, actua de según la siguiente tabla, donde para seleccionar el sentido, se basa en las variables movimiento\_motor\_1 y movimiento\_motor\_2, que se obtienen de la función de autocalibración. 
+ 
+ \begin{table}[ht]
+ 	\centering 
+ 	\begin{tabular}{|c|c|c|c|}
+ 		\hline 
+ 		eje & error & sentido de movimiento & valor variable sentido \\ 
+ 		\hline	 
+ 	%	\cline{3-4} 
+ 		\multirow{3}{*}{Azimut}& $e<res_{az}$ & este$\rightarrow$ oeste  &movimiento\_motor\_1[1] \\ \cline{2-4}
+ 		& $e>res_{az}$& oeste$\rightarrow$ este& movimiento\_motor\_1[0] \\ \cline{2-4}
+ 	%	\hline
+ 		& $|e|<res_{az}$& motor parado & 0\\ \cline{2-4}
+ 		\hline   
+ 		\multirow{3}{*}{altura}& $e<res_h $ &90° $\rightarrow$ plano del suelo& movimiento\_motor\_2[1] \\ \cline{2-4}
+ 		& $e>res_h$ &plano del suelo $\rightarrow$ 90° & movimiento\_motor\_2[0] \\ \cline{2-4}
+ 		& $|e|<res_h$& motor parado& 0\\ 
+ 		\hline
+% 		\cline{2-4}
+ 		  			
+  	\end{tabular}
+ \end{table}  
+ 
+ El valor para que se pueda realizar el control correctamente, debe medirse el ruido sobre el sistema(más especificamente, la potencia del ruido),y luego proponer un valor mayor a él para realizar el control, en lugar de la resolución. Se va a probar, si la antena, responde con este valor de resolución, o debe reajustarse. Este procedimiento se realiza al final del presente texto,aclarando dicha situación. El código realizado para el control, se encuentra en el apéndice del presente texto. 
+
+\subsection{Resultados de la función de autocalibración y control}
+
+La función de control, requiere de la definición de los datos brindados por la función de autocalibración. Para la función de autocalibración, en la tabla \ref{tab:result_control} definimos los sentidos, siendo los resultados de las variables los que se encuentran en tabla \ref{tab:resultados_autocalibracion}. Luego, en base a estas variables,se observan cuales puertos son los correspondientes en base a los diodos led referidos en la figura \ref{fig:proto_1}. La resolución, se definió en la sección anterior. El valor de referencia utilizado para realizar las pruebas es el denominado cenit: 90° en altura y 90° en azimut. 
+
+En la tabla \ref{tab:result_control}, se observa que la función de control responde tal cual lo esperado, ya que se observa que al cambiar los puntos iniciales, para el mismo error, se invierte la dirección de los puertos. Esto es así, ya que la función de autocalibración, guarda el sentido de movimiento de la antena, y la función de control, los orienta en el sentido correcto.    
+
+
+\begin{table}[ht]
+%	\hspace{-25mm}
+\resizebox{\linewidth}{!}
+{
+  \begin{threeparttable}		
+	\begin{tabular}{|p{1.5cm}|p{1.5cm}|p{1.5cm}|c|c|c|c|c|c|}
+		\hline 
+		\multicolumn{9}{|c|}{Motor 1: Motor de azimut - Referencia 90º } \\
+		\hline 
+		\multicolumn{3}{|c|}{autocalibración} & \multicolumn{6}{c|}{control } \\
+		\hline 
+		\multirow{2}{1.4cm}{Posición inicial} &\multirow{2}{1.4cm}{ Primer Giro} & \multirow{2}{1.4cm}{Segundo giro} &\multicolumn{2}{c|}{$e>res_{az}$} &\multicolumn{2}{c|}{$e<-res_{az}$} &\multicolumn{2}{c|}{$|e|\leq res_{az}$} \\ \cline{4-9}
+		
+		 & &  & puerto on & puerto off &puerto on & puerto off&puerto off & puerto off\\ 
+		\hline 
+		punto medio & giro izquierda & giro derecha & MOTOR\_1\_S2 & MOTOR\_1\_S1  & MOTOR\_1\_S1& MOTOR\_1\_S2& MOTOR\_1\_S1 & MOTOR\_1\_S2 \\ 
+		\hline 
+		punto medio & giro derecha & giro izquierda &MOTOR\_1\_S1  &MOTOR\_1\_S2
+		& MOTOR\_1\_S2&  MOTOR\_1\_S1 &MOTOR\_1\_S1 & MOTOR\_1\_S2 	\\
+		\hline 
+		extremo izquierdo & giro derecha & x &MOTOR\_1\_S2  & MOTOR\_1\_S1  & MOTOR\_1\_S1& MOTOR\_1\_S2 &MOTOR\_1\_S1 & MOTOR\_1\_S2 \\ 
+		\hline 
+		extremo derecho & giro izquierda & x & MOTOR\_1\_S1&MOTOR\_1\_S2  & MOTOR\_1\_S2 &MOTOR\_1\_S1 &MOTOR\_1\_S1 &MOTOR\_1\_S1  \\ 
+		\hline 
+		%---------------------------- MOTOR DE ALTURA 	--------------------------%
+		\hline 
+		\multicolumn{9}{|c|}{Motor 2: Motor de altura - Referencia 90º } \\
+		\hline 
+		\multicolumn{3}{|c|}{autocalibración} & \multicolumn{6}{c|}{control } \\
+		\hline 
+		\multirow{2}{1.4cm}{Posición inicial} &\multirow{2}{1.4cm}{ Primer Giro} & \multirow{2}{1.4cm}{Segundo giro} &\multicolumn{2}{c|}{$e>res_h$} & \multicolumn{2}{c|}{$e<-res_h$\tnote{1}}  &\multicolumn{2}{c|}{$|e|\leq res_h$} \\ \cline{4-9}
+		
+		& &  & puerto on & puerto off &puerto on & puerto off&puerto on & puerto off\\ 
+		\hline 
+		punto medio & giro izquierda & giro derecha &  MOTOR\_2\_S1 &  MOTOR\_2\_S2  & x & x &MOTOR\_2\_S1 &MOTOR\_2\_S2 \\ 
+		\hline 
+		punto medio & giro derecha & giro izquierda & MOTOR\_2\_S2 & MOTOR\_2\_S1 & x & x & LOW &LOW \\ 
+		\hline  
+		extremo izquierdo & giro derecha &x & MOTOR\_2\_S1 & MOTOR\_2\_S2  &   x  & x  &MOTOR\_2\_S1 &MOTOR\_2\_S2 \\ 
+		\hline 
+		extremo derecho & giro izquierda & x & MOTOR\_2\_S2 & MOTOR\_2\_S1  & x  & x  &MOTOR\_2\_S1 &MOTOR\_2\_S2 \\ 
+		\hline 
+	\end{tabular}
+	\begin{tablenotes}
+	 	\small 
+	 	\item Los valores de los puertos en on y off,están definidas en el archivo "pinout\_ard\_uno.h", cuyo código se muestra en el código  \ref{cod:pinout_ard_uno.h}.
+	 	
+	 	\item [1] En el caso del motor de altura, al ser la referencia el máximo valor angular, el error, no puede darse que $e < -res_h $  
+	\end{tablenotes}
+	\end{threeparttable}
+}	
+	\caption{Resultados de la funcion de control en conjunto con la función de autocalibración.}
+	\label{tab:result_control}
+\end{table}
+\vspace{20mm}
+
+\section{Programación de Scheduler o planificación}
+
+La programación por scheduler(o planificación por su traducción al español), es la base del sistema operativo en tiempo real(ver FreeRtos). El sistema consiste en la ejecución de tareas, que se denominan aplicaciones. Estas tareas, se ejecutan cada cierto tiempo, donde el tiempo lo define el programador. Esto puede definir tareas de mayor o menor prioridad,y permite la ejecución de tareas de forma asincrónica – sincronica. La ejecución sincronica, es la ejecución a tiempo controlado de la aplicación, mientras que la forma asincrónica, puede ejecutarse en cualquier parte del software. En este trabajo, se realiza, la programación de una base de tiempo para controlar la ejecución de tareas, y las funciones necesarias para controlar los relojes. Finalmente se probaron estos relojes, con el uso de un osciloscopio, y midiendo los tiempos.
+
+\subsection{Funcionamiento base de tiempo para scheduler}
+
+Este se basa en el concepto de interrupción.Las interrupciones se explican en el apendice \ref{ap:ard_uno_env}. Se realiza una interrupción por timer. Una interrupción por timer es una interrupción que ocurre con cierta frecuencia,definida por el programador. En el caso del Atmel ATMEGA 328P, posee tres timer, en el presente trabajao, se utiliza el timer2. El diagrama de este se muestra en la figura \ref{fig:timer_2}. 
+
+\begin{figure}[ht]
+	\includegraphics{timer_2}
+	\caption{Diagrama del timer 2 }
+	\label{fig:timer_2}
+\end{figure}
+
+
+Antes de empezar, se debe definir una frecuencia de funcionamiento, para el control del timer. Esta frecuencia se selecciona del clock principal, y se hace pasar por un divisor de frecuencia, llamado preescaler. Este preescaler, solo realiza divisiones de frecuencia en potencias de dos. Este preescaler se configura de un registro llamado “TCCR2B”, que además configura otros parámetros. Una vez configurada la frecuencia de las interrupciones, contamos cuantas interrupciones ocurren, y se tiene el tiempo para cada tarea. 
+
+Este timer tiene 4 modos de funcionamiento. Los cuales son:  
+
+\begin{itemize}
+	\item NORMAL MODE 
+	\item Clear Timer on Compare Match (CTC) Mode
+	\item Fast PWM Mode 
+	\item Phase Correct PWM Mode
+\end{itemize}
+
+Sin entrar en los detalles de cada uno de ellos, explicados en la hoja de datos del microcontrolador Atmel Atmega328P, los últimos dos modos, se usan para realizar un PWM, y el primero, cuenta hasta una cantidad fija, definida en 255. El modo elegido para este propósito fue el CTC(explicado en la siguiente sección), que es el que mejor se adecua a los requerimientos de una base de tiempo controlada. 
+
+\subsection{Clear Timer on Compare Match (CTC) Mode }
+
+Para configurar este modo, se deben configurar algunos registros, mostrados en la figura \ref{fig:timer_2}. En ella, se ve que los registros, tienen la terminación "nx". Esta terminación corresponde al número de timer y al canal. Así, n puede tomar el valor 0,1 o 2, y x la letra A o B. Por ejemplo el registro OCR2A, corresponde al timer 2, y al canal A del mismo. 
+ 
+El registro TCNT2, se incrementa de a uno, con la frecuencia de preescaler seleccionada en el registo TCCR2B. Cuando el valor de TCNT2 coincide con el valor cargado en el registro OCR2A, se lanza una interrupción por timer. El siguiente esquema aclara lo anterior. 
+
+\begin{figure}[ht]
+	\includegraphics{ctc_t2} 
+	\caption{Diagrama de tiempos del modo CTC. Extraido de la hoja de datos del microcontrolador}
+	\label{fig:ctc_isr}
+\end{figure}
+
+En el se ve, que la interrupción se ejecuta cuando TCNT2 alcanza a OCR2A. Para el calculo de la frecuencia, usamos la siguiente formula, que viene dada por el fabricante del dispositivo
+\begin{equation} \label{eq:frec_clk_isr2}
+	f_{OCnx} = \frac{f_{clk \_ I/O}}{2N(1+OCRnx)}
+\end{equation}
+donde 
+
+\begin{flalign}
+	&f_{OCnx} : \text{frecuencia de el modo CTC.} & \\
+	&N : \text{valor del preescaler,son algunas potencias de dos.} & 
+	\\
+	&f_{clk \_ I/0} : \text{frecuencia del reloj utilizado por el microcontrolador.} & 		
+\end{flalign}
+
+Esta ecuación para calcular la frecuencia, es la frecuencia de una onda cuadrada, en el caso de la imagen \ref{fig:ctc_isr}, es el periodo enumerado con "1", en la imagen. Por este motivo, para conocer la frecuencia de la interrupción, se debe dividir por dos, al valor que brinda esta ecuación. 
+
+
+El valor de $f_{clk \_ I/0}$ es 16 Mhz, que es la frecuencia de reloj utilizada por la placa arduino UNO. En este caso, buscamos que el valor sea entero, o múltipo de 10. Para realizar esto, se utilizaron varias pruebas. Se concluyeron los siguientes valores
+\begin{itemize}
+	\item N = 32
+	\item OCR2A = 49
+\end{itemize}
+
+Si reemplazamos en la ecuación \ref{eq:frec_clk_isr2} nos brinda un valor de 5Khz. Entonces, la interrupción ocurrira, con una frecuencia de 10Khz, o cada 100 $\mu$s. 
+
+Para configurar el valor de N(denominado preescaler,dentro de la hoja de datos del microcontrolador), y la configuración CTC, dentro de cada timer, existen dos registros de configuración. 
+Estos se llamana TCCR2A y TCCR2B, y 
+Estos registros se deben configurar con los siguientes valores binarios: 
+\begin{itemize}
+	\item \textbf{TCCR2A = 0b00000010} 
+	\item \textbf{TCCR2B = 0b00000011} 
+\end{itemize} 
+
+El valor de cada bit, esta detallado en la hoja de datos del microcontrolador, y no se van a explicar en el presente documento. Al final de realizar todo este analisis, se construyó una función, que automatice esta tarea de configuración. La función tiene por nombre \mintinline{Arduino}{Base_tiempo()}. El código se muestra a continuación. 
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single]{Arduino}
+void Base_tiempo()
+{
+ SREG = (SREG & 0b01111111);
+ TCNT2 = 0 ;
+ TIMSK2 = TIMSK2 | 0b00000010 ;
+ TCCR2A = 0b00000010;
+ TCCR2B = 0b00000011; // 0.5 MhZ n= 32 
+ OCR2A = 49;
+ SREG = (SREG & 0b01111111) | 0b10000000 ;
+}	
+	\end{minted}
+\caption{Función base de tiempo.}
+\label{cod:base_tiempo}
+\end{listing}
+
+Esta función, además de configurar el modo CTC, el preescalador , y el registro OCR2A, configura las interrupciones. La configuración de las interrupciones puede obtenerse de la hoja de datos del microcontrolador.
+
+\subsection{Programación del Software scheduler} 
+
+El sistema, se compone de una determinada cantidad de relojes, siendo esta cantidad variable por cada programador en la cantidad que se desee. En el caso de este trabajo, se hicieron 8 relojes, y se testearon.
+Primero deben crearse los relojes, que pueden o no estar configurados. Estos relojes, los definimos como una matriz de 8x4, donde cada fila es el numero de reloj, y cada columna es hora, minuto, segundo y milisegundo. Esta matriz se llama timer dentro del código. Luego, deben crearse las funciones para interactuar con ella, y además, debe crearse una bandera, que diga, que reloj o relojes se vencieron. Esto se logra con un vector de eventos, donde va guardando los relojes que se vencen. Se usa un vector, porque pueden vencerse mas de un reloj al mismo tiempo. Se lo denomina FlagRepEvent[] . Ademas, creamos un vector que nos indica que relojes están activos, y lo llamamos timer\_activo. Todas estas variables, necesitan, comunicarse entre si, y la comunicación entre ellas se realiza usando funciones. En la figura \ref{fig:soft_sch} se muestra un diagrama del software programado.  
+
+
+\begin{figure}[ht]
+	\includegraphics[width=\linewidth]{software_timer} 
+	\caption{Diagrama de software para el software de scheduler}
+	\label{fig:soft_sch} 	
+\end{figure}
+
+\subsubsection{Funciones}
+
+En primer lugar, se crean dos archivos, uno denominado "tiempo.cpp"  y "tiempo.h". Dentro de ambos archivos se encuentra la programación de las funciones. En el sistema, se crearon las siguientes funciones, las cuales luego se van a encapsulan en una librería.  
+
+\begin{itemize}
+\item TimerStart(char n\_reloj,char h, char m, char s , int ms)
+\item AnalizoTimer(char n\_reloj, char\_index) 
+\item timerClose(char n\_reloj) 
+\item timerStop(char n\_reloj)
+\item timer\_marcha(char n\_reloj) 
+\end{itemize}
+
+A continuación se da un breve resumen de lo que realiza cada una de ellas: 
+
+\textbf{TimerStart}:  inicializa el numero de reloj, con la cantidad de tiempo que desea el programador que se ejecute la tarea. Esta función carga la variable timer[n\_reloj][] con los valores de hora, minuto, segundo y milisegundo que desea el programador(es decir, carga la fila), y además carga el vector timer\_activo[] con el valor de reloj. 
+
+\textbf{AnalizoTimer}: Esta función se ejecuta dentro de la interrupción. Su finalidad es descontar un milisegundo a los relojes que previamente se habían cargado. Esta lo que realiza, es solamente el decremento de un milisegundo en los relojes que esten activos en el flag timer\_activo. La función decrementa igual que lo haría un cronometro de bolsillo. Es decir, llega ms a cero, y mira los segundos, si los segundos no son cero, decrementa en uno el segundo, y pone en 999 la variable de ms en el numero de reloj correspondiente.  
+
+\textbf{TimerClose}: Esta función apaga el timer correspondiente, modificando el timer\_activo(poniendolo a cero) y poniendo todo el reloj a cero. 
+
+\textbf{TimerStop}: Deja de contar, es equivalente a parar un cronometro, para luego seguir contando. Esta función modifica timer\_activo y lo pone en cero, pero no modifica el vector de relojes, los cuales siguen sin ser modificados. Para volver a arrancar, se debe utilizar la función timer\_marcha, que vuelve a poner el funcionamiento el reloj que se había frenado. 
+
+
+\subsubsection{Funcionamiento del software} 
+
+Este software se basa en el concepto de interrupción. Se genera una interrupción cada 100us, y con una variable se cuentan 10 de ellas, y ahí ha transcurrido 1ms. Luego de 10 interrupciones, se llama a la función AnalizoTimer(), que descuenta en un milisegundo de los relojes que esten activos, y si luego de descontar, todo el reloj es cero,(es decir, la fila n\_reloj es toda cero), activa el flagRepEvent correspondiente, para ejecutar la acción correspondiente. Esta acción, es activada por el switch -case de timerEvent() y ejecuta la aplicación correspondiente. 
+
+El modo de utilizarlo es llamar a la función Base\_tiempo(),dentro del inicio del programa, luego con esto, se activan las interrupciones por timer. Acto seguido a esto, hay que definir el numero de reloj a activar con la función TimerStart, o cuando se desee llamar, para activar el reloj correspondiente. Luego, debe definirse la acción a ejecutar por ese reloj, la cual debe estar definida dentro de la función timerEvent. 
+
+Todo el código desarrollado para estas funciones, se encuentra en el anexo del presente capítulo. 
+
+
+
+\subsection{Resultados del software de planificación}
+
+Luego de haber construido todo el software, se realizaron pruebas, prendiendo y apagando dos led, cada determinada cantidad de tiempo, y se ha utilizado un osciloscopio para ver la forma de onda.
+ 
+Se configuro un reloj de 872ms, y se midio con un osciloscopio, ambos lanzados a tiempos distintos, es decir, existe un delay entre ambos. Los resultados se midieron en el osciloscopio, en una primera prueba. La segunda prueba, fue configurar dos relojes, y parar uno y relanzarlo, mientras el otro permanecia prendido. Los resultados sobre el osciloscopio se observan en las siguientes imagenes: 
+
+
+\begin{figure}[ht]
+%	\hspace{-20mm}
+	\begin{subfigure}{0.5\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{osciloscopio_im1} 
+		\caption{Primera prueba realizada sobre el software de scheduler}
+		\label{fig:osc_m1}	
+	\end{subfigure}
+	\hfill
+%	\hspace{20mm} 
+	\begin{subfigure}{0.5\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{osciloscopio_im2}
+		\caption{Segunda prueba realizada sobre el software de scheduler} 
+		\label{fig:osc_m2}		
+	\end{subfigure}
+	\caption{prueba sobre software de manejo de scheduler}
+\end{figure}
+
+Los códigos utilizados para medir esta función, no se encuentra dentro de este documento. Este, debe realizarse utilizando las funciones anteriores, y para la segunda prueba, poner un contador y parar el segundo reloj cuando llegue a un determinado valor, y seguir contando, y cuando alcance un segundo valor,volver a lanzar el mismo reloj. 
+
+Como observamos, en la primer prueba, fue generar una onda cuadrada, donde el estado de alto era de 872ms, y bajo de ese mismo tiempo. En la figura \ref{fig:osc_m1}, se observa la forma de onda en alto, y puede verse que con los cursores del osciloscopio, la medida, fue del mismo tiempo. 
+
+% observaciones imagenes oscioloscopio % 
+
+La segunda prueba, se observa en la imagen \ref{fig:osc_m2}, donde, se ha parado un reloj, durante un tiempo, y se ha vuelto a empezar, manteniendo una onda cuadrada sobre el otro puerto. El resultado fue satisfactorio, ya que se observa, en el osciloscopio, como se ha frenado un puerto, mientras el otro sigue funcionando,y al cabo de un tiempo, volvió a empezar.  
+ 
+
+\section{Conexión del software con Gpredict y Stellarium} 
+
+En esta sección, se muestran los componentes principales del software desarrollado para comunicarse con estos programas, y como obtener la posición hacia donde debe ir la antena. En la figura \ref{fig:sist_control_real}, se observa un recuadro, que dice "decidir referencia". En esta parte del desarrollo, trata, de ver la forma de decidir esa referencia. Las referencias provienen de tres fuentes posibles: 
+\begin{itemize}
+	\item Gpredict.  
+	\item Stellarium. 
+	\item Ninguna - Debe mantenerse en el cenit.
+\end{itemize} 
+
+Para ello, dentro del programa principal, se crean dos variables: denominadas \mintinline{Arduino}{ref1} y \mintinline{Arduino}{ref2} respectivamente. Estas tendrán por defecto el valor del cenit (90° en ángulo de azimut y 90° en altura). Cuando existe una conexión, con alguno de estos programas, estos valores cambián automaticamente a aquellas coordenadas enviadas por algúnos de los programas. Una vez finalizada la conexión con alguno de estos programas, estas vuelven a su valor inicial(posición del cenit). 
+
+Antes de empezar a realizar el software para comunicarnos con ambos programas, debe obtenerse la dirección IP, que en esta etapa, será asignada por DHCP. Luego, cuando se conecte a la red institucional, se le asignará una dirección ip fija, dada por el administrador de la red. 
+
+\subsection{Conexión a la red mediante DHCP} 
+
+En principió, el chip ethernet w5100, se conecta a la red, mediante un cable denominado utp. Este cable, se le adiciona un conector, denominado RJ11, en ambos extremos. Este cable, se debe conectar a un router o switch.   
+
+ Una vez, armado el cable y conectado a la red, se debe obtener los parámetros de la red, mediante el uso de el servicio de DHCP(por el momento,en un futuro será fija la dirección IP del dispositivo). El entorno arduino, provee una libreria para trabajar sobre el chip ethernet W5100. Esta libreria, se denomina "ethernet.h", y viene por defecto en su entorno. Esta libreria, se provee de varias funciones, para poder realizar la conexión con el chip W5100 y obtener la dirección IP mediante el protocolo DHCP. 
+ 
+ Para comenzar, a utilizar esta libreria, en primer lugar, se debe armar la conexión como muestra la figura \ref{fig:esq_completo}. Una vez armado, se debe conectar el cable de red a la placa que posee el chip W5100. Una vez realizado, se debe realizar la petición DHCP mediante el uso de la libreria. 
+ 
+  
+En primera instancia, debe realizarse la configuración del puerto de slave select. Esto se realiza con la sentenca 
+
+\mint{Arduino}|Ethernet.init(PINSS)| 
+
+Una vez definido el pin de chip select, se debe asociar una dirección al dispositivo, denominada "dirección mac". Esta dirección es un identificador que esta asociada a cada hardware que desee conectarse a la red. En el caso del chip w5100, esta dirección, se la debe dar el programador, ya que se configura mediante software. La manera de definir una dirección es: 
+
+\mint{Arduino}|  byte mac [] = {0x00, 0xCD, 0xEF, 0xEE, 0xAA, 0xBC};|  
+
+Ahora, debe procederse a obtener la dirección IP por DHCP. Las sentencias para obtener la dirección ip se muestran en el código \ref{cod:dhcpIP}. La dirección IP,que se le asigna mediante el protocolo DHCP, se lee en el puerto serie, con este código.
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single]{Arduino}
+ if (Ethernet.begin(mac) == 0)
+{
+	Serial.print("obt_Ip") ;
+	Serial.print(F("Fallo DHCP"));
+	
+} else {
+	Serial.print(Ethernet.localIP());
+}		
+	\end{minted}
+\caption{Obtención de la dirección IP usando el protocolo DHCP} 	
+\label{cod:dhcpIP} 
+\end{listing}
+
+
+Una vez, obtenidos todos los parámetros de la red, se deben configurar los programas, Gpredict, y Stellarium. La dirección IP que se obtuvo a partir de los pasos mencionados, fue la 192.168.0.150. Esta, es la que se va a utilizar para configurar los programas. 
+
+\subsection{Configuración de Gpredict - Programación de la comunicación} 
+
+En primer lugar, debe realizarse la configuración del software Gpredict, siguiendo los pasos que se muestran en la sección \ref{subs:conf_Gpredict}, en la figura \ref{fig:conf_rot_ip}. Antes. de realizar la configuración sobre el software, se debe recordar, que Gpredict, toma el cero en el eje azimutal, en el polo norte geografico, y en sentido de las agujas del reloj, aumenta la cantidad de grados, hasta llegar a 360º. Por ende, la configuración de Gpredict en el eje azimutal, debe ser entre 90º(corresponde al este), y 270º(corresponde al
+oeste geográfico). Dicho esto, se configura el rotador como muestra la siguiente figura: 
+ 
+\begin{figure}[ht]
+	\centering 
+	\includegraphics{conf_rotador_gpr}
+	\caption{Imagen de la configuración del software Gpredict para la antena ubicada en sala de control del IAR. }
+	\label{fig:conf_rot_sala_control}
+\end{figure}
+%
+\subsubsection{Panel de control del rotador}
+Si se procede a abrir el rotador recien creado, se observá la siguiente imagén(ver sección \ref{subs:conf_Gpredict}): 
+
+\vspace{20mm}
+\begin{figure}[ht]
+	\includegraphics{rotador_select}
+	\caption{Panel de control del rotador en Gpredict}
+	\label{fig:panel_control_gpr}
+\end{figure}
+
+Observamos en la imagen, que se tienen los siguientes botones: 
+
+\begin{itemize}	
+	\item azimuth: posee las coordenadas del rotador, que se envían mediante el protocolo TCP/IP. Si el rotador esta conectado, en la parte read, aparece la posición del rotador.  
+	\item elevación: idem que azimuth, salvo que en el eje de azimuth  
+	\item target: Se selecciona el satelite que se desea seguir. Oprimiendo el boton track, se aplica la posición de azimut y elevación del satelite a seguir, tanto a azimuth como a elevación 
+	\item settings: Se selecciona el rotador, y en tolerance, indica la tolerancia entre el valor leido y el valor enviado por el rotador. Cycle, es para uso interno del programa, y no debe modificarse. El boton engage es para conectarse al rotador mediante la red.   
+\end{itemize}
+
+
+En la parte izquierda de la figura \ref{fig:pan_ctrl_antena}, se encuentra una gráfica en coordenadas polares. Los circulos concentricos, indican el ángulo de altura, siendo el circulo exterior un ángulo de altura de 0º, y el centro de 90º. El ángulo desde el norte, en sentido de las agujas del reloj, indica el ángulo de azimuth. Este ángulo es el que esta representado en la ventana de azimuth y elevación, con un circulo rojo. Por ejemplo, en la imagen de la figura \ref{fig:pan_ctrl_antena}, se observa, 180º azimuth, y 45º elevación,y el circulo rojo, esta marcado apuntando al sur, y aproximadamente en la mitad del radio del centro, hasta el circulo mas grande. La imagen \ref{fig:polar_plot_expl} aclara la explicación dada. En la figura, se observa que hay un recuadro a rayas rojas, esto indican, la visibilidad de la antena instalada en sala de control en el IAR. 
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[height=8cm]{polar_plot}
+	\caption{Diagrama de gráfico polar en software Gpredict.} 
+	\label{fig:polar_plot_expl}
+\end{figure}
+
+De la figura, se observa, que en el ángulo de azimuth, se tiene un desfase de 270º, entre la convención de gpredict, y la convención utilizada en este trabajo. Por este motivo, a la coordenada recibida por el software Gpredict, debe restarsele esta cantidad. Si denominamos $\theta_{azgpr}$ a la coordenada recibida por Gpredict, y $\theta_{az}$ a la coordenada que debe apuntarse, según nuestra convención, se tiene la siguiente ecuación :
+\begin{equation}
+	\theta_{az} =270^\circ - \theta_{azgpr}
+\end{equation}
+
+Por último, se observa en la sección target y settings, los botones engage y track. Su comportamiento, se describe con la siguiente tabla: 
+
+\begin{table}[h!]
+	\begin{tabular}{|c|c|p{11.0cm}|}
+		\hline 
+		track & engaje & Descripción. \\
+		\hline 
+		off & off  & No se envían comandos al rotador y tampoco se lee su posición \\ 
+		\hline 
+		on  & off  &   Los widget del controlador se actualizan con la posición destino pero no se envían comandos al rotador. La posición actual del rotador no se lee de nuevo. Si el satélite objetivo esta fuera del alcance, los widgets del contolador se establecerán en donde se espera que aparezca el satélite en el siguiente AOS \\
+		\hline 
+		off & on  &    Los widgets del controlador no se actualizan con la posición de destino, pero los comandos son enviados al rotador y se lee la posición actual.  Este modo se puede usar para controlar manualmente el rotador\\ 
+		\hline 
+		on  & on   &    Los widgets del controlador se actualizan con la posición destino y la posición se envia al rotador.La posición actual se envia desde el dispositivo rotador. 
+		Si el satélite objetivo esta fuera del rango, se intenta establecer el siguiente AOS \\
+		\hline 
+				
+	\end{tabular}
+	\caption{comportamiento al oprimir los botones track y engage}
+\end{table}
+
+De la tabla anterior, se observa, que la comunicación mediante el protocolo TCP/IP, se debe oprimir el boton Engage. Si se oprime este boton, la coordenada enviada, será la que aparece en la parte del panel donde dice "azimuth y elevación". Si se oprime track, y luego engage, la coordenada enviada por TCP/IP, será aquella en la cual, se encuentre el satelite seleccionado. 
+
+\subsection{Programación del microcontrolador} 
+
+Después de configurar el programa Gpredict, para que realize la comunicación con el dispositivo desarrollado en el presente trabajo, utilizando la libreria "ethernet", provista por el propio desarrollador de la placa de desarrollo, se debe crear un objeto, denominado servidor. La sentencia, para crear este objeto es la siguiente: 
+
+\begin{listing}[H]
+	\begin{minted}[linenos,frame=single]{Arduino}
+#define PORT_GPREDICT 4533 
+EthernetServer Gpredict(PORT_GPREDICT)
+	\end{minted}
+\caption{definición del objeto servidor dentro del entorno arduino}. 
+\label{cod:obj_serv_gpr}
+\end{listing}
+Donde se encuentra definido \mintinline{Arduino}{#define PORT_GPREDICT 4533 }, es el puerto utilizado para la comunicación mediante el protocolo TCP/IP.
+
+Luego, dentro del código principal, se debe realizar una captura de estos datos para poder manipularlos. Estos datos vienen en la forma: 
+comando Parametro1 parametro2\\n o simplemente con el comando \\n. La diferencia, entre uno y otro, es que el que viene sin los parámetros, requiere la respuesta desde el dispositivo, con el mismo formato. Estos comandos, son los que se muestran en la sección \ref{subsub:protocol_com}. 
+
+Dentro de código principal, para saber si existe algún dispositivo que quiera conectarse, se debe realizar las siguientes sentencias: 
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single]{Arduino}
+EthernetClient cliente_gpr = Gpredict.available() ;
+if(cliente_gpr)
+{
+
+}
+	\end{minted}
+\caption{captura de paquetes recibidos mediante el software Gpredict}
+\label{cod:cliente_gpr}
+\end{listing}
+
+Dentro de las llaves iría la acción a realizar según el comando recibido. Los comandos que utiliza Gpredict, son los que se muestran en la tabla \ref{tab:commands_Gpredict}. Los metodos set, vienen de la forma "comando par1 par2", siendo par1, el ángulo azimutal, y el par2, el ángulo de altura. Los métodos get, piden información, y al recibirlos, se debe responder con un salto de linea entre parámetros. Para ejemplificar: supongase que se lee el valor de "P 155.20 38.3". Esto significa que debe apuntar la antena al punto 155.20° en azimuth, y 38.3° en altura,pero no debe responder la petición. Si en vez de una P, llegase una "p", este comando, indica que debe responder su posición al programa. Supongamos que la antena, se encuentra en la posición 125.0° en azimut, y 39° en altura, la respuesta a esta petición será "125.0\\n 39°\\n", y en la pantalla de Gpredict, aparecerán estas coordenadas. En este ejemplo, no se aplicó la corrección de las coordenadas,estan implementadas dentro del software. En el caso, que llegue un comando q(desconectarse del gpredict),se debe cambiar la referencia al cenit. En caso de el comando S, se debe para la antena, mediante la función "mover\_antena". 
+
+Todo el código desarrollado se encuentra en el apéndice del presente capítulo. 
+
+
+
+
+\subsection{Stellarium}
+
+Para el stellarium, debe configurarse el software, según la sección \ref{sub:conf_stellarium_red}. Una vez alli, se configura el software como muestra la figura \ref{fig:conf_net_stell}. 
+
+\begin{figure}[ht]
+	\centering 
+	\includegraphics[scale=0.5]{configuracion_telescopio}
+	\caption{configuración del stellarium} 
+	\label{fig:conf_net_stell}
+\end{figure}  
+
+Una vez configurado, debe presionar "control + 0" o en la barra inferior, debe buscar el icono que le diga "mover el telescopio a las coordenadas definidas. Una vez allí, se le abrirá una ventan con la opción de "configurar telescopio". Debe abrir esa ventana, y le aparecerá el telescopio configurado recientemente. Puede configurar más de un telescopio si así lo desea. Aparecerá una ventana como la que se muestra en la figura \ref{fig:rotador_stellarium_conn}. 
+ 
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[scale=0.6]{rotador_stellarium} 
+	\caption{Apertura del telescopio recién creado.}
+	\label{fig:rotador_stellarium_conn}
+\end{figure}
+Una vez, ahi dentro, presionando el boton conectar, se aprecia la siguiente ventana que aparece en la figura \ref{control del telescopio en stellarium}.  
+
+\begin{figure}[ht!]
+	\includegraphics{rotar_telesc}
+	\caption{Imagen del panel de control del telescopio usando Stellarium}
+	\label{control del telescopio en stellarium}
+\end{figure}
+donde se observan los siguientes botones y opciones: 
+\begin{itemize}
+	\item Rotar: envia las coordenadas al dispositivo que mueve la antena, en el caso del presente documento, es el dispositivo desarrollado en este trabajo. 
+	\item Sync: En desuso, no posee ningun tipo de uso. 
+	\item Ascencion recta: tipo de coordenadas para visualizar estrellas. 
+	\item declinación: Idem que ascención recta.  
+	\item objeto actual,centro de la pantalla: Permite poner las coordenadas en a donde debe apuntar el telescopio, usando algún astro seleccionado, o el centro de la pantalla. 
+	\item HMS, GMS,DECIMAL: tipo de ángulo mostrado. HMS es utilizando el sistema de medición angular basado en horas, el segundo, es el sexagesimal, y el tercero es el decimal. 
+\end{itemize}
+
+Este software, no trae límites para el control de la antena, ya que al ser un software utilizado para telescopios, supone que puede girar 360° en azimut y 90° en altura. El sistema de coordenadas utilizado se denomina ecuatorial, y debe realizarse una transformación de coordenadas para poder mover la antena. Esta transformación, se realiza en la siguiente fase del desarrollo del proyecto. 
+
+
+
+\subsection{Programación para conectarse con Stellarium}. 
+
+En este caso, se debe definir un nuevo objeto servidor. La nueva definición del objeto se realiza de la siguiente manera: 
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single]{Arduino}
+#define PORT_STELLARIUM 10000
+EthernetServer stelarium(PORT_STELLARIUM) ;      // socket tcp/ip para stelarium 
+	\end{minted}
+\caption{definición de objeto servidor para conectarse con el stellarium}. 
+\end{listing}
+
+En la sección \ref{sub:comun_stell}, se explica como envía los datos el stellarium, es decir, la trama de datos. En ésta sección, se explica que el programa stellarium, llama a un software externo para enviar estos datos a travez del protocolo TCP/IP. Este se denomina "telescope\_server". La codificación que utiliza, es la siguiente, dentro de los bits, la cual según su documentación, utiliza los ángulos en un sistema horario: 
+
+\begin{itemize}
+	\item ascención recta: 
+		\begin{itemize}
+		 \item	ascención recta 0hs  = 0x100000000 = 		
+		 \item	ascención recta 12hs = 0x80000000 
+		 \item	ascención recta 24hs = 0x00	
+	\end{itemize}
+	\item declinación: 
+		\begin{itemize}
+		  \item	declinacion -90° = -0x40000000
+		  \item	declinacion  0°  =  0x00000000
+		  \item	declinacion -90° = -0x40000000
+		\end{itemize}
+\end{itemize}
+
+y con estos valores, se realiza una regla de tres simple, para ambos ejes coordenados. 
+
+Dado que los bits, llegan desordenadados, (es decir, llegan en orden inverso), se los debe ordenar, para luego realizar la regla de tres simple, las instrucciónes para organizar estos datos son: 
+
+\begin{listing}
+%\hspace{-30mm}	
+\begin{minted}[linenos,frame=single,breaklines]{Arduino}
+uint8_t sunP[19] ; 
+... 
+
+dec = 0x00000000 | (long (sunP[19])<<24) | (long (sunP[18])<<16) | (long (sunP[17])<<8) | (long (sunP[16])<<0);
+RA  = 0x00000000 | (long (sunP[15])<<24) | (long (sunP[14])<<16) | (long (sunP[13])<<8) | (long (sunP[12])<<0);
+ 	
+\end{minted}
+\caption{Reorganización de los datos recibidos desde el programa stellarium dentro del microcontrolador}
+\label{cod:bitwise_order}
+\end{listing}
+
+donde las variables dec y RA, son las coordenadas recibidas desde el software stellarium, los bits recibidos, se guardan en el vector uint8\_t sunP[20].
+
+Una vez se realiza esto, se debe definir el código para que el microcontrolador,se comunique con el software stellarium. Este código, se realiza dentro del bucle principal del programa, y se le añade el código \label{cod:bitwise_order}, dentro del comportamiento. El código es el siguiente: 
+
+\begin{listing}
+	\begin{minted}[frame=single,linenos,texcomments,escapeinside=||]{Arduino}
+EthernetClient cliente_s = stellarium.available() ; 
+long int dec ; 
+unsigned long int RA = 0 ; 
+uint8_t sunP[20] ; // vector datos recibidos 
+char state_con = 0 ; 
+if (cliente_s)
+{
+	% aquí se implementa el código mostrado en| eñ cóigo \ref{cod:bitwise_order}|   
+}
+	\end{minted}
+\caption{Parte del software que se encarga de conectarse con el software stellarium programado dentro del microcontrolador.}
+\label{cod:connect_stellarium}
+\end{listing} 
+
+Luego, dentro de cada bloque if (ver código \ref{cod:cliente_gpr} y código \ref{cod:connect_stellarium}), van otras lineas adicionales, las cuales no se han mostrado para no extender el documento. Estas lineas adicionales se encuentran dentro del anexo del presente capitulo, y se encargan de mantener la conexión entre los programas de la PC, y el microcontrolador. 
+   
+\subsection{Resultados de la conexión con Gpredict y Stellarium} 
+
+En esta sección, se comprueba la conexión, el intercambió de mensajes entre stellarium y el microntrolador atmega328p,y el microcontrolador y el Gpredict, utilizando como interface entre la red, el dispositivo el chip ethernet w5100. 
+
+La herramienta seleccionada para realizar este análisis es el software WireShark,que se muestra en el capitulo de redes. Cada software se analiza por separado. Cabe mencionar, que el chip utilizado,no soporta ambos software trabajando en simultaneo, debido a sus limitaciones físicas, impuestas por el fabricante. Por este motivo, se prueban ambos software por separado. 
+
+\subsubsection{Conexión con Gpredict.} 
+
+Una vez, configurado el software Gpredict, para conectarse, se debe abrir el panel de control del rotador, y se debe oprimir el boton "engage" para calibrar la antena. Si la conexión funciona, dentro de los cuadros de azimuth y elevación, se obtienen las posición de la antena (donde dice "read" en la figura \ref{fig:pan_ctrl_antena}). Esta posición, aparece como una cruz roja en el polar plot. El punto rojo, es la posición a la que se debe dirigir la antena, la cual es la coordenada azimuth y altura, marcada con números más grandes en la imagen \ref{fig:pan_ctrl_antena}. 
+
+
+\begin{figure}[ht]
+	\includegraphics[scale=0.7]{gpred_rotador} 
+	\caption{Conexión del microcontrolador al software Gpredict mediante el uso del protocolo TCP/IP} 
+	\label{fig:prueba_gpredict_1} 
+\end{figure}
+
+En la prueba siguiente, se le dió a la antena, una altura de 45° y ángulo de azimuth de 180°. Esta posición esta marcada con un circulo rojo dentro de la gráfica polar. La posición que se encuentra el rotador, es de 253.78° en azimuth y 47.85° en altura, esta posición se encuentra marcada con una cruz roja dentro de la gráfica polar(ver figura \ref{fig:prueba_gpredict_1}). A continuación, se han movido los potenciometros manualmente,  y se nota que al llegar a la posición, todos los leds del protoboard, permanecen apagados. Esto es un indicativo, que tanto el control como el software responden de manera apropiada. 
+
+ 
+Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manual(es decir, moviendo los potenciometros), en este caso, aparece el circulo rojo, la cruz indicando la posición de la antena, y un punto rojo, el cual indica la posición del satélite en el plano polar. Durante la prueba, se ha utilizado el software wireshark, para monitorizar los comandos enviados y recibidos desde Gpredict. En los comandos enviados y recibidos, no se ha mostrado ningún tipo de anomalia. A continuación se dejan los resultados del panel de control y del software wireshark 
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{gpredict_seguimiento_sat} 
+	\caption{Panel de control del monitor realizando un seguimiento satelital} 
+	
+\end{figure}
+
+\begin{figure}[ht]
+	\includegraphics[scale=0.5]{wireshark_gpredict} 
+	\caption{Captura de paquetes TCP/IP utilizando el programa wirwshark mediante el seguimiento de un satelite} 
+	
+\end{figure}
+
+
+
+\subsubsection{Conexión con Stellarium.} 
+
+En el caso de stellarium, al no poseer un panel de control, como el Gpredict, se debe verificar de alguna forma, que las coordenadas recibidas, sean las correctas. En este caso, se usa el puerto serie como medio de depuración. Dentro del código, se transformán las coordenadas y se verifica que la unidad angular sea la correcta. Además, se realiza una verificación mediante el software wireshark para asegurarse que la comunicación sea fiable, y se respeten los protocolos entre ambos dispositivos(PC y microcontrolador).
+Para verificar si las coordenadas son las correctas, se ha oprimido el boton "centro de la pantalla", y luego el boton rotar. La figura \ref{fig:rotador_antena_stell_test} muestra las coordenadas enviadas por el panel de control del telescopio del software stellarium, y en la figura \ref{fig:coord_test_stell} se observan los resultados por puerto serie. 
+
+\begin{figure}[ht!]
+	\includegraphics{rotador_antena_stell} 
+	\caption{Panel de control del rotador del stellarium al momento de realizar las pruebas sobre el software} 
+	\label{fig:rotador_antena_stell_test}
+\end{figure}
+
+\begin{figure}[ht!]
+	\includegraphics{puerto_comm_stellarium}
+	\caption{Coordenadas recibidas por el stellarium}
+	\label{fig:coord_test_stell}
+\end{figure}
+
+
+Además, se revisa la conexión mediante el software wireshark. Los resultados del análisis se muestran a continuación: 
+
+
+
+\begin{figure}[ht!]
+	\includegraphics{wireshark_stellarium}
+	\caption{Coordenadas recibidas por el stellarium}
+	\label{fig:wireshark_stell}
+\end{figure}
+
+\section{Unión de partes del software} 
+
+En esta sección se procede a unir todas las partes desarrolladas en esta etapa. Esta unión, se realiza utilizando el esquema de la figura \ref{fig:sistema_general}. La primera parte, debe realizar la función de autocalibración, luego debe iniciar el control de la antena, para volverla a su posición de equilibrio.  
+
+Para realizar el control de la antena, se debe llamar a la función \mintinline{Arduino}{Leer_encoders()}, acto seguido, a la función de control, \mintinline{Arduino}{controlMotores(ref1, ref2)}. Esto debe realizarse periódicamente, por ende, dentro de la programación del scheduler deben ponerse ambas funciones. El tiempo de control seleccionado es 10ms. Estas funciones, se encuentran dentro del archivo "timer.cpp". Para inicializar dichas funciones, se debe realizar las siguientes sentencias: 
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single,escapeinside=||]{Arduino}
+
+#define NUMBER_CLOCK 0 
+#define HOUR_CLOCK  0 
+#define MINUTE_CLOCK  0 
+#define SEGUNDO_CLOCK  0 
+#define MILISECOND_CLOCK  10 
+
+|   aqui siguien otras definiciones ... |
+...
+   |puesta en marcha del control cada 10 milisegundos |
+Base_tiempo() ; 
+timerStart(NUMBER_CLOCK,HOUR_CLOCK,MINUTE_CLOCK,SEGUNDO_CLOCK,MILISECOND_CLOCK)
+
+| en el bucle principal del programa debe ir |
+timerEvent() ; 
+
+	\end{minted}
+\end{listing} 
+
+Luego de realizar esto último, se obtiene la dirección IP mediante DHCP , y se programa la conexión dentro del bucle principal del programa. A continuación se muestra la parte de inicialización, y el bucle principal del programa, donde el código obtenido hasta el momento, se muestra en el apéndice del presente capítulo 
+
+
+\begin{listing}[ht]
+	\begin{minted}[linenos,frame=single,escapeinside=||]{Arduino}
+void setup() 
+{
+	// debugger -- 
+	Serial.begin(9600) ; 
+	/**** inicializacion de puertos del motor como salida  *****/
+	init_pins_motores() ; 
+	autocalibracion()  ;
+	// inicializacion de ethernet 
+	Ethernet.init(PINSS) ; 
+	byte mac [] = {0x00, 0xCD, 0xEF, 0xEE, 0xAA, 0xBC}; // dirmac
+	#if ETHERNET_IP_LOCAL 
+	if (Ethernet.begin(mac,ip,DNS,gateway,mask_net) == 0)
+	{
+		Serial.print(F("Fallo DHCP"));    
+	}else 
+	{
+		Serial.print(Ethernet.localIP());
+	}
+	#else 
+	if (Ethernet.begin(mac) == 0)
+	{
+		Serial.print(F("Fallo DHCP"));    
+	}else 
+	{
+		Serial.print(Ethernet.localIP());
+	}
+	#endif
+	// inicio scheduler -- > 
+	Base_tiempo() ; 
+	timerStart(NUMBER_CLOCK,HOUR_CLOCK,MINUTE_CLOCK,SEGUNDO_CLOCK,MILISECOND_CLOCK) ; 
+	
+
+}
+
+void loop() 
+{
+	timerEvent() ; 
+	EthernetClient cliente_gpr = Gpredict.available() ;
+	EthernetClient cliente_s = stellarium.available() ; 
+	long int dec ; 
+	unsigned long int RA = 0 ; 
+	uint8_t sunP[20] ; // vector datos recibidos -- sunposition 
+	char state_con = 0 ; 
+	if(cliente_gpr)
+	{
+		
+	} 
+	if(cliente_s)
+	{
+		
+	} 
+	
+
+}		
+	
+	
+		
+	\end{minted}
+\end{listing} 
+
+En esta parte del desarrollo, se ha utilizado el puerto serie para mostrar información.En la próxima sección, se utiliza el display LCD para mostrar información. Esto se realiza en el mismo reloj definido para utilizar la función leer\_encoders y controlMotores(ref1,ref2) ; 
+
+\subsection{Resultados}
+Para realizar la depuración del software realizado hasta este momento del desarrollo, se han realizado los siguientes pasos: 
+\begin{enumerate}
+	\item Se conecto Gpredict con el rotador. 
+	\item Se movieron los potenciometros, y se revisó que el ángulo de movimiento total de la antena sea el de la figura \ref{fig:panel_control_gpr}
+	\item Se conecto Stellarium con el rotador.
+	\item Se mueve la posición del software stellarium, y quedan registrados los datos por puerto serie.
+\end{enumerate}
+
+
+Luego de realizados estos pasos, se comprobó que todo el software respondia de forma correcta. No se incluira ninguna imagen, ya que las respuestas son las mismas que corresponden a cada sección del presente capítulo de este documento. En esta sección, se ha construido la mayor parte del software. 
+
+
+\subsection{análisis del código realizado}
+
+En esta sección, se muestran las principales métricas relacionadas al código. 
+En primer lugar, se cuentan las lineas de desarrollo, utilizando la herramienta de visual Studio Code denominada VSCodeCounter. Los resultados se resumen a continuación: 
+\begin{table}
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline 
+		lenguaje& archivos & codigo & comentarios & lineas en blanco & total \\ 
+		\hline 
+		C++ & 8 &692 &189 &197 & 1078 \\
+		\hline 
+		ini &1 &13 &9 &2&24
+	\end{tabular}
+\caption{Tabla resumén de las lineas de desarrollo realizadas hasta el momento}
+\end{table}
+
+Luego de esto, se analiza, los resultados arrojados por el compilador, que el código ocupa 80\% de la memoria de programa, y 52.9\% de la memoria RAM. 
+
+Viendo la gran cantidad de memoria de programa que ocupa, se realizo un análisis con mayor profundidad del código, utilizando una herramienta de desarrollo conocida como "avr-obj-dump". La explicación de esta herramienta rebasa el alcance de este documento. Solamente se dirá que es una herramienta para analizar la memoria de microcontroladores AVR, revisando variables, objetos, etc. Una de las conclusiones, que se pueden obtener utilizando esté metodo, es que las librerias de arduino, se cargan de forma completa dentro del microcontrolador. No distingue entre funciones que usa y cuales no, el compilador. Debido a esta situación, se han programado una cantidad moderada de lineas de código para obtener tanta capacidad de memoria flash. A continuación se deja una imagen de los resultados del obj dump 
+
+\begin{figure}[ht]
+	\includegraphics{dump_memory}
+	\caption{Programa desensamblado en código assembler del microcontrolador. Se utilizó la herramienta avr-obj-dump. }
+\end{figure}
+
+
+\section{Conclusiones}
+
+
+En este capítulo, se muestra como han sido los pasos para construir un apuntador de antena basado en tecnología arduino, y sus librerias. Las librerias, poseen la desventaja de cargarse en memoria sin distinción acerca del uso o no de la funcionalidad. Esto, es un punto en contra, pero la velocidad de desarrollo mediante el uso de estas libreria, es superior si uno debe realizar los desarrollos desde cero.  
+
+Se ha logrado realizar un control de tipo ON/Off, a pesar de las limitaciones del microcontrolador, y que respondan de manera adecuada a los requerimientos del proyecto, además, posee un manejo muy preciso de los tiempos de actuación, a pesar de ser un procesador de bajo costo en el mercado local. 
+
+
+Para finalizar, esta sección, se ha construido la gran parte del software en esta sección, queda la parte de transformación de coordenadas, que será analizada y aplicada en la próxima fase. La construcción de esta función, requiere de conocimientos de trigonometría esférica, ya que todas estas coordenadas utilizadas, se refieren a una esfera. 
+
+
+
+\begin{appendices}
+
+	\addcontentsline{toc}{chapter}{anexo capitulo \thechapter}
+	\chapter{Códigos de programacion}
+	\section{Códigos de programación C/C++} 
+	
+\end{appendices}
+	
