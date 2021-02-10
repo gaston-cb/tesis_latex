@@ -89,7 +89,7 @@ Para realizar las conexiones, revisando el diagrama de conexiones dentro del ap�
 	\end{itemize}  
 \end{itemize}  
 
-Por último, ya que no se dispone de la conexión al motor aún, se prueban conectando en los pines A1 y A0, dos potenciometros,de 10Kohms cada uno, ya que cada motor tiene adosado un potenciometro que es utilizado como encoder. Para conocer si el sentido de giro es correcto, en los pines 5,6,9 y 10, se conecta una resistencia y un led,estos led tiene por finalidad, mostrar si el motor gira en sentido correcto, pero estos no se muestran en el esquemático. El esquema de conexiones se muestra en la figura \ref{fig:esq_completo}. 
+Por último, ya que no se dispone de la conexión al motor aún, se prueban conectando en los pines A1 y A0, dos potenciómetros,de 10Kohms cada uno, ya que cada motor tiene adosado un potenciometro que es utilizado como encoder. Para conocer si el sentido de giro es correcto, en los pines 5,6,9 y 10, se conecta una resistencia y un led,estos led tiene por finalidad, mostrar si el motor gira en sentido correcto, pero estos no se muestran en el esquemático. El esquema de conexiones se muestra en la figura \ref{fig:esq_completo}. 
 
 A continuación se deja una imagen del armado del circuito en una protoboard, en ella, se incluyen las resistencias y diodos led que no se encuentran en la imagen \ref{fig:esq_completo}. 
 
@@ -107,7 +107,7 @@ A continuación se deja una imagen del armado del circuito en una protoboard, en
 	\label{fig:esq_completo} 
 \end{figure}
 
-Donde se ha conectado los diodos led y los potenciometros de la siguiente manera: 
+Donde se ha conectado los diodos led y los potenciómetros de la siguiente manera: 
 \begin{itemize}
 	\label{item:prototipo_leds_pote}
 	\item led rojo: puerto 9 
@@ -133,7 +133,7 @@ Además, el software debe informar en todo momento al usuario de su estado (medi
 Por lo expuesto en los parrafos anteriores de la presente sección, debe realizarse un sistema temporizado, que lea los puertos analógicos A0 y A1, y realizar una acción de control en base a su valor. La acción de control es encender el/los motores en un determinado sentido de giro, y apagarlo cuando llegue a esta. Además, en caso que no este realizando ningún seguimiento, se debe verificar que la antena se encuentre en el cenit. Esto debe realizarse, ya que podrian existir vientos, y/o condiciones climáticas adversas que puedan mover la antena de su posición de equilibrio(el cenit). 
 
 
-Por lo expuesto en parrafos anteriores, se desarrolla el diagrama de software en la figura  \ref{fig:software_diagrama_general}. En este diagrama, se muestra el software desarrollado en el microcontrolador, y como actuan los distintos puertos del microcontrolador con el hardware. El driver de cada motor, en la figura, se realiza en la fase 4, y es un diseño de hardware. Los encoders 1 y 2 respectivamente, son potenciometros adosados al eje de cada motor. Estos potenciometros son de 10Kohms cada uno. Las coordenadas angulares, se denominan angulo de azimut y altura respectivamnte, en astronomía de posición, y por eso se le dió ese nombre. En el capítulo \ref{cap:sist_cord} se tiene una descripción mas detallada de este tipo de coordenadas. 
+Por lo expuesto en parrafos anteriores, se desarrolla el diagrama de software en la figura  \ref{fig:software_diagrama_general}. En este diagrama, se muestra el software desarrollado en el microcontrolador, y como actuan los distintos puertos del microcontrolador con el hardware. El driver de cada motor, en la figura, se realiza en la fase 4, y es un diseño de hardware. Los encoders 1 y 2 respectivamente, son potenciómetros adosados al eje de cada motor. Estos potenciómetros son de 10Kohms cada uno. Las coordenadas angulares, se denominan angulo de azimut y altura respectivamnte, en astronomía de posición, y por eso se le dió ese nombre. En el capítulo \ref{cap:sist_cord} se tiene una descripción mas detallada de este tipo de coordenadas. 
 
 En la figura se observan dos recuadros, uno denominado "POLLING", y otro denominado "ISR - Esquema de tiempos". El cuadro de POLLING indica que el puerto SPI se mira todo el tiempo, para conocer si existe uno de los programas de la PC(Gpredict, o Stellarium) quiere realizar un movimiento sobre la antena. 
 
@@ -280,7 +280,7 @@ Por lo expuesto en los parrafos anteriores, la función de autocalibración debe
 
 Esta función,se debe realizar al iniciar el equipo.  
 
-Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciometros la posición actual, y las guarde en las variables azimuth y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
+Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciómetros la posición actual, y las guarde en las variables azimuth y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame= single]{Arduino}
 #include "Arduino.h" 
@@ -409,9 +409,9 @@ Para revisar los resultados de la función de autocalibración, se ha definido u
 
 El prototopo armado es el de la figura \ref{fig:proto_1}, y las conexiones del potenciometro y los diodos leds, se encuentran debajo de la imagen.  
 %
-%Para probar la función, se ponen los potenciometros, en un extremo, luego en el otro, y luego en el medio. Luego se giran, hacia la derecha, o izquierda, y luego se giran en sentido contrario. Se registran los resultados en el puerto serie, y observando que los diodos leds, se encuentren apagados al finalizar la prueba. Los resultados arrojados por el puerto serie se resumen en la siguiente tabla. 
+%Para probar la función, se ponen los potenciómetros, en un extremo, luego en el otro, y luego en el medio. Luego se giran, hacia la derecha, o izquierda, y luego se giran en sentido contrario. Se registran los resultados en el puerto serie, y observando que los diodos leds, se encuentren apagados al finalizar la prueba. Los resultados arrojados por el puerto serie se resumen en la siguiente tabla. 
 
-Para realizar la prueba del programa, se pone el potenciometro en una posición inicial, y luego se gira el potenciometro. Hay tres posiciones iniciales, que empiece en uno de los dos extremos, o que empiece en un punto medio. Si empiezan en un extremo, solo se debería girar una vez hacia el otro extremo. Si empieza en un punto medio, se debe girar dos veces, una para un extremo, y luego hacia el otro extremo. Para realizar esta prueba, dentro del código \ref{cod:pinout_ard_uno.h} se pone la bandera DEBUG en 1, y se utiliza el código mostrado en \ref{cod:autocalibracion}. Este código arroja los resultados por el puerto serie. Estos resultados, se resumen en la tabla \ref{tab:resultados_autocalibracion},donde el sentido viene dado, por los potenciometros vistos de frente.   
+Para realizar la prueba del programa, se pone el potenciometro en una posición inicial, y luego se gira el potenciometro. Hay tres posiciones iniciales, que empiece en uno de los dos extremos, o que empiece en un punto medio. Si empiezan en un extremo, solo se debería girar una vez hacia el otro extremo. Si empieza en un punto medio, se debe girar dos veces, una para un extremo, y luego hacia el otro extremo. Para realizar esta prueba, dentro del código \ref{cod:pinout_ard_uno.h} se pone la bandera DEBUG en 1, y se utiliza el código mostrado en \ref{cod:autocalibracion}. Este código arroja los resultados por el puerto serie. Estos resultados, se resumen en la tabla \ref{tab:resultados_autocalibracion},donde el sentido viene dado, por los potenciómetros vistos de frente.   
 
 %\renewcommand{\arraystretch}{1.5} 
 \begin{table}[ht!]
@@ -457,7 +457,7 @@ Para realizar la prueba del programa, se pone el potenciometro en una posición 
 
 Al analizar la tabla anterior, se observa, que la función de autocalibración, responde correctamente para ambos motores. Por ejemplo, la primer fila del motor 1, se empieza del punto medio,con el sentido siendo 1(ver seccion anterior), y se gira el potenciometro hacia la derecha, y guarda el valor leido del conversor A/D:1023 en este caso. Cambia de sentido,con el valor de sentido 2, y se gira el potenciometro hacia el otro extremo. En este caso, el valor leido es 1. Luego, el sentido Oeste - Este es el sentido con valor 1, ya que el primer giro, aumentó la tensión. Luego al invertir los puertos, se gira hacia el otro lado, y se observa, que la tensión disminuye. Esto indica que el sentido de giro es en el sentido este - oeste. Luego el valor guardado del sentido Oeste - Este debe ser 1, y el sentido contrario, debe ser 2. Se analiza de la misma manera los restantes, y se observa que el comportamiento es el esperado. 
 
-Cabe destacar, que el giro de los potenciometros se ha realizado de forma manual. Los potenciometros que van a usarse, estan adosado al eje de la antena, y estos realizan el movimiento, a medida que gira el/los motores.  
+Cabe destacar, que el giro de los potenciómetros se ha realizado de forma manual. Los potenciómetros que van a usarse, estan adosado al eje de la antena, y estos realizan el movimiento, a medida que gira el/los motores.  
 
 \section{Control de la posición}
 El control de la posición, consta en leer la posición enviada desde el software Gpredict o Stellarium, y mover la antena hacia esa posición. Además, si no recibe, ninguna posición de estos programas, el software, debe ser capaz de regresar a la posición de equilibrio, o denominada cenit. Esta posición es equivalente a 90º en posición azimutal y 90º respecto del suelo. 
@@ -1121,10 +1121,10 @@ Una vez, configurado el software Gpredict, para conectarse, se debe abrir el pan
 	\label{fig:prueba_gpredict_1} 
 \end{figure}
 
-En la prueba siguiente, se le dió a la antena, una altura de 45° y ángulo de azimuth de 180°. Esta posición esta marcada con un circulo rojo dentro de la gráfica polar. La posición que se encuentra el rotador, es de 253.78° en azimuth y 47.85° en altura, esta posición se encuentra marcada con una cruz roja dentro de la gráfica polar(ver figura \ref{fig:prueba_gpredict_1}). A continuación, se han movido los potenciometros manualmente,  y se nota que al llegar a la posición, todos los leds del protoboard, permanecen apagados. Esto es un indicativo, que tanto el control como el software responden de manera apropiada. 
+En la prueba siguiente, se le dió a la antena, una altura de 45° y ángulo de azimuth de 180°. Esta posición esta marcada con un circulo rojo dentro de la gráfica polar. La posición que se encuentra el rotador, es de 253.78° en azimuth y 47.85° en altura, esta posición se encuentra marcada con una cruz roja dentro de la gráfica polar(ver figura \ref{fig:prueba_gpredict_1}). A continuación, se han movido los potenciómetros manualmente,  y se nota que al llegar a la posición, todos los leds del protoboard, permanecen apagados. Esto es un indicativo, que tanto el control como el software responden de manera apropiada. 
 
  
-Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manual(es decir, moviendo los potenciometros), en este caso, aparece el circulo rojo, la cruz indicando la posición de la antena, y un punto rojo, el cual indica la posición del satélite en el plano polar. Durante la prueba, se ha utilizado el software wireshark, para monitorizar los comandos enviados y recibidos desde Gpredict. En los comandos enviados y recibidos, no se ha mostrado ningún tipo de anomalia. A continuación se dejan los resultados del panel de control y en la figura \ref{fig:wireshark_gpr} los resultados del análisis hecho con wireshark. 
+Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manual(es decir, moviendo los potenciómetros), en este caso, aparece el circulo rojo, la cruz indicando la posición de la antena, y un punto rojo, el cual indica la posición del satélite en el plano polar. Durante la prueba, se ha utilizado el software wireshark, para monitorizar los comandos enviados y recibidos desde Gpredict. En los comandos enviados y recibidos, no se ha mostrado ningún tipo de anomalia. A continuación se dejan los resultados del panel de control y en la figura \ref{fig:wireshark_gpr} los resultados del análisis hecho con wireshark. 
 
 
 \begin{figure}[ht]
@@ -1275,7 +1275,7 @@ En esta parte del desarrollo, se ha utilizado el puerto serie para mostrar infor
 Para realizar la depuración del software realizado hasta este momento del desarrollo, se han realizado los siguientes pasos: 
 \begin{enumerate}
 	\item Se conecto Gpredict con el rotador. 
-	\item Se movieron los potenciometros, y se revisó que el ángulo de movimiento total de la antena sea el de la figura \ref{fig:panel_control_gpr}
+	\item Se movieron los potenciómetros, y se revisó que el ángulo de movimiento total de la antena sea el de la figura \ref{fig:panel_control_gpr}
 	\item Se conecto Stellarium con el rotador.
 	\item Se mueve la posición del software stellarium, y quedan registrados los datos por puerto serie.
 \end{enumerate}
