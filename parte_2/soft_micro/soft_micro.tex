@@ -829,7 +829,7 @@ Antes de empezar a realizar el software para comunicarnos con ambos programas, d
 
 En principió, el chip ethernet w5100, se conecta a la red, mediante un cable denominado utp. Este cable, se le adiciona un conector, denominado RJ11, en ambos extremos. Este cable, se debe conectar a un router o switch.   
 
- Una vez, armado el cable y conectado a la red, se debe obtener los parámetros de la red, mediante el uso de el servicio de DHCP(por el momento,en un futuro será fija la dirección IP del dispositivo). El entorno arduino, provee una libreria para trabajar sobre el chip ethernet W5100. Esta libreria, se denomina "ethernet.h", y viene por defecto en su entorno. Esta libreria, se provee de varias funciones, para poder realizar la conexión con el chip W5100 y obtener la dirección IP mediante el protocolo DHCP. 
+ Una vez, armado el cable y conectado a la red, se debe obtener los parámetros de la red, mediante el uso de el servicio de DHCP(por el momento,en un futuro será fija la dirección IP del dispositivo). El entorno arduino, provee una libreria para trabajar sobre el chip ethernet W5100. Esta libreria, se denomina ``ethernet.h'', y viene por defecto en su entorno. Esta libreria, se provee de varias funciones, para poder realizar la conexión con el chip W5100 y obtener la dirección IP mediante el protocolo DHCP. 
  
  Para comenzar, a utilizar esta libreria, en primer lugar, se debe armar la conexión como muestra la figura \ref{fig:esq_completo}. Una vez armado, se debe conectar el cable de red a la placa que posee el chip W5100. Una vez realizado, se debe realizar la petición DHCP mediante el uso de la libreria. 
  
@@ -838,11 +838,11 @@ En primera instancia, debe realizarse la configuración del puerto de slave sele
 
 \mint{Arduino}|Ethernet.init(PINSS)| 
 
-Una vez definido el pin de chip select, se debe asociar una dirección al dispositivo, denominada "dirección mac". Esta dirección es un identificador que esta asociada a cada hardware que desee conectarse a la red. En el caso del chip w5100, esta dirección, se la debe dar el programador, ya que se configura mediante software. La manera de definir una dirección es: 
+Una vez definido el pin de chip select, se debe asociar una dirección al dispositivo, denominada ``dirección mac''. Esta dirección es un identificador que esta asociada a cada hardware que desee conectarse a la red. En el caso del chip w5100, esta dirección, se la debe dar el programador, ya que se configura mediante software. La manera de definir una dirección es: 
 
 \mint{Arduino}|  byte mac [] = {0x00, 0xCD, 0xEF, 0xEE, 0xAA, 0xBC};|  
 
-Ahora, debe procederse a obtener la dirección IP por DHCP. Las sentencias para obtener la dirección ip se muestran en el código \ref{cod:dhcpIP}. La dirección IP,que se le asigna mediante el protocolo DHCP, se lee en el puerto serie, con este código.
+Ahora, debe procederse a obtener la dirección IP por DHCP. Las sentencias para obtener la dirección ip se muestran en el código \ref{cod:dhcpIP}. La dirección IP,que se le asigna mediante el protocolo DHCP, se muestra en el puerto serie, con este código.
 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame=single]{Arduino}
@@ -864,7 +864,7 @@ Una vez, obtenidos todos los parámetros de la red, se deben configurar los prog
 
 \subsection{Configuración de Gpredict - Programación de la comunicación} 
 
-En primer lugar, debe realizarse la configuración del software Gpredict, siguiendo los pasos que se muestran en la sección \ref{subs:conf_Gpredict}, en la figura \ref{fig:conf_rot_ip}. Antes. de realizar la configuración sobre el software, se debe recordar, que Gpredict, toma el cero en el eje azimutal, en el polo norte geografico, y en sentido de las agujas del reloj, aumenta la cantidad de grados, hasta llegar a 360º. Por ende, la configuración de Gpredict en el eje azimutal, debe ser entre 90º(corresponde al este), y 270º(corresponde al
+En primer lugar, debe realizarse la configuración del software Gpredict, siguiendo los pasos que se muestran en la sección \ref{subs:conf_Gpredict}, en la figura \ref{fig:conf_rot_ip}. Antes. de realizar la configuración sobre el software, se debe recordar, que Gpredict, toma el cero del eje azimutal, en el polo norte geografico, y en sentido de las agujas del reloj, aumenta la cantidad de grados, hasta llegar a 360º. Por ende, la configuración de Gpredict en el eje azimutal, debe ser entre 90º(corresponde al este), y 270º(corresponde al
 oeste geográfico). Dicho esto, se configura el rotador como muestra la siguiente figura: 
  
 \begin{figure}[ht]
@@ -884,7 +884,7 @@ Si se procede a abrir el rotador recien creado, se observá la siguiente imagén
 	\label{fig:panel_control_gpr}
 \end{figure}
 
-Observamos en la imagen, que se tienen los siguientes botones: 
+Observamos en la imagen, que se tienen los siguientes partes: 
 
 \begin{itemize}	
 	\item azimuth: posee las coordenadas del rotador, que se envían mediante el protocolo TCP/IP. Si el rotador esta conectado, en la parte read, aparece la posición del rotador.  
@@ -894,7 +894,7 @@ Observamos en la imagen, que se tienen los siguientes botones:
 \end{itemize}
 
 
-En la parte izquierda de la figura \ref{fig:pan_ctrl_antena}, se encuentra una gráfica en coordenadas polares. Los circulos concentricos, indican el ángulo de altura, siendo el circulo exterior un ángulo de altura de 0º, y el centro de 90º. El ángulo desde el norte, en sentido de las agujas del reloj, indica el ángulo de azimuth. Este ángulo es el que esta representado en la ventana de azimuth y elevación, con un circulo rojo. Por ejemplo, en la imagen de la figura \ref{fig:pan_ctrl_antena}, se observa, 180º azimuth, y 45º elevación,y el circulo rojo, esta marcado apuntando al sur, y aproximadamente en la mitad del radio del centro, hasta el circulo mas grande. La imagen \ref{fig:polar_plot_expl} aclara la explicación dada. En la figura, se observa que hay un recuadro a rayas rojas, esto indican, la visibilidad de la antena instalada en sala de control en el IAR. 
+En la parte izquierda de la figura \ref{fig:panel_control_gpr}, se encuentra una gráfica en coordenadas polares. Los circulos concentricos, indican el ángulo de altura, siendo el circulo exterior un ángulo de altura de 0º, y el centro de 90º. El ángulo desde el norte, en sentido de las agujas del reloj, indica el ángulo de azimuth. Este ángulo es el que esta representado en la ventana de azimuth y elevación, con un circulo rojo. Por ejemplo, en la imagen de la figura \ref{fig:panel_control_gpr}, se observa, 180º azimuth, y 45º elevación,y el circulo rojo, esta marcado apuntando al sur, y aproximadamente en la mitad del radio del centro, hasta el circulo mas grande. La imagen \ref{fig:polar_plot_expl} aclara la explicación dada. En la figura, se observa que hay un recuadro a rayas rojas, esto indica, la visibilidad de la antena instalada en sala de control en el IAR. 
 
 
 \begin{figure}[ht]
@@ -918,12 +918,11 @@ Por último, se observa en la sección target y settings, los botones engage y t
 		\hline 
 		off & off  & No se envían comandos al rotador y tampoco se lee su posición \\ 
 		\hline 
-		on  & off  &   Los widget del controlador se actualizan con la posición destino pero no se envían comandos al rotador. La posición actual del rotador no se lee de nuevo. Si el satélite objetivo esta fuera del alcance, los widgets del contolador se establecerán en donde se espera que aparezca el satélite en el siguiente AOS \\
+		on  & off  &   La posición del controlador se actualizan con la posición destino pero no se envían comandos al rotador. La posición actual del rotador no se lee. Si el satélite objetivo esta fuera del alcance, las coordenadas del contolador se establecerán en donde se espera que aparezca el satélite. \\
 		\hline 
-		off & on  &    Los widgets del controlador no se actualizan con la posición de destino, pero los comandos son enviados al rotador y se lee la posición actual.  Este modo se puede usar para controlar manualmente el rotador\\ 
+		off & on  &   Las coordenadas azimuth y altura,se envian al rotador, pero no se establece ningún satelite para seguir.  Este modo se puede usarse para controlar manualmente el rotador,o realizar una calibración de la antena. \\ 
 		\hline 
-		on  & on   &    Los widgets del controlador se actualizan con la posición destino y la posición se envia al rotador.La posición actual se envia desde el dispositivo rotador. 
-		Si el satélite objetivo esta fuera del rango, se intenta establecer el siguiente AOS \\
+		on  & on   &La posición del satelite a seguir, se envia continuamente al rotador en caso de que exista un satelite dentro del campo de visión de la antena. Si el satelite no se encuentra dentro del campo de visión, se establece la ubicación de la antena para esperarlo, y luego seguirlo \\
 		\hline 
 				
 	\end{tabular}
@@ -934,20 +933,44 @@ De la tabla anterior, se observa, que la comunicación mediante el protocolo TCP
 
 \subsection{Programación del microcontrolador} 
 
-Después de configurar el programa Gpredict, para que realize la comunicación con el dispositivo desarrollado en el presente trabajo, utilizando la libreria "ethernet", provista por el propio desarrollador de la placa de desarrollo, se debe crear un objeto, denominado servidor. La sentencia, para crear este objeto es la siguiente: 
+Después de configurar el programa Gpredict, para que realize la comunicación con el dispositivo desarrollado en el presente trabajo, utilizando la libreria ``ethernet'', provista de manera nativa con el entorno de desarrollo arduino, se debe crear un objeto, denominado servidor. La sentencia, para crear este objeto es la siguiente: 
 
-\begin{listing}[H]
+\begin{listing}[ht!]
 	\begin{minted}[linenos,frame=single]{Arduino}
 #define PORT_GPREDICT 4533 
 EthernetServer Gpredict(PORT_GPREDICT)
 	\end{minted}
+
 \caption{definición del objeto servidor dentro del entorno arduino}. 
 \label{cod:obj_serv_gpr}
 \end{listing}
 Donde se encuentra definido \mintinline{Arduino}{#define PORT_GPREDICT 4533 }, es el puerto utilizado para la comunicación mediante el protocolo TCP/IP.
 
-Luego, dentro del código principal, se debe realizar una captura de estos datos para poder manipularlos. Estos datos vienen en la forma: 
-comando Parametro1 parametro2\\n o simplemente con el comando \\n. La diferencia, entre uno y otro, es que el que viene sin los parámetros, requiere la respuesta desde el dispositivo, con el mismo formato. Estos comandos, son los que se muestran en la sección \ref{subsub:protocol_com}. 
+Luego, dentro del código principal, se debe realizar una captura de estos datos para poder manipularlos, y responder adecuadamente. Recordar que hay dos tipos de comandos, los comandos de tipo Get y de tipo Set. En la siguiente tabla, se ilustra el formato de los datos, tanto en la respuesta como en la llamada: 
+\begin{table}[ht]
+	\centering
+ \begin{threeparttable}	
+	\begin{tabular}{|p{2.0cm}|p{2.0cm}|p{2.0cm}|p{2.0cm}|} 
+		\hline
+		\multicolumn{2}{|c|}{Comandos tipo Get} &\multicolumn{2}{c|}{Comandos tipo Set}  
+		\\ \hline 
+		Protocolo de envio & respuesta & protocolo de envio & respuesta \\ \hline 
+		comando\tnote{1} & par1$\backslash$npar2$\backslash$n & 
+		comando\tnote{1} par1\tnote{2} par2\tnote{2}  $\backslash$n & par1$\backslash$npar2$\backslash$n  \\ 
+		\hline 
+	\end{tabular}
+	\begin{tablenotes}
+		\item [1] los comandos estan definidos en la tabla \ref{tab:commands_Gpredict}   
+		\item [2] par1 y par2 son las coordenadas de azimut y elevación respectivamente.  
+		
+	\end{tablenotes}
+
+
+\end{threeparttable}
+	\caption{Envio de respuesta y comandos entre Gpredict y el microcontrolador.}
+	\label{tab:protocol_tx_gpr}
+\end{table}
+
 
 Dentro de código principal, para saber si existe algún dispositivo que quiera conectarse, se debe realizar las siguientes sentencias: 
 
@@ -963,7 +986,8 @@ if(cliente_gpr)
 \label{cod:cliente_gpr}
 \end{listing}
 
-Dentro de las llaves iría la acción a realizar según el comando recibido. Los comandos que utiliza Gpredict, son los que se muestran en la tabla \ref{tab:commands_Gpredict}. Los metodos set, vienen de la forma "comando par1 par2", siendo par1, el ángulo azimutal, y el par2, el ángulo de altura. Los métodos get, piden información, y al recibirlos, se debe responder con un salto de linea entre parámetros. Para ejemplificar: supongase que se lee el valor de "P 155.20 38.3". Esto significa que debe apuntar la antena al punto 155.20° en azimuth, y 38.3° en altura,pero no debe responder la petición. Si en vez de una P, llegase una "p", este comando, indica que debe responder su posición al programa. Supongamos que la antena, se encuentra en la posición 125.0° en azimut, y 39° en altura, la respuesta a esta petición será "125.0\\n 39°\\n", y en la pantalla de Gpredict, aparecerán estas coordenadas. En este ejemplo, no se aplicó la corrección de las coordenadas,estan implementadas dentro del software. En el caso, que llegue un comando q(desconectarse del gpredict),se debe cambiar la referencia al cenit. En caso de el comando S, se debe para la antena, mediante la función "mover\_antena". 
+Dentro de las llaves iría la acción a realizar según el comando recibido. Los comandos que utiliza Gpredict, son los que se muestran en la tabla \ref{tab:commands_Gpredict}, y el formato para responder a estas peticiones, se encuentran en la tabla \ref{tab:protocol_tx_gpr}.
+Para ejemplificar: supongase que se lee el valor de "P 155.20 38.3". Esto significa que debe apuntar la antena al punto 155.20° en azimuth, y 38.3° en altura,pero  debe responder la petición, como indica pa tabla \ref{tab:protocol_tx_gpr}. Si en vez de una P, llegase una "p", este comando, indica que debe responder su posición al programa. Supongamos que la antena, se encuentra en la posición 125.0° en azimut, y 39° en altura, la respuesta a esta petición será "125.0\\n 39°\\n", y en la pantalla de Gpredict, aparecerán estas coordenadas. En este ejemplo, no se aplicó la corrección de las coordenadas,estan implementadas dentro del software. En el caso, que llegue un comando q(desconectarse del gpredict),se debe cambiar la referencia al cenit. En caso de el comando S, se debe para la antena, mediante la función "mover\_antena". 
 
 Todo el código desarrollado se encuentra en el apéndice del presente capítulo. 
 
@@ -1023,7 +1047,7 @@ EthernetServer stelarium(PORT_STELLARIUM) ;      // socket tcp/ip para stelarium
 \caption{definición de objeto servidor para conectarse con el stellarium}. 
 \end{listing}
 
-En la sección \ref{sub:comun_stell}, se explica como envía los datos el stellarium, es decir, la trama de datos. En ésta sección, se explica que el programa stellarium, llama a un software externo para enviar estos datos a travez del protocolo TCP/IP. Este se denomina "telescope\_server". La codificación que utiliza, es la siguiente, dentro de los bits, la cual según su documentación, utiliza los ángulos en un sistema horario: 
+En la sección \ref{sub:comun_stell}, se explica como envía los datos el stellarium, es decir, la trama de datos. En ésta sección, se explica que el programa stellarium, llama a un software externo para enviar estos datos a travez del protocolo TCP/IP. Este se denomina ``telescope\_server''. La codificación que utiliza, es la siguiente, dentro de los bits, la cual según su documentación, utiliza los ángulos en un sistema decimal: 
 
 \begin{itemize}
 	\item ascención recta: 
@@ -1088,7 +1112,7 @@ La herramienta seleccionada para realizar este análisis es el software WireShar
 
 \subsubsection{Conexión con Gpredict.} 
 
-Una vez, configurado el software Gpredict, para conectarse, se debe abrir el panel de control del rotador, y se debe oprimir el boton "engage" para calibrar la antena. Si la conexión funciona, dentro de los cuadros de azimuth y elevación, se obtienen las posición de la antena (donde dice "read" en la figura \ref{fig:pan_ctrl_antena}). Esta posición, aparece como una cruz roja en el polar plot. El punto rojo, es la posición a la que se debe dirigir la antena, la cual es la coordenada azimuth y altura, marcada con números más grandes en la imagen \ref{fig:pan_ctrl_antena}. 
+Una vez, configurado el software Gpredict, para conectarse, se debe abrir el panel de control del rotador, y se debe oprimir el boton ``engage" para calibrar la antena. Si la conexión funciona, dentro de los cuadros de azimuth y elevación, se obtienen las posición de la antena (donde dice ``read'' en la figura \ref{fig:pan_ctrl_antena}). Esta posición, aparece como una cruz roja en el polar plot. El punto rojo, es la posición a la que se debe dirigir la antena, la cual es la coordenada azimuth y altura, marcada con números más grandes en la imagen \ref{fig:pan_ctrl_antena}. 
 
 
 \begin{figure}[ht]
@@ -1100,7 +1124,7 @@ Una vez, configurado el software Gpredict, para conectarse, se debe abrir el pan
 En la prueba siguiente, se le dió a la antena, una altura de 45° y ángulo de azimuth de 180°. Esta posición esta marcada con un circulo rojo dentro de la gráfica polar. La posición que se encuentra el rotador, es de 253.78° en azimuth y 47.85° en altura, esta posición se encuentra marcada con una cruz roja dentro de la gráfica polar(ver figura \ref{fig:prueba_gpredict_1}). A continuación, se han movido los potenciometros manualmente,  y se nota que al llegar a la posición, todos los leds del protoboard, permanecen apagados. Esto es un indicativo, que tanto el control como el software responden de manera apropiada. 
 
  
-Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manual(es decir, moviendo los potenciometros), en este caso, aparece el circulo rojo, la cruz indicando la posición de la antena, y un punto rojo, el cual indica la posición del satélite en el plano polar. Durante la prueba, se ha utilizado el software wireshark, para monitorizar los comandos enviados y recibidos desde Gpredict. En los comandos enviados y recibidos, no se ha mostrado ningún tipo de anomalia. A continuación se dejan los resultados del panel de control y del software wireshark 
+Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manual(es decir, moviendo los potenciometros), en este caso, aparece el circulo rojo, la cruz indicando la posición de la antena, y un punto rojo, el cual indica la posición del satélite en el plano polar. Durante la prueba, se ha utilizado el software wireshark, para monitorizar los comandos enviados y recibidos desde Gpredict. En los comandos enviados y recibidos, no se ha mostrado ningún tipo de anomalia. A continuación se dejan los resultados del panel de control y en la figura \ref{fig:wireshark_gpr} los resultados del análisis hecho con wireshark. 
 
 
 \begin{figure}[ht]
@@ -1113,7 +1137,7 @@ Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manu
 \begin{figure}[ht]
 	\includegraphics[scale=0.5]{wireshark_gpredict} 
 	\caption{Captura de paquetes TCP/IP utilizando el programa wirwshark mediante el seguimiento de un satelite} 
-	
+	\label{fig:wireshark_gpr}
 \end{figure}
 
 
@@ -1123,6 +1147,12 @@ Luego de esta prueba, se ha probado el seguimiento de un satelite, de forma manu
 En el caso de stellarium, al no poseer un panel de control, como el Gpredict, se debe verificar de alguna forma, que las coordenadas recibidas, sean las correctas. En este caso, se usa el puerto serie como medio de depuración. Dentro del código, se transformán las coordenadas y se verifica que la unidad angular sea la correcta. Además, se realiza una verificación mediante el software wireshark para asegurarse que la comunicación sea fiable, y se respeten los protocolos entre ambos dispositivos(PC y microcontrolador).
 Para verificar si las coordenadas son las correctas, se ha oprimido el boton "centro de la pantalla", y luego el boton rotar. La figura \ref{fig:rotador_antena_stell_test} muestra las coordenadas enviadas por el panel de control del telescopio del software stellarium, y en la figura \ref{fig:coord_test_stell} se observan los resultados por puerto serie. 
 
+Cabe destacar, que el ángulo de ascención recta marcado por el stellarium es de -109,41°, y el del programa desarrollado, es de 250.58°. Este desfasaje, se da, por el signo negativo de la ascensión recta. Este signo negativo, indica que es contrario al sentido establecido por los astrónomos en este tipo de coordenadas. Para transformarla, se debe restarle 360° a ese ángulo, y se obtendrá la ascención recta. La cuenta que debe realizarse es: 
+\begin{equation*}
+	360^\circ - 109.41^\circ = 250.58 
+\end{equation*}
+
+ Se observa, que el ángulo coincide, con el valor predichoesto se observa en la imagen \ref{fig:coord_test_stell}.  
 \begin{figure}[ht!]
 	\includegraphics{rotador_antena_stell} 
 	\caption{Panel de control del rotador del stellarium al momento de realizar las pruebas sobre el software} 
@@ -1136,12 +1166,12 @@ Para verificar si las coordenadas son las correctas, se ha oprimido el boton "ce
 \end{figure}
 
 
-Además, se revisa la conexión mediante el software wireshark. Los resultados del análisis se muestran a continuación: 
+Además, se revisa la conexión mediante el software wireshark. Los resultados del análisis se muestran a en la imagen 	\ref{fig:wireshark_stell} : 
 
 
 
 \begin{figure}[ht!]
-	\includegraphics{wireshark_stellarium}
+	\includegraphics[width=\linewidth]{wireshark_stellarium}
 	\caption{Coordenadas recibidas por el stellarium}
 	\label{fig:wireshark_stell}
 \end{figure}
@@ -1150,7 +1180,7 @@ Además, se revisa la conexión mediante el software wireshark. Los resultados d
 
 En esta sección se procede a unir todas las partes desarrolladas en esta etapa. Esta unión, se realiza utilizando el esquema de la figura \ref{fig:sistema_general}. La primera parte, debe realizar la función de autocalibración, luego debe iniciar el control de la antena, para volverla a su posición de equilibrio.  
 
-Para realizar el control de la antena, se debe llamar a la función \mintinline{Arduino}{Leer_encoders()}, acto seguido, a la función de control, \mintinline{Arduino}{controlMotores(ref1, ref2)}. Esto debe realizarse periódicamente, por ende, dentro de la programación del scheduler deben ponerse ambas funciones. El tiempo de control seleccionado es 10ms. Estas funciones, se encuentran dentro del archivo "timer.cpp". Para inicializar dichas funciones, se debe realizar las siguientes sentencias: 
+Para realizar el control de la antena, se debe llamar a la función \mintinline{Arduino}{Leer_encoders()}, acto seguido, a la función de control, \mintinline{Arduino}{controlMotores(ref1, ref2)}. Esto debe realizarse periódicamente, por ende, dentro de la programación del scheduler deben ponerse ambas funciones. El tiempo de control seleccionado es 10ms. Estas funciones, se encuentran dentro del archivo "timer.cpp". Para inicializar dichas funciones, se debe realizar el código mostrado en \ref{cod:control_scheduler}. 
 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame=single,escapeinside=||]{Arduino}
@@ -1171,9 +1201,11 @@ timerStart(NUMBER_CLOCK,HOUR_CLOCK,MINUTE_CLOCK,SEGUNDO_CLOCK,MILISECOND_CLOCK)
 timerEvent() ; 
 
 	\end{minted}
+\caption{inicialización del scheduler para leer los encoders y realizar el control de los motores.} 
+\label{cod:control_scheduler}
 \end{listing} 
 
-Luego de realizar esto último, se obtiene la dirección IP mediante DHCP , y se programa la conexión dentro del bucle principal del programa. A continuación se muestra la parte de inicialización, y el bucle principal del programa, donde el código obtenido hasta el momento, se muestra en el apéndice del presente capítulo 
+Luego de realizar esto último, se obtiene la dirección IP mediante DHCP , y se programa la conexión dentro del bucle principal del programa. En él código \ref{cod:main_cpp} se muestra la parte de inicialización, y el bucle principal del programa, donde el código obtenido hasta el momento, se muestra en el apéndice del presente capítulo 
 
 
 \begin{listing}[ht]
@@ -1232,10 +1264,9 @@ void loop()
 	
 
 }		
-	
-	
-		
 	\end{minted}
+\caption{código principal del proyecto.}
+\label{cod:main_cpp}
 \end{listing} 
 
 En esta parte del desarrollo, se ha utilizado el puerto serie para mostrar información.En la próxima sección, se utiliza el display LCD para mostrar información. Esto se realiza en el mismo reloj definido para utilizar la función leer\_encoders y controlMotores(ref1,ref2) ; 
@@ -1257,26 +1288,43 @@ Luego de realizados estos pasos, se comprobó que todo el software respondia de 
 
 En esta sección, se muestran las principales métricas relacionadas al código. 
 En primer lugar, se cuentan las lineas de desarrollo, utilizando la herramienta de visual Studio Code denominada VSCodeCounter. Los resultados se resumen a continuación: 
-\begin{table}
+\begin{table}[ht]
+	\centering
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline 
 		lenguaje& archivos & codigo & comentarios & lineas en blanco & total \\ 
 		\hline 
 		C++ & 8 &692 &189 &197 & 1078 \\
 		\hline 
-		ini &1 &13 &9 &2&24
+		ini &1 &13 &9 &2&24\\
+		\hline
 	\end{tabular}
 \caption{Tabla resumén de las lineas de desarrollo realizadas hasta el momento}
 \end{table}
 
 Luego de esto, se analiza, los resultados arrojados por el compilador, que el código ocupa 80\% de la memoria de programa, y 52.9\% de la memoria RAM. 
 
-Viendo la gran cantidad de memoria de programa que ocupa, se realizo un análisis con mayor profundidad del código, utilizando una herramienta de desarrollo conocida como "avr-obj-dump". La explicación de esta herramienta rebasa el alcance de este documento. Solamente se dirá que es una herramienta para analizar la memoria de microcontroladores AVR, revisando variables, objetos, etc. Una de las conclusiones, que se pueden obtener utilizando esté metodo, es que las librerias de arduino, se cargan de forma completa dentro del microcontrolador. No distingue entre funciones que usa y cuales no, el compilador. Debido a esta situación, se han programado una cantidad moderada de lineas de código para obtener tanta capacidad de memoria flash. A continuación se deja una imagen de los resultados del obj dump 
+Viendo la gran cantidad de memoria de programa que ocupa, se realizo un análisis con mayor profundidad del código, utilizando una herramienta de desarrollo conocida como ``avr-obj-dump''. La explicación de esta herramienta rebasa el alcance de este documento. Solamente se dirá que es una herramienta para analizar la memoria de microcontroladores AVR, revisando variables, objetos, etc. Una de las conclusiones, que se pueden obtener utilizando esté metodo, es que las librerias de arduino, se cargan de forma completa dentro del microcontrolador. No distingue entre funciones que usa y cuales no, el compilador. Debido a esta situación, se han programado una cantidad moderada de lineas de código para obtener tanta capacidad de memoria flash. A continuación se deja una imagen de los resultados del obj dump 
 
 \begin{figure}[ht]
 	\includegraphics{dump_memory}
 	\caption{Programa desensamblado en código assembler del microcontrolador. Se utilizó la herramienta avr-obj-dump. }
 \end{figure}
+
+\section{Programación del display LCD} 
+
+El entorno arduino, provee una libreria especifica para el manejo del display con el chip pcf8574. Esta se denomina \mintinline{Arduino}{LyquidCrystal\_I2C}. Para utilizarla, se debe incluir en el archivo principal del proyecto. Una vez incluida, se debe crear un objeto LCD, que será el encargado de realizar todas las funciones del display. El objeto LCD se crea de la siguiente forma: 
+\mintinline{Arduino}|LiquidCrystal_I2C lcd (ADRRESS\_LCD_I2C,COLS\_LCD,FILAS\_LCD) ; |
+Donde ADRESS\_LCD tiene el valor 0x27, que es la dirección del display para el uso del I2C(ver apéndice \ref{AP:protSerial}). 
+
+Algunos de los métodos que posee esta función, son: 
+\begin{itemize}
+	\item \mintinline{Arduino}{print(String c)}: imprime el String c en el display. 
+	\item \mintinline{Arduino}{setCursor(x,y)}: posiciona el cursor en una fila y columna(x es la columna e y es la fila) 
+	\item \mintinline{Arduino}{backlight()}:prende el backlight del display LCD.   
+\end{itemize}
+
+Estas funciones, serán utilizadas para mostrar información en el display LCD, reemplazando al puerto serie. 
 
 
 \section{Conclusiones}
@@ -1295,7 +1343,1092 @@ Para finalizar, esta sección, se ha construido la gran parte del software en es
 
 	\addcontentsline{toc}{chapter}{anexo capitulo \thechapter}
 	\chapter{Códigos de programacion}
-	\section{Códigos de programación C/C++} 
+	Todos estos códigos, pueden descargarse libremente del repositorio de github, el repositorio es: \url{https://github.com/gaston-cb/control_antena_iar}
+	\section{Programación control\_motores} 
+
+	\subsection{Archivo control\_motores.cpp} 
+
+
+\begin{minted}[frame=single,breaklines,linenos,autogobble=true]{Arduino}
+#include <Arduino.h> 
+#include "../pinout_ard_uno.h"
+#include "../lecturas_encoders/lectura_encoders.h"
+
+#define MOTOR_AZ 1 
+#define MOTOR_H 2 
+
+#define PRIMER_SENTIDO_CAL_AZ 1  
+#define SEGUNDO_SENTIDO_CAL_AZ 2  
+#define PRIMER_SENTIDO_CAL_H 1  
+#define SEGUNDO_SENTIDO_CAL_H 2  
+#define STOP_MOTOR_1_2 0 
+
+//------------------------ funciones locales en este archivo----------------------------//  
+
+void mover_antena(char _sentido_giro_az, char _sentido_giro_h) ; 
+void assign_value_autocal() ; 
+void function_compare_autocalibracion() ; 
+void assignar_sentidos_motores() ; 
+
+
+//--------------------------------------------------------------------------------------// 
+extern int azimuth ; 
+extern int altura ; 
+
+
+// variables locales al archivo  
+int ult4ad[4] ;  // ultimos 4 valores del ad0 y ad1 respectivamente  
+/*
+* ult4ad[0] = primer_valor_AD_A0   
+* ult4ad[1] = segundo_valor_AD_A0
+* ult4ad[2] = primer_valor_AD_A1  
+* ult4ad[3] = segundo_valor_AD_A1
+*/
+
+int calibracion_encoders[4] ; 
+/*
+* calibracion_encoders[0] : primer valor lectura encoders  -- lectura azimuth  
+* calibracion_encoders[1] : segundo valor lectura encoders -- lectura azimuth 
+* calibracion_encoders[2] : primer valor lectura encoders  -- lectura altura
+* calibracion_encoders[3] : segundo valor lectura encoders -- lectura altura
+*/
+
+char estado_autocalibracion[2] = {0,0} ;  // esta variable se usa para scheduler en calibracion  
+/*
+* estado_autocalibracion[0] --> motor azimuth 
+*                           --> 1 ---> primer sentido 
+*                           --> 2 ---> segundo sentido 
+*                           --> 0 ---> fin calibracion eje azimuth 
+* estado_autocalibracion[1] --> motor de altura 
+*                           --> 1 ---> primer sentido 
+*                           --> 2 ---> segundo sentido 
+*                           --> 0 ---> fin calibracion eje azimuth 
+* 
+* 
+*/                           
+
+char movimiento_motor_1[2] ; 
+/*
+* motor de azimut 
+* movimiento_motor_1[0]: sentido  oeste - este 
+* movimiento_motor_1[1]: sentido  este  - oeste 
+*/
+char movimiento_motor_2[2] ; 
+/*
+* motor de altura 
+* movimiento_motor_2[0]: sentido   
+* movimiento_motor_2[1]: sentido 
+*/
+
+int resH  ; 
+int resAz  ; 
+
+
+
+
+enum _state_antena   
+{
+	AUTOCAL ,  
+	NO_AUTOCAL ,  
+} antena ; 
+
+
+struct boolean_ad
+{
+	unsigned char max_az :1 ;
+	unsigned char min_az :1 ; 
+	unsigned char min_h  :1 ; 
+	unsigned char max_h  :1 ;     
+}min_max={0,0,0,0}   ; 
+
+
+//-------------------------------------------------------------------------------------------//
+
+
+
+
+void init_pins_motores()
+{
+	pinMode(MOTOR_1_S1,OUTPUT) ; 
+	pinMode(MOTOR_1_S2,OUTPUT) ;
+	pinMode(MOTOR_2_S1,OUTPUT) ;
+	pinMode(MOTOR_2_S2,OUTPUT) ;
+}
+
+
+
+
+
+void autocalibracion()
+{
+	assign_value_autocal() ;
+	delay(1000) ; 
+	function_compare_autocalibracion() ; 
+	while (estado_autocalibracion[0]!=0 || estado_autocalibracion[1]!= 0)
+	{
+		delay(1000) ;     
+		function_compare_autocalibracion() ;             
+	}
+	//ASIGNACIÓN DE MOTORES 
+	assignar_sentidos_motores() ; 
+	antena = NO_AUTOCAL ; 
+	#if DEBUG==1
+	// depuración por puerto serie . 
+	Serial.print("calibracion encoders az: ") ; Serial.print(calibracion_encoders[0]);Serial.print(" ");  Serial.println(calibracion_encoders[1]) ;
+	Serial.print("calibracion encoders h: ") ; Serial.print(calibracion_encoders[2]);Serial.print(" "); Serial.println(calibracion_encoders[3]) ;
+	Serial.print("movimiento_motor_1: ") ; Serial.print(movimiento_motor_1[0],DEC) ;Serial.print(" ");  Serial.println(movimiento_motor_1[1],DEC) ; 
+	Serial.print("movimiento_motor_2: ") ; Serial.print(movimiento_motor_2[0],DEC) ; Serial.print(" "); Serial.print(movimiento_motor_2[1],DEC) ; 
+	#endif    
+	
+}
+
+
+// n° motor -- sentido -- 
+void mover_antena(char n_motor, char sentido_giro)
+{
+	/*
+	*
+	*  pines 5 y 6 ---> eje de azimut 
+	* _sentido_giro_az =  1 --> pin 5 alto /pin 6 bajo 
+	* _sentido_giro_az =  2 --> pin 5 bajo /pin 6 alto  
+	* _sentido_giro_az =  0 --> pin 5 bajo /pin 6 bajo 
+	* 
+	* pines 9 y 10 --> eje de cenith 
+	* _sentido_giro_h =  1 --> pin 9 alto /pin 10 bajo 
+	* _sentido_giro_h =  2 --> pin 9 bajo /pin 10 alto 
+	* _sentido_giro_h =  0 --> pin 9 bajo /pin 10 bajo  
+	*  
+	*/
+	
+	if(n_motor == MOTOR_AZ) 
+	{
+		switch (sentido_giro)
+		{
+			case 1:
+			digitalWrite(MOTOR_1_S1,HIGH) ; 
+			digitalWrite(MOTOR_1_S2,LOW) ;
+			break;
+			case 2: 
+			digitalWrite(MOTOR_1_S1,LOW) ; 
+			digitalWrite(MOTOR_1_S2,HIGH) ;
+			break;
+			case 0:
+			digitalWrite(MOTOR_1_S1,LOW) ; 
+			digitalWrite(MOTOR_1_S2,LOW) ;
+			break; 
+		}
+	}else if(n_motor==MOTOR_H)
+	{
+		switch (sentido_giro)
+		{
+			case 1:
+			digitalWrite(MOTOR_2_S1,HIGH) ; 
+			digitalWrite(MOTOR_2_S2,LOW) ;
+			break;
+			case 2: 
+			digitalWrite(MOTOR_2_S1,LOW) ; 
+			digitalWrite(MOTOR_2_S2,HIGH) ;
+			break;
+			case 0:
+			digitalWrite(MOTOR_2_S1,LOW) ; 
+			digitalWrite(MOTOR_2_S2,LOW) ;
+			break; 
+		}
+		
+	} 
+	
+	
+	
+}
+
+void assign_value_autocal()
+{
+	leer_encoders() ; 
+	ult4ad[0] = azimuth ; 
+	ult4ad[2] = altura  ; 
+	estado_autocalibracion[0] = 1 ; 
+	estado_autocalibracion[1] = 1 ; 
+	mover_antena(MOTOR_AZ,PRIMER_SENTIDO_CAL_AZ); 
+	mover_antena(MOTOR_H,PRIMER_SENTIDO_CAL_H); 
+	
+}
+
+void function_compare_autocalibracion()
+{
+	// estado_autocalibracion[] ={ 1,1}  ; 
+	leer_encoders() ; 
+	ult4ad[1] = azimuth ; 
+	ult4ad[3] = altura  ;
+	
+	
+	char flags_status = 'x' ;  
+	//motor az ;  motor altura -- flag = 0x33 ambos en estado estacionario 
+	//flags que sirven para avisar que se llego a un estado limite dentro de 
+	//las comparaciones 
+	
+	
+	// motor de azimut  
+	if (ult4ad[1]<100  && min_max.min_az == 0 )
+	{
+		min_max.min_az = (abs(ult4ad[0]-ult4ad[1])<10)?1:0 ;  
+		flags_status = (min_max.min_az==1)?1:'x';  
+		
+	}else if(ult4ad[1]>800 && min_max.max_az == 0 )
+	{
+		//min_max.max_az = 1 ; 
+		min_max.max_az = (abs(ult4ad[0]-ult4ad[1])<10)?1:0 ; 
+		flags_status = (min_max.max_az==1)?1:'x'; 
+	} 
+	
+	
+	
+	// motor de altura 
+	
+	if (ult4ad[3]<100 && min_max.min_h == 0)
+	{
+		min_max.min_h = (abs(ult4ad[3]-ult4ad[2])<10)?1:0 ;  
+		if (flags_status==1)
+		{
+			flags_status = (min_max.min_h==1) ?0x33:1;  
+		}else 
+		{
+			flags_status = (min_max.min_h==1) ?2:'x';  
+		}
+	}else if(ult4ad[3]>800 && min_max.max_h == 0)
+	{
+		min_max.max_h = (abs(ult4ad[3]-ult4ad[2])<10)?1:0 ;  
+		if (flags_status==1)
+		{
+			flags_status = (min_max.max_h==1) ?0x33:1;  
+		}else 
+		{
+			flags_status = (min_max.max_h==1) ?2:'x';  
+		}        
+	}
+	
+	ult4ad[0] = ult4ad[1] ; 
+	ult4ad[2] = ult4ad[3] ; 
+	
+	switch (flags_status)
+	{
+		case 1:
+		if(estado_autocalibracion[0]==1)
+		{
+			calibracion_encoders[0] = ult4ad[0] ; 
+			estado_autocalibracion[0]=2 ; 
+			mover_antena(MOTOR_AZ,SEGUNDO_SENTIDO_CAL_AZ) ;
+		}else if(estado_autocalibracion[0]==2) 
+		{
+			calibracion_encoders[1] = ult4ad[0] ; 
+			estado_autocalibracion[0]=0 ; 
+			mover_antena(MOTOR_AZ,STOP_MOTOR_1_2) ; 
+		}
+		break ; 
+		case 2:
+		if(estado_autocalibracion[1]==1)
+		{
+			//            Serial.print("est_cal = 1 ") ; 
+			calibracion_encoders[2] = ult4ad[2] ; 
+			estado_autocalibracion[1] = 2 ; 
+			mover_antena(MOTOR_H,SEGUNDO_SENTIDO_CAL_AZ) ; 
+		}else if(estado_autocalibracion[1]==2)
+		{
+			calibracion_encoders[3] = ult4ad[2] ;
+			//          Serial.print("est_cal = 2 ") ;
+			estado_autocalibracion[1] = 0 ; 
+			mover_antena(MOTOR_H,STOP_MOTOR_1_2) ; 
+		} 
+		break ;
+		case 0x33: 
+		if (estado_autocalibracion[0]==1 && estado_autocalibracion[1]==1)
+		{
+			calibracion_encoders[0] = ult4ad[0] ; 
+			calibracion_encoders[2] = ult4ad[2] ; 
+			estado_autocalibracion[0] = 2 ; 
+			estado_autocalibracion[1] = 2 ; 
+			mover_antena(MOTOR_AZ,SEGUNDO_SENTIDO_CAL_AZ) ; 
+			mover_antena(MOTOR_H,SEGUNDO_SENTIDO_CAL_H)   ; 
+			
+		}else if(estado_autocalibracion[0]==2 && estado_autocalibracion[1]==2)
+		{
+			calibracion_encoders[1] = ult4ad[0] ; 
+			calibracion_encoders[3] = ult4ad[2] ;     
+			estado_autocalibracion[0] = 0 ; 
+			estado_autocalibracion[1] = 0 ; 
+			mover_antena(MOTOR_AZ,STOP_MOTOR_1_2) ; 
+			mover_antena(MOTOR_H,STOP_MOTOR_1_2)   ; 
+		}
+	} 
+	
+	
+	
+} 
+
+
+void assignar_sentidos_motores()
+{
+	// motor de azimuth  (cal_enc[0]-->primer sentido )
+	/*
+	* calibracion_encoders[0] < calibracion_encoders[1] --> sentido = 1 --> sentido este - oeste  
+	* calibracion_encoders[0] > calibracion_encoders[1] --> sentido = 1 --> sentido oeste - oeste  
+	* 
+	*/
+	int aux ; 
+	#if DEBUG==1
+	Serial.println("asig sent motor") ;  
+	Serial.print("calibracion encoders az: ") ; Serial.print(calibracion_encoders[0]);Serial.print(" ");  Serial.println(calibracion_encoders[1]) ;
+	Serial.print("calibracion encoders h: ") ; Serial.print(calibracion_encoders[2]);Serial.print(" "); Serial.println(calibracion_encoders[3]) ;         
+	Serial.println("end assig ") ; 
+	#endif
+	if(calibracion_encoders[0] < calibracion_encoders[1])
+	{
+		movimiento_motor_1[0] = SEGUNDO_SENTIDO_CAL_AZ ; 
+		movimiento_motor_1[1] = PRIMER_SENTIDO_CAL_AZ;
+		
+	}else 
+	{
+		movimiento_motor_1[0] = PRIMER_SENTIDO_CAL_AZ ; 
+		movimiento_motor_1[1] = SEGUNDO_SENTIDO_CAL_AZ;
+		
+		aux = calibracion_encoders[0]   ; 
+		calibracion_encoders[0] = calibracion_encoders[1] ; 
+		calibracion_encoders[1] = aux ;   
+	}
+	
+	if(calibracion_encoders[2] < calibracion_encoders[3])
+	{
+		movimiento_motor_2[0] = PRIMER_SENTIDO_CAL_H; 
+		movimiento_motor_2[1] = SEGUNDO_SENTIDO_CAL_H; 
+	}else 
+	{
+		
+		movimiento_motor_2[1] = PRIMER_SENTIDO_CAL_H; 
+		movimiento_motor_2[0] = SEGUNDO_SENTIDO_CAL_H; 
+		aux = calibracion_encoders[2]   ; 
+		calibracion_encoders[2] = calibracion_encoders[3] ; 
+		calibracion_encoders[3] = aux ;   
+	}
+	resH = abs((100*((90.0)/(calibracion_encoders[2] - calibracion_encoders[3])))); 
+	resAz = (100*((180.0 )/(calibracion_encoders[1]- calibracion_encoders[0]))); 
+	
+	
+	
+}
+
+
+
+
+void control_motores(int ref_1,int ref_2)
+{
+	int error_h  = ref_2 - altura ; 
+	int error_az = ref_1 - azimuth  ; 
+	#if DEBUG == 1 
+	Serial.print("resoluciónH: ") ; Serial.println(abs(resH)) ; 
+	Serial.print("resoluciónZ: ") ; Serial.println(resAz) ; 
+	Serial.print("error alt: ") ; Serial.println(error_h) ; 
+	Serial.print("error az: ") ; Serial.println(error_az) ; 
+	#endif
+	
+	// control ON - OFF azimut 
+	if(abs(error_az)<resAz)
+	{
+		mover_antena(MOTOR_AZ,STOP_MOTOR_1_2) ; 
+	}else if(error_az>resAz)
+	{
+		mover_antena(MOTOR_AZ,movimiento_motor_1[0]) ; 
+	}else if(error_az<-resAz)
+	{
+		mover_antena(MOTOR_AZ,movimiento_motor_1[1]) ; 
+	} 
+	
+	// control ON - OFF altura
+	
+	if(abs(error_h)<resH)
+	{
+		mover_antena(MOTOR_H,STOP_MOTOR_1_2) ; 
+	}else if(error_h>resH)
+	{
+		mover_antena(MOTOR_H,movimiento_motor_2[0]) ;     
+	}else if(error_h<-resH)
+	{ 
+		mover_antena(MOTOR_H,movimiento_motor_2[1]) ; 
+	} 
+}
+
+		\end{minted}
+
+	\subsection{Archivo control\_motores.h} 
+	
+
+		\begin{minted}[frame=single,breaklines,linenos]{Arduino}
+void autocalibracion() ; 
+void init_pins_motores() ; 
+void control_motores(int ref1,int ref2) ; 
+		\end{minted}
+
+	
+	
+	\section{Programación lectura encoders} 
+	\subsection{Archivo lectura\_encoders.cpp} 
+
+		\begin{minted}[frame=single,breaklines,linenos]{Arduino}
+#include "Arduino.h" 
+#include "../pinout_ard_uno.h"
+
+
+int azimuth ; 
+int altura ;
+extern enum _state_antena 
+{
+	AUTOCAL ,  
+	NO_AUTOCAL, 
+} antena ;
+
+// variables externas --- Función de autocalibracion  
+extern int calibracion_encoders[4] ; 
+
+
+
+
+
+void leer_encoders()
+{
+	// int scope_h  ; 
+	// int scope_az ; 
+	
+	int lect_az = analogRead(PINENCODERAZ) ; 
+	int lect_h  = analogRead(PINENCODERH) ; 
+	if (antena==AUTOCAL) 
+	{
+		altura = lect_h ; 
+		azimuth = lect_az; 
+		return  ; 
+	}
+	// transformación de coordenadas 
+	
+	altura  = (100*((90.0)/(calibracion_encoders[2] - calibracion_encoders[3]))) *(lect_h - calibracion_encoders[3]) ; 
+	azimuth = (100*((180.0 )/(calibracion_encoders[1]- calibracion_encoders[0]))) *(lect_az - calibracion_encoders[0]) ; 
+	#if DEBUG==1
+	Serial.print("altura: ") ; Serial.println(altura) ; 
+	Serial.print("az: ") ; Serial.println(azimuth) ; 
+	
+	#endif  
+	
+	
+}
+
+
+
+		\end{minted}
+
+	
+	\subsection{Archivo lectura\_encoders.h} 
+
+	\begin{minted}[frame=single,breaklines,linenos]{Arduino}
+	void leer_encoders() ; 
+	\end{minted}
+
+
+
+
+	
+	\section{Programación del scheduler} 
+	\subsection{Archivo tiempo.cpp} 
+
+		\begin{minted}[frame=single,breaklines,linenos]{Arduino}
+/*
+*   
+*   Maquina de timer -
+*   Cantidad de relojes - 8 : modificable desde "globales.h". Se debe cambiar #define RELOJES  por el numero deseado
+*   Autor : Gaston Valdez 
+*   Fecha de prueba : 22/3/2020 - Funciono de manera correcta
+*   Prueba - apagado y encendido de leds
+
+*   Nota- Todos estos relojes se suponen bien usados y no hay ningun tipo
+*   de check en las funciones. Es deber del programador revisar que no exista
+*   ningun fallo de comunicacion entre ellas.
+
+*   No existe comprobacion de TimerStart, POR TANTO DEBE INGRESARSE EL TIEMPO CORRECTAMNETE (ver que ms<1000).
+*   Si ms>1000 entonces contara mas de un segundo, la funcion no contaria el tiempo correctamente
+*
+*   Cada reloj utilizado dentro de TimerEvent() debe cerrarse: hay dos formas distintas
+*    1 - poniendo el reloj que se vencio todos sus elementos a cero (es decir TimerStart(n_reloj,0,0,0,0))
+*    2 - Usando timerClose(n_reloj)
+*    Es importante el cierre de los relojes, ya que ejecutara el case mas de una vez, y el software no es capaz de cambiarlo.
+*    
+*/
+
+#include <Arduino.h>
+#include "../../include/control_motores/control_motores.h"
+#include "../../include/lecturas_encoders/lectura_encoders.h"
+
+
+#define RELOJES 8  
+volatile char dec_milis = 0 ;
+unsigned int  timer[RELOJES][4]; // vector de relojes
+char timer_activo[RELOJES] = {0, 0, 0, 0, 0, 0, 0, 0};
+char FlagRepEvent[RELOJES] = {88, 88, 88, 88, 88, 88, 88, 88} ;
+
+extern int ref1 ; 
+extern int ref2 ; 
+
+
+
+
+void Base_tiempo()
+{
+	/*  
+	*  Configuracion de registros y flags para habilitar interrupciones
+	*  por timer usando timer2 de atmega 328p
+	*  Base de tiempo 100 us generacion de interrupcion
+	*/
+	
+	SREG = (SREG & 0b01111111);
+	TCNT2 = 0 ;
+	TIMSK2 = TIMSK2 | 0b00000010 ;
+	TCCR2A = 0b00000010;
+	TCCR2B = 0b00000011; // 0.5 MhZ n= 32 
+	OCR2A = 49;
+	SREG = (SREG & 0b01111111) | 0b10000000 ;
+	
+}
+
+
+
+void TimerStart(char n_reloj, char h, char m, char s, int ms)
+{
+	/* 
+	* Funcion TimerStart:  inicializa y configura un reloj
+	*  recibe hora, minutos , segundos y milisegundos para
+	*  configurar un reloj dentro de la matriz
+	*/
+	
+	SREG = (SREG & 0b01111111); // deshabilitar int
+	char aux = 0 ;
+	aux = (timer[n_reloj][0] == 0 && timer[n_reloj][1] == 0  && timer[n_reloj][2] == 0 && timer[n_reloj][3] == 0) ? 1 : 2 ;
+	if (aux == 1)
+	{
+		aux = 0 ;
+		// modificar FlagRepEvent
+		while (FlagRepEvent[aux] != (n_reloj + 1) && aux < RELOJES - 1)
+		{
+			aux = aux + 1 ;
+		}
+		FlagRepEvent[aux] = 88 ;
+		
+	}
+	aux = 0;
+	
+	
+	timer[n_reloj][0] = h  ;
+	timer[n_reloj][1] = m  ;
+	timer[n_reloj][2] = s ;
+	timer[n_reloj][3] = ms  ;
+	
+	if (ms != 0 || s != 0 || m != 0 || h != 0)
+	{
+		while (timer_activo[aux] != 0 && aux < RELOJES) {
+			aux = aux + 1;
+		}
+		timer_activo[aux] = n_reloj + 1  ;
+	}
+	SREG = (SREG & 0b01111111) | 0b10000000 ; // habilitar int
+}
+
+
+void AnalizoTimer(char n_reloj, char index)
+{
+	/*
+	AnalizoTimer - No usada por el usuario
+	Funcion invocada por la interrupcion
+	Descuenta el tiempo hasta cero y pone un
+	flag para generacion de eventos
+	
+	*/
+	timer[n_reloj][3] = (timer[n_reloj][3] != 0) ? timer[n_reloj][3] - 1 : 0 ;
+	if (timer[n_reloj][3] == 0)
+	{
+		if (timer[n_reloj][0] == 0 && timer[n_reloj][1] == 0  && timer[n_reloj][2] == 0) // se vence reloj  -> flagRepEvent[n0_reloj] = reloj + 1 -> N° de reloj (1 a 8)
+		{
+			FlagRepEvent[index] = n_reloj + 1  ;
+			timer_activo[index] = 0 ;
+		} else if (timer[n_reloj][2] != 0) // segundos
+		{
+			timer[n_reloj][2] = timer[n_reloj][2] - 1  ;
+			timer[n_reloj][3] = 999 ;
+		} else if (timer[n_reloj][1] != 0) // minutos
+		{
+			timer[n_reloj][1] =  timer[n_reloj][1] - 1  ;
+			timer[n_reloj][2] = 59 ;
+			timer[n_reloj][3] = 999 ;
+		} else if (timer[n_reloj][0] != 0) // horas
+		{
+			timer[n_reloj][0] =  timer[n_reloj][0] - 1  ;
+			timer[n_reloj][1] =  59 ;
+			timer[n_reloj][2] = 59 ;
+			timer[n_reloj][3] = 999 ;
+		}
+	}
+}
+
+
+
+
+void timerClose(char n_reloj)
+{
+	/* 
+	timerClose() - Usada por el usuario
+	Funcion que cierra el numero de reloj
+	Pone a cero todo la fila del reloj
+	Modifica FlagRepEvent y timer_activo
+	*/
+	
+	SREG = (SREG & 0b01111111); // deshabilitar int
+	char aux = TCNT2 ;
+	char i = 0 ;
+	timer[n_reloj][0] = 0 ;
+	timer[n_reloj][1] = 0 ;
+	timer[n_reloj][2] = 0 ;
+	timer[n_reloj][3] = 0 ;
+	
+	while (timer_activo[i] != n_reloj + 1 && i < RELOJES - 1)
+	{
+		i = i + 1  ;
+	}
+	timer_activo[i] = 0 ;
+	
+	// ordenar timer activo y cambiar FlagRepEvent
+	i = 0 ;
+	for (i = 0; i < RELOJES; i++)
+	{
+		if (FlagRepEvent[i] == n_reloj + 1)
+		{
+			FlagRepEvent[i] = 88 ;
+		}
+		if (timer_activo[i] == 0)
+		{
+			char k = 1 ;
+			while (timer_activo[i + k] == 0 && (i + k) < RELOJES)
+			{
+				k = k + 1 ;
+			}
+			timer_activo[i] = timer_activo[i + k] ;
+			timer_activo[i + k] = 0 ;
+		}
+	}
+	
+	TCNT2 = aux ;
+	SREG = (SREG & 0b01111111) | 0b10000000 ; // habilitar int
+}
+
+void timerCloseAll() 
+{
+	/*
+	* Desactivar todos los relojes activos 
+	*/
+	char n_reloj = 0 ; 
+	for(n_reloj;n_reloj<RELOJES;n_reloj++){
+		timer[n_reloj][0] = 0 ;
+		timer[n_reloj][1] = 0 ;
+		timer[n_reloj][2] = 0 ;
+		timer[n_reloj][3] = 0 ;
+		FlagRepEvent[n_reloj] = 88 ; 
+		timer_activo[n_reloj] = 0 ; 
+	}
+	
+}
+
+
+
+
+
+void timerStop(char n_reloj)
+{
+	/*
+	Funcion que para el reloj
+	Puede seguir contando luego
+	Modifica timer_activo y flagrepevent
+	Reinicio de reloj - funcion timer_marcha
+	La funcion timer_marcha no contempla ninguna validacion de reloj
+	Debe ser realizada por el programador y/o modificar este codigo fuente
+	*/
+	
+	SREG = (SREG & 0b01111111); // deshabilitar int
+	char i = 0 ;
+	// buscar el timer_activo -- desativarlo --
+	while (timer_activo[i] != n_reloj + 1 && i < RELOJES  )
+	{
+		i = i + 1  ;
+	}
+	timer_activo[i] = 0 ;
+	i = 0 ;
+	for (i = 0; i < RELOJES; i++)
+	{
+		if (FlagRepEvent[i] = n_reloj + 1)
+		{
+			FlagRepEvent[i] = 88 ;
+		}
+		if (timer_activo[i] == 0)
+		{
+			char k = 1 ;
+			while (timer_activo[i + k] == 0 && (i + k) < 8)
+			{
+				k = k + 1 ;
+			}
+			timer_activo[i] = timer_activo[i + k] ;
+			timer_activo[i + k ] = 0 ;
+		}
+	}
+	
+	SREG = (SREG & 0b01111111) | 0b10000000 ; // habilitar int
+}
+
+void timer_marcha(char n_reloj )
+{
+	/*
+	timer_marcha - Usada por usuario
+	vuelve a descontar de un contador que se paro.
+	con timerStop
+	*/
+	
+	char aux = 0 ;
+	while (timer_activo[aux] != 0 && aux < RELOJES )
+	{
+		aux = aux + 1;
+	}
+	timer_activo[aux] = n_reloj + 1  ;
+	
+}
+
+
+
+ISR(TIMER2_COMPA_vect)
+{
+	/*
+	Funcion de Interrupcion
+	Ocurre cada 100us
+	idea - contar 10 interrupciones - > 1 ms
+	Reloj con horas - minutos - segundos - milisegundos
+	
+	*/
+	SREG = (SREG & 0b01111111); // deshabilitar int
+	char i = 0 ;
+	char cant = 0 ;
+	dec_milis = dec_milis + 1 ;
+	if (dec_milis == 10)
+	{
+		dec_milis = 0 ;                             //reinicio contador
+		while (timer_activo[i] != 0 && i < RELOJES)
+		{
+			AnalizoTimer(timer_activo[i] - 1, i) ;
+			i = i + 1 ;
+		}
+		/*
+		Acomoda el vector timer_activo en caso de algun reloj vencido
+		Primeros valores - > relojes activos
+		No hay correspondencia entre los relojes y el indice del vector
+		*/
+		for (cant = 0; cant < RELOJES; cant++)
+		{
+			if (timer_activo[cant] == 0)
+			{
+				char k = 1 ;
+				while (timer_activo[cant + k] == 0 && (cant + k) < RELOJES)
+				{
+					k = k + 1 ;
+				}
+				timer_activo[cant] = timer_activo[cant + k] ;
+				timer_activo[cant + k ] = 0 ;
+			}
+		}
+		
+	}
+	
+	SREG = (SREG & 0b01111111) | 0b10000000 ; // habilitar int
+	
+} // END INTERRUPT
+
+
+
+void timerEvent()
+{
+	/*
+	*  Funcion de eventos -
+	*  Cuando levanta el flag - inicializa evento segun FlagRepEvent
+	*/
+	char k ; 
+	for (k = 0; k < RELOJES; k++) {
+		switch (FlagRepEvent[k])
+		{
+			case 1:
+			leer_encoders() ; 
+			control_motores(ref1,ref2) ;  
+			break ;
+			case 2:
+			break ;
+			case 3:       
+			break ;
+			case 4 :          
+			break ;         
+			case 5: 
+			break ;
+			case 6 :           
+			break ;
+			case 7 :            
+			break ;
+			case 8 :           
+			break ;
+			default:
+			break ;
+		}
+	}
+}
+		\end{minted}
+
+	
+	\subsection{Archivo tiempo.h} 
+
+		\begin{minted}[frame=single,breaklines,linenos,]{Arduino}
+void timerEvent() ; 
+void Base_tiempo()  ;
+void TimerStart(char n_reloj, char h, char m, char s, int ms) ; 
+void AnalizoTimer(char n_reloj, char index) ; 
+void timerClose(char n_reloj) ; 
+void timerStop(char n_reloj) ; 
+void timer_marcha(char n_reloj ) ; 
+		\end{minted}
+
+	 
+	\section{Archivo principal de programación. main.cpp } 
+
+	\begin{minted}[frame=single,breaklines,linenos]{Arduino}
+
+#include <Arduino.h>
+#include "../include/control_motores/control_motores.h"
+
+#include "pinout_ard_uno.h" 
+#include "../include/lecturas_encoders/lectura_encoders.h"
+#include <Ethernet.h>
+#include "tiempo.h"
+#include <LiquidCrystal_I2C.h> 
+#define ETHERNET_IP_LOCAL 0 //0 -> IP POR DHCP 
+#define PORT_GPREDICT 4533 
+#define PORT_STELLARIUM 10000
+#define NUMBER_CLOCK 0 
+#define HOUR_CLOCK  0 
+#define MINUTE_CLOCK  0 
+#define SEGUNDO_CLOCK  0 
+#define MILISECOND_CLOCK  10 
+
+
+
+
+//1 -> ip ASIGNADA POR EL PROGRAMADADOR 
+#if ETHERNET_IP_LOCAL      //if  ETHERNET_IP_LOCAL ==1 
+byte ip [] = {127,0,0,0}
+byte mask_net[] ={127,0,0,0} ; 
+byte gateway [] ={127,0,0,0} ; 
+byte DNS [] ={127,0,0,0}     ; 
+#endif
+// prototipo de funciones 
+void Asignar_Azimuth_Declinacion(EthernetClient &ptr, String &cad_leida); 
+String az_dec_pos_actual();
+
+
+
+int ref1 = 9000 ; 
+int ref2 = 9000 ; 
+
+EthernetServer stellarium(PORT_STELLARIUM) ;
+unsigned long int RA12HS = 0x80000000  ; // 4bytes  
+long int DEC10 = 0x40000000  ; //4 bytes 
+
+EthernetServer Gpredict(PORT_GPREDICT) ; 
+LiquidCrystal_I2C lcd (ADRRESS_LCD_I2C,COLS_LCD,FILAS_LCD) ; 
+
+// variables externas 
+extern int azimuth ; 
+extern int altura ;
+
+
+
+void setup() 
+{	
+ // debugger -- 
+ Serial.begin(9600) ; 
+/**** inicializacion de puertos del motor como salida  *****/
+ init_pins_motores() ; 
+ autocalibracion()  ;
+ //inicializacion de LCD  
+ lcd.init() ; 
+ lcd.backlight() ; 
+ //lcd.print("hola mundillo") ;
+	
+ // inicializacion de ethernet 
+ Ethernet.init(PINSS) ; 
+ byte mac [] = {0x00, 0xCD, 0xEF, 0xEE, 0xAA, 0xBC}; // dirmac
+#if ETHERNET_IP_LOCAL 
+ if (Ethernet.begin(mac,ip,DNS,gateway,mask_net) == 0)
+ {
+	Serial.print(F("Fallo DHCP"));    
+ }else 
+ {
+   Serial.print(Ethernet.localIP());
+ }
+#else 
+ if (Ethernet.begin(mac) == 0)
+ {
+   lcd.print(F("Fallo DHCP"));    
+ }else 
+ {
+   lcd.print(Ethernet.localIP());
+ }
+#endif
+ // inicio scheduler -- > 
+ Base_tiempo() ; 
+ TimerStart(NUMBER_CLOCK,HOUR_CLOCK,MINUTE_CLOCK,SEGUNDO_CLOCK,MILISECOND_CLOCK) ; 
+}
+
+void loop() 
+{
+	timerEvent() ; 
+	EthernetClient cliente_gpr = Gpredict.available() ;
+	EthernetClient cliente_s = stellarium.available() ; 
+	long int dec ; 
+	unsigned long int RA = 0 ; 
+	uint8_t sunP[20] ; // vector datos recibidos -- sunposition 
+	char state_con = 0 ; 
+	
+	
+	
+	if (cliente_gpr)
+	{ 
+		while (cliente_gpr.connected())
+		{ 
+			timerEvent() ;
+			String cadena = "" ;      
+			if (cliente_gpr.available())
+			{
+				//timerEvent() ;  
+				char c = cliente_gpr.read()  ;   
+				if (c == 'P')
+				{
+					
+					cliente_gpr.print("RPRT 0") ; // lectura correcta 
+					Asignar_Azimuth_Declinacion(cliente_gpr,cadena) ;             
+					cliente_gpr.flush() ;// VACIADO DE BUFFER 
+					cadena ="" ;   
+				}else if (c == 'p')
+				{      
+					cadena = az_dec_pos_actual() ;       
+					cliente_gpr.print(cadena);
+					cliente_gpr.flush() ; 
+					cadena ="" ;     
+				}else if (c=='q' || c=='Q' )
+				{                
+					cliente_gpr.flush() ; 
+					cliente_gpr.stop()  ;
+					cadena ="" ; 
+					break ;          
+				}else if (c=='S')
+				{
+					cliente_gpr.flush() ;  
+					cliente_gpr.stop() ;
+					cadena = "" ; 
+				} 
+			}
+		}
+		cliente_gpr.stop() ; 
+		delay(10) ; 
+		ref1 = 9000 ; 
+		ref2 = 9000 ; 
+	}
+	
+	if (cliente_s)
+	{  
+		while (cliente_s.connected())
+		{
+			timerEvent() ; 
+			
+			char i = 0 ; 
+			while (cliente_s.available())
+			{
+				//Serial.println(cliente_s.read(),HEX) ; 
+				sunP[i] = cliente_s.read() ;  
+				i = i + 1 ;          
+				state_con = 1 ; 
+			}
+			if(state_con == 1)
+			{
+				dec = 0x00000000 | (long (sunP[19])<<24) | (long (sunP[18])<<16) | (long (sunP[17])<<8) | (long (sunP[16])<<0);
+				RA  = 0x00000000 | (long (sunP[15])<<24) | (long (sunP[14])<<16) | (long (sunP[13])<<8) | (long (sunP[12])<<0);
+				state_con = 0 ; 
+				// declinacion en angulo 
+				//ra en angulo 
+				// RA12HS -- 12hs 
+				unsigned long int hsra = (((RA*12.0)/RA12HS) * 10000)*15   ;
+				float hsrf  = ((RA*12.0)/RA12HS)*15 ;      
+				float declinacion = (90.0/DEC10)*dec ;  
+				
+				Serial.print("declinacion: ") ; Serial.println(declinacion) ; 
+				Serial.print("ascencion recta: ") ; Serial.println(hsrf) ; 
+				Serial.print("ascencion recta entera: ") ; Serial.println(hsra) ; 
+				cliente_s.write(sunP,20) ;   
+			}
+			
+		}
+		cliente_s.stop() ; 
+		delay(10) ; 
+		// change ref1 and ref2  in future part of the project 
+	}
+
+}
+
+
+
+
+void Asignar_Azimuth_Declinacion(EthernetClient &ptr, String &cad_leida)
+{
+	/*
+	* Esta funcion esta destinada a recoger los datos del 
+	* Gpredict y guardarlos en una variable para poder 
+	* global para poder compararlos. Se realiza una conversion a valor 
+	* entero y se comparan entre ellos para obtener la posicion actual. Si son 
+	* coincidentes se detiene el motor, si no, se gira a la derecha o izquierda segun 
+	* el caso
+	* 
+	*/
+	float az = 0  ;
+	float alt = 0  ;
+	ptr.read(); //espacio en blanco  
+	while(ptr.available())
+	{ 
+		char c = ptr.read() ; 
+		cad_leida+= c==','?'.':c;   
+	}
+	
+	
+	az = (cad_leida.substring(0,cad_leida.indexOf(' '))).toFloat();
+	alt = (cad_leida.substring(cad_leida.indexOf(' '))).toFloat(); 
+	
+	//conversion a valor entero 
+	ref1 =  27000 - (az*100) ; 
+	ref2 =  (alt*100) ;  
+	
+	
+}
+
+
+String az_dec_pos_actual()
+{
+	Serial.print("azimuth: "); Serial.println(azimuth) ; 
+	
+	return String(String(270.00 - azimuth/100.0) +'\n'+String(altura/100.0))+'\n' ; 
+}
+
+		\end{minted}
+
+	 
 	
 \end{appendices}
 	
