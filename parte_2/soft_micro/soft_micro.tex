@@ -219,12 +219,14 @@ Antes de realizar la programación, se realiza un archivo, denominado "pinout\_a
 \end{listing}
 Donde las variables \mintinline{C++}{TIMERS_CLOCKS} y \mintinline{C++}{DEBUG}(resaltadas en la \ref{cod:pinout_ard_uno.h}) son utilizados para realizar compilaciones condicionales, mientras se desarrolla.Las compilaciones condicionales se explican en el apéndice \ref{ap:ard_uno_env} .
  
-Una vez definido los puertos, para realizar esta función de autocalibración, debe conocer cual es el sentido de giro, al poner en estado alto, el pin 10 y 9, o 6 y 5, y guardar este resultado. Para realizar esto, cada motor que mueve la antena, tiene adosado un potenciometro. El giro de este potenciometro, nos indica la medida angular. Un potenciometro, consta de tres pines, donde uno esta conectado a la fuente de tension, otro a tierra, y el del medio se dirige al pin A0 o A1 del microcontrolador. Al girar este, cambia su resistencia entre el punto medio y tierra, cambiando al tensión, y esta tensión es la que se mide desde el microcontrolador. A continuación, se deja la imagén de un potenciometro, y sus conexiones: 
+Una vez definido los puertos, para realizar esta función de autocalibración, debe conocer cual es el sentido de giro, al poner en estado alto, el pin 10 y 9, o 6 y 5, y guardar este resultado. Para realizar esto, cada motor que mueve la antena, tiene adosado un potenciometro. El giro de este potenciometro, nos indica la medida angular. Un potenciometro, consta de tres pines, donde uno esta conectado a la fuente de tension, otro a tierra, y el del medio se dirige al pin A0 o A1 del microcontrolador. Al girar este, cambia su resistencia entre el punto medio y tierra, cambiando al tensión, y esta tensión es la que se mide desde el microcontrolador. En la figura
+\ref{fig:pot} se encuentra la imagen de un potenciometro. 
+
 %\setlength{\textheight}{260mm} 
 
 \begin{SCfigure}[50][h]
 	\centering
-	\vspace{-20mm}
+%	\vspace{-20mm}
 	\caption{Vista de un potenciometro, y sus respectivas conexiones de tensión, y con el microcontrolador.}	
 	\includegraphics[height=3.2cm]{pote}
 %	\begin{minipage}
@@ -240,12 +242,13 @@ Como se observa en la figura(\ref{fig:pot}), la salida de tensión(pin 2 de la f
 
 Para poder realizar la autocalibración, se debe definir, si la tensión en un extremo de la posición de la antena, es maxima, y en el otro extremo es mínima. Con esto, el software se dará cuenta, en que sentido se esta moviendo la antena(esta definición debe realizarse en ambos ejes de la antena). El software se dará cuenta, ya que podra revisar si la tensión de entrada, esta aumentando o disminuyendo, y en base a esto, se asignan los sentidos de giro dentro de las variables movimiento\_motor\_1 y movimiento\_motor\_2. 
 
-Los sentidos de giro de máxima y mínima tensión, se deben definir sobre los ejes de la antena. Estos ejes se mueven como muestra la siguiente figura: 
+Los sentidos de giro de máxima y mínima tensión, se deben definir sobre los ejes de la antena. Estos ejes se mueven como muestra la figura \ref{fig:mov_antena}. 
 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[height=5cm]{mov_antena}
-	\caption{Movimientos que puede realizar la antena usando sus dos motores.}	
+	\caption{Movimientos que puede realizar la antena usando sus dos motores.}
+	\label{fig:mov_antena}	
 \end{figure}
 
 
@@ -277,15 +280,14 @@ Por lo expuesto en los parrafos anteriores, la función de autocalibración debe
 
 Esta función,se debe realizar al iniciar el equipo.  
 
-Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciometros la posición actual, y las guarde en la variable azimuth y altura, respectivamente. Para estas funcion, se han creado dos archivos: uno denominado "lectura\_encoders.cpp" y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo "lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en "lectura\_encoders.h". 
+Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciometros la posición actual, y las guarde en las variables azimuth y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
 \begin{listing}[ht]
-	\begin{minted}[linenos,frame= single]{C++}
+	\begin{minted}[linenos,frame= single]{Arduino}
 #include "Arduino.h" 
 #include "../pinout_ard_uno.h"
 // variables tipo buffer 
 int azimuth ; 
 int altura ;
-void leer_antena() ; 
 
 extern enum _state_antena 
 {
@@ -309,28 +311,28 @@ void leer_encoders()
 \label{cod:lectura_encoders.cpp}
 \end{listing}
 
-La única función definida en este archivo es \mintinline[style=arduino,escapeinside=||] {C++}
-{|\textcolor{orange}{leer\_encoders()}|} es devolver el valor leido por el conversor analógico digital, cuando se esta autocalibrando. Esta función se muestra en el código \ref{cod:lectura_encoders.cpp}. Si no se esta autocalibrando, deberá devolver las coordenadas correspondientes. En este caso, esta parte, se va programar en la próxima sección. 
+La única función definida en este archivo es \mintinline[style=arduino] {Arduino}
+{leer\_encoders()} es devolver el valor leido por el conversor analógico digital, cuando se esta autocalibrando. Esta función se muestra en el código \ref{cod:lectura_encoders.cpp}. Si no se esta autocalibrando, deberá devolver las coordenadas correspondientes. En este caso, esa parte, se va programar en la próxima sección. 
 
-Una vez realizado el proceso de lectura de los encoders por parte del microcontrolador, ahora resta la función de autocalibración.  Esta esta divida en dos archivos, uno denominado ''control\_motores.h'' y ''control\_motores.cpp''. 
+Una vez realizado el proceso de lectura de los encoders por parte del microcontrolador, ahora resta la función de autocalibración.  Esta esta divida en dos archivos, uno denominado ``control\_motores.h'' y ``control\_motores.cpp''. 
 
-Esta función de autocalibración, debe ser capaz de mover los motores, por ende, se crea la funcion \mintinline{C++}{"mover_antena(char n_motor,sentido)} , donde n\_motor es el motor de azimuth si n\_motor es uno, o el motor de altura si toma el valor 2. Esta variable define el número de motor. Los sentidos, se definen  como 0,1, o 2 respectivamente, siendo: 
+Esta función de autocalibración, debe ser capaz de mover los motores, por ende, se crea la funcion \mintinline{Arduino}{mover_antena(char n_motor,sentido)} , donde n\_motor es el motor de azimuth si n\_motor es uno, o el motor de altura si toma el valor 2. Esta variable define el número de motor. Los sentidos, se definen  como 0,1, o 2 respectivamente, siendo: 
 \begin{itemize}
 	\item sentido = 0 :  Apagar motor 
-	\item sentido = 1 :  Encender el puerto  \mintinline[style=arduino]{C++}{MOTOR_1_S1}(ver código \ref{cod:pinout_ard_uno.h}, idem para las otras variables mencionadas) en alto y \mintinline{C++}{MOTOR_1_S2} en estado bajo si el número de motor es 1, si el número de motor es 2,se definen en alto el puerto  \mintinline{C++}{MOTOR_2_S1} y en bajo el puerto 
-	\mintinline{C++}{MOTOR_2_S2} 
+	\item sentido = 1 :  Encender el puerto  \mintinline[style=arduino]{Arduino}{MOTOR_1_S1}(ver código \ref{cod:pinout_ard_uno.h}, idem para las otras variables mencionadas) en alto y \mintinline{Arduino}{MOTOR_1_S2} en estado bajo si el número de motor es 1, si el número de motor es 2,se definen en alto el puerto  \mintinline{Arduino}{MOTOR_2_S1} y en bajo el puerto 
+	\mintinline{Arduino}{MOTOR_2_S2} 
 	\item sentido = 2: define los puertos en forma inversa al sentido que los define sentido = 1 
 \end{itemize}
  
-Una vez, se ha definido la función \textbf{mover\_antena(char n\_motor,char sentido)}, se pasa a realizar la función de autocalibración.  El código de la función de mover\_antena(char n\_motor,n\_antena),se observa en el apéndice x1  
+Una vez, se ha definido la función \mintinline{Arduino}{mover_antena(char n\_motor,char sentido)}, se pasa a realizar la función de autocalibración.  El código de la función de\mintinline{Arduino}{mover_antena(char n\_motor,char sentido)},se observa en el apéndice del presente capìtulo.   
 
-La función de autocalibración, utiliza las funciones leer\_encoders y mover\_antena, y funciones auxilares. Estas funciones son: 
+La función de autocalibración, utiliza las funciones \mintinline{Arduino}{leer_encoders} y \mintinline{Arduino}{mover_antena}, y funciones auxilares. Estas funciones son: 
 
 \begin{itemize}
-	\item \textbf{assign\_value\_autocal()}  
-	\item \textbf{mover\_antena(char n\_motor, char sentido)}   
-	\item \textbf{function\_compare\_autocalibracion()}  
-	\item \textbf{assignar\_sentidos\_motores()}
+	\item \mintinline{Arduino}{assign_value_autocal()}  
+	\item \mintinline{Arduino}{mover_antena(char n_motor, char sentido)}   
+	\item \mintinline{Arduino}{function_compare_autocalibracion()}  
+	\item \mintinline{Arduino}{assignar_sentidos_motores()}
 \end{itemize}
 
 Además, utiliza variables auxiliares. Estas se denominan: 
@@ -357,11 +359,13 @@ La idea del algoritmo es la siguiente:
 \end{enumerate}
 
 
-La función de comparación, en primer lugar lee los valores actuales de los encoders, y luego los compara con los anteriores para saber si el valor actual es igual al anterior. Luego, borra los valores actuales, y los pasa como valores antiguos, y los compara con los que siguen. Los códigos de programación, se encuentran en el apéndice.  
+La función de comparación, en primer lugar lee los valores actuales de los encoders, y luego los compara con los anteriores para saber si el valor actual es igual al anterior. Luego, borra los valores actuales, y los pasa como valores antiguos, y los compara con los que siguen. Asì, sigue hasta que los últimos dos valores son iguales.
 
-Luego, la función de autocalibración, viene definida de la siguiente manera: 
+Los códigos de programación,de todas las funciones auxiliares, incluyendo la de autocalibración, se encuentran en el apéndice del presente capítulo. 
 
-\begin{listing}[h]
+Luego, la función de autocalibración,se programó con el código mostrado en \ref{cod:autocalibracion}. 
+
+\begin{listing}[ht]
 	\begin{minted}[linenos,frame=single]{Arduino}
 void autocalibracion()
 {
@@ -407,10 +411,10 @@ El prototopo armado es el de la figura \ref{fig:proto_1}, y las conexiones del p
 %
 %Para probar la función, se ponen los potenciometros, en un extremo, luego en el otro, y luego en el medio. Luego se giran, hacia la derecha, o izquierda, y luego se giran en sentido contrario. Se registran los resultados en el puerto serie, y observando que los diodos leds, se encuentren apagados al finalizar la prueba. Los resultados arrojados por el puerto serie se resumen en la siguiente tabla. 
 
-Para realizar la prueba del programa, se pone el potenciometro en una posición inicial, y luego se gira el potenciometro. Hay tres posiciones iniciales, que empiece en uno de los dos extremos, o que empiece en un punto medio. Si empiezan en un extremo, solo se debería girar una vez hacia el otro extremo. Si empieza en un punto medio, se debe girar dos veces, una para un extremo, y luego hacia el otro extremo. Para realizar esta prueba, dentro del código \ref{cod:pinout_ard_uno.h} se pone la bandera DEBUG en 1, y se utiliza el código mostrado en \ref{cod:autocalibracion}. Este código arroja los resultados por el puerto serie. Estos resultados, se resumen en la siguiente tabla,donde el sentido viene dado, por los potenciometros vistos de frente.   
+Para realizar la prueba del programa, se pone el potenciometro en una posición inicial, y luego se gira el potenciometro. Hay tres posiciones iniciales, que empiece en uno de los dos extremos, o que empiece en un punto medio. Si empiezan en un extremo, solo se debería girar una vez hacia el otro extremo. Si empieza en un punto medio, se debe girar dos veces, una para un extremo, y luego hacia el otro extremo. Para realizar esta prueba, dentro del código \ref{cod:pinout_ard_uno.h} se pone la bandera DEBUG en 1, y se utiliza el código mostrado en \ref{cod:autocalibracion}. Este código arroja los resultados por el puerto serie. Estos resultados, se resumen en la tabla \ref{tab:resultados_autocalibracion},donde el sentido viene dado, por los potenciometros vistos de frente.   
 
-\renewcommand{\arraystretch}{1.5} 
-\begin{table}[ht]
+%\renewcommand{\arraystretch}{1.5} 
+\begin{table}[ht!]
 	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline 
 		\multicolumn{7}{|c|}{motor 1} \\
@@ -468,13 +472,13 @@ Una vez creados ambos programas, sobre el microcontrolador, y sobre la pc(script
 \begin{figure}[ht]
     \hspace{-10mm}
 	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth,height=7cm]{medidas_cenit} 
+		\includegraphics[width=\textwidth,height=6cm]{medidas_cenit} 
 		\caption{Encoder de altura} 
 		\label{subfig:altura} 
 	\end{subfigure}
 	\hspace{10mm}	
 	\begin{subfigure}[t]{0.5\textwidth}
-		\includegraphics[width=\textwidth,height=7cm]{medidas_azimut}
+		\includegraphics[width=\textwidth,height=6cm]{medidas_azimut}
 		\caption{Encoder azimut}  
 		\label{subfig:azimut} 
 	\end{subfigure}
@@ -513,11 +517,11 @@ Siendo:
 \begin{flalign*}
 	& AD_1:\text{Valor leido por el conversor Analogico digital del puerto 1} &  \\
 	&\Delta\theta_h = 90^\circ - 0^\circ & \\
-	&y_1 =\min\{calibracion\_encoders[0],calibracion\_encoders[1]\}& \\ &y_2 =\max\{calibracion\_encoders[0],calibracion\_encoders[1]\} & \\
+	&y_1 =\max\{calibracion\_encoders[0],calibracion\_encoders[1]\}& \\ &y_2 =\min\{calibracion\_encoders[0],calibracion\_encoders[1]\} & \\
 	&\Delta A_d = y_2 - y_1 & 
 \end{flalign*}
 
-Las ecuaciones mostradas anterioremente, se implementan dentro de la función \mintinline{c++}{leer_encoders.} 
+Las ecuaciones mostradas anterioremente, se implementan dentro de la función \mintinline{Arduino}{leer_encoders.} 
 
 Además de esto, se debe calcular la resolución angular del dispositivo para cada eje. Esta viene dada por las pendientes de las rectas anteriores, multiplicadas por 1, ya que es el mínimo valor de cuenta que posee el conversor analógico digital. Las resoluciones, son entonces: 
 \begin{equation}
@@ -527,7 +531,7 @@ Además de esto, se debe calcular la resolución angular del dispositivo para ca
 	\end{split}
 \end{equation}
 
-
+Cabe destacar, que como magnitud del error, se ha utilizado la resolución, para realizar pruebas. En realidad, se debe tener en cuenta el ángulo sólido de la antena para realizar el control. Esta discusión, sobre el ángulo sólido de una antena parabólica, rebasa el alcance del presente trabajo.
 El esquema de control se muestra en la figura  \ref{fig:sist_control_real}. 
 
 En esta parte, se programa el recuadro de la parte "control\_motores(ref1,ref2)" de la figura \ref{fig:sist_control_real}. El control, mira una señal de error, donde la señal de error en la figura viene dada por $e[k]$. Hay dos señales de error, estas las denominados $e_1 $ y $e_2$ .Estas señales de error vienen dadas por: 
@@ -556,12 +560,12 @@ En esta parte, se programa el recuadro de la parte "control\_motores(ref1,ref2)"
  		eje & error & sentido de movimiento & valor variable sentido \\ 
  		\hline	 
  	%	\cline{3-4} 
- 		\multirow{3}{*}{Azimut}& $e<res_{az}$ & este$\rightarrow$ oeste  &movimiento\_motor\_1[1] \\ \cline{2-4}
+ 		\multirow{3}{*}{Azimut}& $e<-res_{az}$ & este$\rightarrow$ oeste  &movimiento\_motor\_1[1] \\ \cline{2-4}
  		& $e>res_{az}$& oeste$\rightarrow$ este& movimiento\_motor\_1[0] \\ \cline{2-4}
  	%	\hline
  		& $|e|<res_{az}$& motor parado & 0\\ \cline{2-4}
  		\hline   
- 		\multirow{3}{*}{altura}& $e<res_h $ &90° $\rightarrow$ plano del suelo& movimiento\_motor\_2[1] \\ \cline{2-4}
+ 		\multirow{3}{*}{altura}& $e<-res_h $ &90° $\rightarrow$ plano del suelo& movimiento\_motor\_2[1] \\ \cline{2-4}
  		& $e>res_h$ &plano del suelo $\rightarrow$ 90° & movimiento\_motor\_2[0] \\ \cline{2-4}
  		& $|e|<res_h$& motor parado& 0\\ 
  		\hline
@@ -633,7 +637,7 @@ En la tabla \ref{tab:result_control}, se observa que la función de control resp
 	\caption{Resultados de la funcion de control en conjunto con la función de autocalibración.}
 	\label{tab:result_control}
 \end{table}
-\vspace{20mm}
+
 
 \section{Programación de Scheduler o planificación}
 
@@ -641,7 +645,7 @@ La programación por scheduler(o planificación por su traducción al español),
 
 \subsection{Funcionamiento base de tiempo para scheduler}
 
-Este se basa en el concepto de interrupción.Las interrupciones se explican en el apendice \ref{ap:ard_uno_env}. Se realiza una interrupción por timer. Una interrupción por timer es una interrupción que ocurre con cierta frecuencia,definida por el programador. En el caso del Atmel ATMEGA 328P, posee tres timer, en el presente trabajao, se utiliza el timer2. El diagrama de este se muestra en la figura \ref{fig:timer_2}. 
+Este se basa en el concepto de interrupción.Las interrupciones se explican en el apendice \ref{ap:ard_uno_env}. Se realiza una interrupción por timer. Una interrupción por timer es una interrupción que ocurre con cierta frecuencia,definida por el programador. En el caso del Atmel ATMEGA 328P, posee tres timer, en el presente trabajo, se utiliza el timer2. El diagrama de este se muestra en la figura \ref{fig:timer_2}. 
 
 \begin{figure}[ht]
 	\includegraphics{timer_2}
@@ -688,7 +692,7 @@ donde
 	&f_{clk \_ I/0} : \text{frecuencia del reloj utilizado por el microcontrolador.} & 		
 \end{flalign}
 
-Esta ecuación para calcular la frecuencia, es la frecuencia de una onda cuadrada, en el caso de la imagen \ref{fig:ctc_isr}, es el periodo enumerado con "1", en la imagen. Por este motivo, para conocer la frecuencia de la interrupción, se debe dividir por dos, al valor que brinda esta ecuación. 
+Esta ecuación para calcular la frecuencia, es la frecuencia de una onda cuadrada, en el caso de la imagen \ref{fig:ctc_isr}, es el periodo enumerado con "1", en la imagen. Por este motivo, para conocer la frecuencia de la interrupción, se debe multiplicar por dos, al valor que brinda esta ecuación. 
 
 
 El valor de $f_{clk \_ I/0}$ es 16 Mhz, que es la frecuencia de reloj utilizada por la placa arduino UNO. En este caso, buscamos que el valor sea entero, o múltipo de 10. Para realizar esto, se utilizaron varias pruebas. Se concluyeron los siguientes valores
@@ -742,7 +746,7 @@ Primero deben crearse los relojes, que pueden o no estar configurados. Estos rel
 
 \subsubsection{Funciones}
 
-En primer lugar, se crean dos archivos, uno denominado "tiempo.cpp"  y "tiempo.h". Dentro de ambos archivos se encuentra la programación de las funciones. En el sistema, se crearon las siguientes funciones, las cuales luego se van a encapsulan en una librería.  
+En primer lugar, se crean dos archivos, uno denominado ``tiempo.cpp''  y ``tiempo.h''. Dentro de ambos archivos se encuentra la programación de las funciones. En el sistema, se crearon las siguientes funciones, las cuales luego se van a encapsular en una librería.  
 
 \begin{itemize}
 \item TimerStart(char n\_reloj,char h, char m, char s , int ms)
