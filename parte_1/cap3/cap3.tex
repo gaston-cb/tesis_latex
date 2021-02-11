@@ -50,9 +50,9 @@ La placa ethernet W5100(ver figura \ref{fig:chip_ethernet}) es un controlador de
 
 \subsection{Interfaz de usuario} \label{Int_u}
 % explicacion display por I2C 
-Como se explico en la sección \ref{Sec_CompH}, se va a utilizar un display LCD de 16 columnas y 2 filas,que esta disponible para su uso en el Instituto Argentino de Radioastronomía.  
+Como se expuso en la sección \ref{Sec_CompH}, se va a utilizar un display LCD de 16 columnas y 2 filas,que está disponible para su uso en el Instituto Argentino de Radioastronomía.  
  
-El display LCD, es una pantalla, la cual es capaz de mostrar texto, valores numéricos,crear símbolos propios,etc.El display LCD disponible, se muestra en la figura \ref{fig:LCD_r}: 
+El display LCD, es una pantalla, la cual es capaz de mostrar texto, valores numéricos, crear símbolos propios,etc.El display LCD disponible, se muestra en la figura \ref{fig:LCD_r}: 
 \begin{figure}[ht]
 	\centering
 	\includegraphics{dispLCD} 
@@ -75,7 +75,7 @@ Los microcontroladores disponibles dentro de la institución, están embebidos d
 	\item Puerto I2C: para la conexión del display 
 \end{enumerate}
 
- De los placas de desarrollo que hay actualmente en el IAR, se tienen las siguiente placas a analizar: 
+ De las placas de desarrollo que hay actualmente en el IAR, se tienen las siguiente placas a analizar: 
  
 \begin{enumerate}
 	\item EDU-CIAA
@@ -92,14 +92,14 @@ Donde, de las tres, debemos elegir aquella que tenga un menor valor económico, 
 	\caption{Eduu Ciaa disponible en el IAR}
 	\label{fig:edu_ciaa}
 \end{wrapfigure}
-La placa EDU-CIAA, es una computadora de software abierto, desarrollada en argentina. Su núcleo se basa en un microprocesador cortex ARM 4.Su microcontrolador es el LPC4337. La documentación existente,está incompleta. Algunas partes, están desarrolladas y otras partes, aún están en desarrollo. Posee todas las interfaces necesarias para interactuar con los demás módulos(SPI, I2C,conversores A/D y pines disponibles), se puede realizar una depuración sobre la misma placa,sobre un protocolo denominado JTAG. 
+La placa EDU-CIAA, es una computadora de software abierto, desarrollada en argentina. Su núcleo se basa en un microprocesador cortex ARM 4.Su microcontrolador es el LPC4337. La documentación existente está incompleta. Algunas partes, están desarrolladas y otras partes, aún están en desarrollo. Posee todas las interfaces necesarias para interactuar con los demás módulos(SPI, I2C,conversores A/D y pines disponibles), se puede realizar una depuración sobre la misma placa,sobre un protocolo denominado JTAG. 
 
 
-Posee un IDE, y los archivos de compilación(makefile) para cargar el código sobre esta placa. La placa se muestra en la figura \ref{fig:edu_ciaa}. La EDU-CIAA esta pensada en software y hardware libre. Todos los esquemáticos de circuitos, y los componentes de software, existen disponibilidad para descargarse y modificarse libremente. 
+Posee un IDE, y los archivos de compilación(makefile) para cargar el código sobre esta placa. La placa se muestra en la figura \ref{fig:edu_ciaa}. La EDU-CIAA está pensada en software y hardware libre. Todos los esquemáticos de circuitos, y los componentes de software, existen disponibilidad para descargarse y modificarse libremente. 
 
-Esta placa de desarrollo, esta pensada para aprender programación sobre microcontroladores, por ende, tiene todas sus interfaces integradas sobre la placa. Posee librerías disponibles para el uso de SPI e I2C. Estas librerías, no poseen documentación, por lo tanto, deben programarse a nivel de registros esta configuración, o realizar una ingeniería inversa sobre las librerías para describir su funcionamiento.    
+Esta placa de desarrollo, está pensada para aprender programación sobre microcontroladores, por ende, tiene todas sus interfaces integradas sobre la placa. Posee librerías disponibles para el uso de SPI e I2C. Estas librerías, no poseen documentación, por lo tanto, deben programarse a nivel de registros esta configuración, o realizar una ingeniería inversa sobre las librerías para describir su funcionamiento.    
 \vspace{-3mm}
-
+ 
 \subsubsection{Arduino UNO }
 \vspace{-5mm}
 \begin{wrapfigure}[11]{l}{0.5\textwidth}
@@ -113,7 +113,7 @@ Esta placa de desarrollo, esta pensada para aprender programación sobre microco
 %\hspace{5mm}
 
 
-La placa de desarrollo, arduino UNO(ver figura \ref{fig:arduino_uno} es una placa de desarrollo basada en hardware y software libre. Esta pensada para desarrollos y prototipos rápidos, y posee un entorno de desarrollo integrado, el cual viene preparado para cargar el software dentro de él. Su lenguaje de programación es C/C++. Todos los esquemáticos, y software estan disponibles en Internet. Se basa en el microcontrolador AtMega328P.  
+La placa de desarrollo, arduino UNO(ver figura \ref{fig:arduino_uno} es una placa de desarrollo basada en hardware y software libre. Está pensada para desarrollos y prototipos rápidos, y posee un entorno de desarrollo integrado, el cual viene preparado para cargar el software dentro de él. Su lenguaje de programación es C/C++. Todos los esquemáticos, y software están disponibles en Internet. Se basa en el microcontrolador AtMega328P.  
 
 Un punto a favor de esta placa de desarrollo, es que poseen librerías para el manejo de los puertos SPI e I2C. En particular, existen librerías para el manejo del display mediante el uso de I2C y el chip ethernet W5100 de manera nativa, es decir, sin necesidad de instalar o descargar ninguna librería adicional. Posee disponibilidad de pines,  y puertos PWM. También posee conversores analógicos digitales. La documentación disponible, se encuentra en su sitio oficial, de manera ordenada. 
 La información no oficial, es decir, en Internet es abundante, y existen varios millones de proyectos basados en el ecosistema Arduino dentro de uno de los repositorios más grandes de software: GitHub.    
@@ -127,17 +127,13 @@ La información no oficial, es decir, en Internet es abundante, y existen varios
 	\label{fig:stm32}
 \end{wrapfigure}
 
-Esta placa de desarrollo, es desarrollada por la empresa STMicroelectronics. Según la información oficial de su página, esta placa está pensada para el aprendizaje del microcontrolador STM32F100. Este microcontrolador es el núcleo de esta placa,es un procesador con arquitectura ARM. Tiene 64 pines disponibles, varios conversores análogicos digitales. Tiene ejemplos y disponibilidad de software en forma gratuita. No posee documentación sobre la construcción de la placa. Existe muy poca información por fuera de la documentación oficial. Existen algunos foros de sistemas embebidos, pero la discusión es muy escasa, y en general se encuentra en idioma inglés.La placa se muestra en la figura \ref{fig:stm32}
-
-
-
-
+Esta placa de desarrollo, es desarrollada por la empresa STMicroelectronics. Según la información oficial de su página, esta placa está pensada para el aprendizaje del microcontrolador STM32F100. Este microcontrolador es el núcleo de esta placa,es un procesador con arquitectura ARM. Tiene 64 pines disponibles, varios conversores analógicos digitales. Tiene ejemplos y disponibilidad de software en forma gratuita. No posee documentación sobre la construcción de la placa. Existe muy poca información por fuera de la documentación oficial. Existen algunos foros de sistemas embebidos, pero la discusión es muy escasa, y en general se encuentra en idioma inglés. La placa se muestra en la figura \ref{fig:stm32}
 
 
 
 
 \subsubsection{Comparación de microcontroladores} 
-Dado, que se han analizado las tres placas de desarrollo que están disponibles, se van a comparar sus prestaciones y además su disponibilidad en el mercado local. Esto se realiza, basado en las hojas de datos de cada microcontrolador. Este es necesario, ya que si el equipo se daña durante el desarrollo, o mediante su uso, puede cambiarse de forma inmediata, sin pérdida de tiempo.Esta comparación se realiza en la siguiente tabla:  
+Dado, que se han analizado las tres placas de desarrollo que están disponibles, se van a comparar sus prestaciones y además su disponibilidad en el mercado local. Esto se realiza, basado en las hojas de datos de cada microcontrolador. Este es necesario, ya qué si el equipo se daña durante el desarrollo, o mediante su uso, puede cambiarse de forma inmediata, sin pérdida de tiempo. Esta comparación se realiza en la siguiente tabla:  
 
 % tabla comparativa 
 \renewcommand{\arraystretch}{1.2}
