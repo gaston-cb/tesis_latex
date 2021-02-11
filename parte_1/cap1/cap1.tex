@@ -13,7 +13,7 @@ Se definen los requerimientos del sistema y las necesidades del radiobservatorio
 \end{center}    
 %-------------Fin de abstract de capitulo ----------------------%
 \section{Introducción}  %\label{cap1:introduccion}
-En el marco de la cátedra Proyecto Final de la carrera de ingeniería electrónica, de la fac. de ingeniería, perteneciente a la Universidad Nacional De La Plata, se realiza un sistema electrónico para el  posicionamiento de una antena,cuyo lugar de realización es el Instituto Argentino de Radioastronomía(IAR), en la modalidad con director. Este instituto, se dedica a la radioastronomía, que es la observación del cielo mediante ondas de radio. Dicha institución,quiere realizar la bajada de datos satelitales, medir la potencia total,vender el servicio a terceros,velar por el cumplimiento de normas internacionales,etc. Utilizando un receptor de comunicaciones adosado a una antena parabólica en desuso, se obtienen estos datos. 
+En el marco de la cátedra Proyecto Final de la carrera de ingeniería electrónica, de la fac. de ingeniería, perteneciente a la Universidad Nacional De La Plata, se realiza un sistema electrónico para el  posicionamiento de una antena, cuyo lugar de realización es el Instituto Argentino de Radioastronomía(IAR), en la modalidad con director. Este instituto, se dedica a la radioastronomía, que es la observación del cielo mediante ondas de radio. Dicha institución, quiere realizar la bajada de datos satelitales, medir la potencia total,vender el servicio a terceros,velar por el cumplimiento de normas internacionales,etc. Utilizando un receptor de comunicaciones adosado a una antena parabólica en desuso, se obtienen estos datos. 
 
 La antena, posee un radio de 2 metros aproximadamente, la misma tiene un sistema mecánico, que mueve la antena mediante dos motores, en dos ejes independientes entre si. En el presente texto, se aprovechan estos dos motores, y se realiza un sistema electrónico de posicionamiento automático para esta antena. Por lo expuesto en el párrafo anterior, el sistema, para realizar la bajada de datos satelitales, debe realizar el seguimiento de satélites que se encuentren dentro de los ángulos de visibilidad de la antena.
 
@@ -21,7 +21,7 @@ La antena, posee un radio de 2 metros aproximadamente, la misma tiene un sistema
 
 En el Instituto Argentino de Radioastronomía(IAR),posee dos antenas parabólicas(ver figura \ref{fig_antena}, donde una de ellas se ve de fondo), de radio 30 mts aproximadamente, las cuales son utilizadas para observaciones astronómicas. La emisión de potencia de los satélites, puede interferir en las observaciones astronómicas, y podrían realizarse filtros adaptativos, para estos receptores. Otra posible aplicación es la venta de estos datos a privados, verificar el cumplimiento de normas de potencia emitida (esto brinda poder de policía a la institución) por satélites, y un sin fin de aplicaciones. 
 
-Para realizar esta medida de potencia, el IAR, requiere el seguimiento de los satélites que se encuentren dentro de la visibilidad que posea la antena, para poder medir esta potencia total y realizar un cálculo de la potencia emitida por los mismos.A continuación se muestra la antena sobre la que se realiza el trabajo, y de fondo, una de las antenas principales de la institución.   
+Para realizar esta medida de potencia, el IAR, requiere el seguimiento de los satélites que se encuentren dentro de la visibilidad que posea la antena, para poder medir esta potencia total y realizar un cálculo de la potencia emitida por los mismos. A continuación se muestra la antena sobre la que se realiza el trabajo, y de fondo, una de las antenas principales de la institución.   
 
 \begin{figure}[h]
 	\centering 
@@ -39,14 +39,14 @@ La antena tiene el sistema mecánico que se observa en la figura \ref{fig_mec_an
 	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=0.5\textwidth]{parte_1/cap1/mot1}
-		\caption{Motor de primer eje de la antena }
+		\caption{Motor del primer eje de la antena }
 		\label{fig_mec_ant1}		
 	\end{subfigure}
 	\hfill 
 	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=0.5\textwidth]{parte_1/cap1/mot2}
-		\caption{Motor de segundo eje de la antena }
+		\caption{Motor del segundo eje de la antena }
 		\label{fig_mec_ant2}
 	\end{subfigure}
 	
@@ -55,13 +55,12 @@ La antena tiene el sistema mecánico que se observa en la figura \ref{fig_mec_an
 \end{figure}
 
 
-En ella, se observa, que existen dos motores, uno para cada eje, además, tiene un sistema que permite medir la posición de la antena mediante dos potenciómetros adosados al eje de cada motor. Estos ejes son independientes entre si,y su medida también. 
-
+En ella, se observa, que existen dos motores, uno para cada eje, además, tiene un sistema que permite medir la posición de la antena mediante dos potenciómetros adosados al eje de cada motor. Estos ejes son independientes entre sí, y su medida también. 
 
 
 En el presente trabajo, se va a desarrollar un sistema que sea capaz de realizar el movimiento de la antena, aprovechando el sistema de motores existente sobre la misma. El sistema, que realiza el movimiento de la antena, se conoce como ''posicionador''. Este sistema, recibe una posición, en dos coordenadas, y tiene que mover la antena hacia las coordenadas recibidas. Estas coordenadas que recibe, son las posiciones de los satélites, los cuales se van moviendo, por ende, mientras el satélite este por encima de la antena, o su ''horizonte visible'', debe realizar el seguimiento de la misma, actuando sobre los motores, y acomodando la antena, a donde este el satélite en cuestión.
 
-En la actualidad, existen diversos software para realizar el seguimiento de satélites en tiempo real, estos consultan bases de datos existentes en Internet, y realizan el cálculo en base a modelos matemáticos. En este documento, se hará uso de estos software, para poder actualizar la posición a cada instante y mover los motores hacia donde corresponda. Además, este dispositivo, debe ser controlador desde una PC que esté ubicada dentro de la institución. 
+En la actualidad, existen diversos programas para realizar el seguimiento de satélites en tiempo real, estos consultan bases de datos existentes en Internet, y realizan el cálculo en base a modelos matemáticos. En este documento, se hará uso de alguno de estos programas, para poder actualizar la posición a cada instante y mover los motores hacia donde corresponda. Además, este dispositivo, debe ser controlador desde una PC que esté ubicada dentro de la institución. 
 
 \section{Metodología de trabajo}
 
@@ -71,7 +70,7 @@ En la segunda fase, se va a desarrollar el software que debe realizar el sistema
 
 
 
-En la tercera fase, se va a realizar una investigación sobre los sistemas de coordenadas, como se realizan las transformaciones de estas entre si, y la física de los satélites y modelos matemáticos.
+En la tercera fase, se va a realizar una investigación sobre los sistemas de coordenadas, como se realizan las transformaciones de estas entre sí, y la física de los satélites y modelos matemáticos.
 
 En la cuarta fase, se va a desarrollar el sistema de posicionamiento de los motores, luego se desarrolla la interfaz para conectarse a la computadora que realiza el control del sistema. Luego, una vez desarrollado estas interfaces, se prueba el sistema realizando algún seguimiento, sea a satélites, o a estrellas.  
 
@@ -100,7 +99,7 @@ De lo expuesto en las secciones anteriores, podemos obtener los requerimientos p
 	\item Requerimientos Funcionales.  
 	\item Requerimientos de sistema. 
 \end{enumerate} 
-Donde en el primero, se definen aquellas cosas relacionadas al comportamiento del dispositivo a diseñar, mientras el segundo, se refiere a como llevar a cabo la solución en si. 
+Donde en el primero, se definen aquellas cosas relacionadas al comportamiento del dispositivo a diseñar, mientras el segundo, se refiere a como llevar a cabo la solución en sí. 
 
 %\renewcommand{\multirowsetup}{\centering}
 
