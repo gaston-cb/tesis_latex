@@ -13,7 +13,7 @@
 	\end{tcolorbox}
 \end{center}    
 \section{Introducción} 
-En este capítulo analizamos las redes de computadoras,y como se conectan entre sí los dispositivos de una red. Ademas, se analizan dos modelos de capas principales: OSI y TCP/IP, donde cada uno consta de varias capas, donde se brinda un breve resumen de cada capa. 
+En este capítulo analizamos las redes de computadoras,y como se conectan entre sí los dispositivos de una red. además, se analizan dos modelos de capas principales: OSI y TCP/IP, donde cada uno consta de varias capas, donde se brinda un breve resumen de cada capa. 
 Luego, se analizan, dos protocolos para reconocer dispositivos en una red, el protocolo DHCP,que le asigna una dirección, y el protocolo IP,que le asigna una red. Además, se introduce el concepto de sniffer, y se muestra como visualizar el contenido de los datos que están circulando en una red. Los conceptos en que profundiza el presente capítulo, son aquellos de mayor interés para la construcción del dispositivo. Este capítulo se basa en un resumen de las referencias \cite{Stallings2004} y \cite{Tanenbaum2003}.  
 
 
@@ -24,9 +24,9 @@ Las redes de área local, son aquellas que se interconectan distintos equipos de
 En el caso de redes alámbricas, las computadoras, realizan un enlace punto a punto, a través de un dispositivo denominado \textbf{Switch}.Un switch, posee varias entradas para conectar mas de una PC,y el trabajo de este, es transmitir mensajes entre computadoras, conociendo la dirección de destino, que viene incluida en el mensaje. Si se requieren redes mas grandes, pueden interconectarse Switchs entre sí, y armar redes de mayor tamaño. 
 
 
-En el presente trabajo, se conecta el dispositivo a un switch, que esta ubicado en sala de control,del Instituto Argentino De Radioastronomía. Ademas al finalizar el trabajo, se solicitará que se le asigne una dirección fija dentro de la red institucional.  
+En el presente trabajo, se conecta el dispositivo a un switch, que esta ubicado en sala de control,del Instituto Argentino De Radioastronomía. Además al finalizar el trabajo, se solicitará que se le asigne una dirección fija dentro de la red institucional.  
 
-En el trabajo realizado en este presente informe, usamos un modelo conocido como arquitectura "cliente-servidor". Esta arquitectura, se basa en que hay maquinas clientes, que solicitan un servicio, a otra estación de trabajo, denominada servidor. Los clientes, son las estaciones de trabajo del lugar, y el servidor es el dispositivo desarrollado en esta tesis, ya que es el qué brinda el servicio de apuntamiento de antena. En otras palabras, las estaciones de trabajo deben conectarse al dispositivo desarrollado en el presente documento. De ahí, que se requiera el permiso correspondiente para fijar la dirección del dispositivo.  
+En el trabajo realizado en este presente informe, usamos un modelo conocido como arquitectura ``cliente-servidor''. Esta arquitectura, se basa en que hay maquinas clientes, que solicitan un servicio, a otra estación de trabajo, denominada servidor. Los clientes, son las estaciones de trabajo del lugar, y el servidor es el dispositivo desarrollado en esta tesis, ya que es el qué brinda el servicio de apuntamiento de antena. En otras palabras, las estaciones de trabajo deben conectarse al dispositivo desarrollado en el presente documento. De ahí, que se requiera el permiso correspondiente para fijar la dirección del dispositivo.  
 
 
 
@@ -53,7 +53,7 @@ Debido a que existen muchas computadoras dentro de una organización, estos prot
 
 
 \subsection{Modelo OSI}
-El modelo OSI, se basa en una propuesta desarrollada por la organización internacional de normas(ISO), en un intento de estandarización para los protocolos. En sí, es un modelo general, pero sus protocolos no se utilizan masivamente.La sigla OSI proviene de ''open system interconection''(sistema de interconexión abierto). Este modelo tiene siete capas, y los principios utilizados para llegar a ellas son los siguientes:
+El modelo OSI, se basa en una propuesta desarrollada por la organización internacional de normas(ISO), en un intento de estandarización para los protocolos. En sí, es un modelo general, pero sus protocolos no se utilizan masivamente.La sigla OSI proviene de ``open system interconection''(sistema de interconexión abierto). Este modelo tiene siete capas, y los principios utilizados para llegar a ellas son los siguientes(\cite{Tanenbaum2003}):
 \begin{enumerate}
 	\item Se debe crear una capa en donde se requiera un nivel diferente de abstracción 
 	\item Cada capa debe realizar una función bien definida 
@@ -61,7 +61,7 @@ El modelo OSI, se basa en una propuesta desarrollada por la organización intern
 	internacionalmente
 	\item Es necesario elegir los límites de las capas de modo que se minimice el flujo de información a través de las interfaces 
 	\item La cantidad de capas debe ser suficiente como para no tener que agrupar funciones distintas en
-	la misma capa; ademas, debe ser lo bastante pequeña como para que la arquitectura no se vuelva
+	la misma capa; además, debe ser lo bastante pequeña como para que la arquitectura no se vuelva
 	inmanejable. 
 \end{enumerate} 
 Las capas, se muestran en la figura a continuación:% \ref{fig:mod_osi}:
@@ -79,7 +79,7 @@ Esta capa, se relaciona con la transmisión de bits a través de un canal de com
 
 
 \subsubsection{capa 2 - Enlace de datos } 
-La función principal es transformar un medio de transmisión puro, en una linea que esté libre de errores. Ademas, proporciona medios para activar,desactivar y mantener el enlace(es decir, la comunicación). Aquí, esta definido un componente de hardware: la tarjeta o placa de red. Cada placa de red tiene un número único conocido como MAC address, y es único para cada dispositivo en el mundo. 
+La función principal es transformar un medio de transmisión puro, en una linea que esté libre de errores. además, proporciona medios para activar,desactivar y mantener el enlace(es decir, la comunicación). Aquí, esta definido un componente de hardware: la tarjeta o placa de red. Cada placa de red tiene un número único conocido como MAC address, y es único para cada dispositivo en el mundo. 
 
 \subsubsection{capa 3 - Capa de red}
 La capa de red, realiza la transferencia de información entre sistemas finales, liberando a las capas superiores del conocimiento de los medios de transmisión y tecnologías de conmutación usadas. 
@@ -88,13 +88,13 @@ Si hay demasiados paquetes en la subred al mismo tiempo, se interpondrán en el 
 otros y formarán cuellos de botella. El manejo de la congestión también es responsabilidad de la capa de
 red, en conjunto con las capas superiores que adaptan la carga que colocan en la red.
 \subsubsection{capa 4 - Transporte }
-En esta capa, se reciben datos de las capas superiores, y los '' particiona'' en unidades mas pequeñas, para ser enviadas a las capa de red.Ademas,debe asegurarse  que estos paquetes lleguen a destino. En otras palabras, parte los mensajes de las capas superiores para ser transmitidas al medio de comunicación. 
+En esta capa, se reciben datos de las capas superiores, y los '' particiona'' en unidades mas pequeñas, para ser enviadas a las capa de red.además,debe asegurarse  que estos paquetes lleguen a destino. En otras palabras, parte los mensajes de las capas superiores para ser transmitidas al medio de comunicación. 
 
 \subsubsection{capa 5 - Sesión  }
 Esta capa, proporciona mecanismos para el control del diálogo (decidir quien debe transmitir)entre las aplicaciones de los sistemas finales. En muchos casos, estos servicios son totalmente  imprescindibles,sin embargo, en algunas aplicaciones, su utilización es obligatoria. 
 
 \subsubsection{capa 6 - Presentación}
-Aquí, se define el formato de los datos que van a intercambiarse en las aplicaciones., y ofrece a las aplicaciones un conjunto de servicios de transformación de datos. Ejemplos específicos, son compresión y cifrado de datos. 
+Aquí, se define el formato de los datos que van a intercambiarse en las aplicaciones, y ofrece a las aplicaciones un conjunto de servicios de transformación de datos. Ejemplos específicos, son compresión y cifrado de datos. 
 
 
 \subsubsection{capa 7 - Aplicación} 
@@ -102,7 +102,7 @@ Esta capa, proporciona a los programas de aplicación, un medio para que accedan
 
 
 \section{Modelo TCP/IP} 
-  El modelo TCP/IP es usado para conectar computadoras entre si a través de una red interna dentro de una organización. Este modelo se muestra en la figura \ref{fig:model_tcpip}, y se dará una breve explicación de cada capa: 
+  El modelo TCP/IP es usado para conectar computadoras entre si a través de una red interna dentro de una organización. Este modelo se muestra en la siguiente figura, y se dará una breve explicación de cada capa: 
   \begin{figure}[ht]
   	\centering
   	\includegraphics{model_tcpip}
@@ -111,9 +111,9 @@ Esta capa, proporciona a los programas de aplicación, un medio para que accedan
   \end{figure} 
 
 \subsection{capa 1 - Capa de Host a red}
-La capa 1,del modelo TCP/IP, también se la suele nombrar capa de enlace. En este documento utilizamos como nombre de capa ''host a red''. De esta capa, no se puede decir mucho, excepto que puntualiza que el host se debe conectar a la red mediante el mismo protocolo para que se puedan enviar paquetes IP (véase la siguiente sección). Este protocolo no está definido y varia de una red a otra.
+La capa 1,del modelo TCP/IP, también se la suele nombrar capa de enlace. En este documento utilizamos como nombre de capa ``host a red''. De esta capa, no se puede decir mucho, excepto que puntualiza que el host se debe conectar a la red mediante el mismo protocolo para que se puedan enviar paquetes IP (véase la siguiente sección). Este protocolo no está definido y varia de una red a otra.
 \subsection{capa 2 - Interred}
-Su trabajo es permitir que los hosts inyecten paquetes dentro de cualquier red y que viajen a su destino de manera independiente. Una analogía es el servicio de correo. Una persona, deposita una serie de cartas internacionales en un buzón, y la mayoría de ellas se entregarán en la dirección correcta del país de destino. Es probable que las cartas, viajes a través de una o más puertas de enlace de correo internacional, pero esto es transparente a los usuarios. Este trabajo, lo realiza la capa de interred, que da transparencia a los usuarios de como viajan estos paquetes dentro de una red. 
+Su trabajo es permitir que los hosts inyecten paquetes dentro de cualquier red y que viajen a su destino de manera independiente. Una analogía es el servicio de correo. Una persona, deposita una serie de cartas internacionales en un buzón, y la mayoría de ellas se entregarán en la dirección correcta del país de destino. Es probable que las cartas, viajes a través de una o más puertas de enlace de correo internacional, pero esto es transparente a los usuarios. Este trabajo, lo realiza la capa de interred, que da transparencia a los usuarios de como viajan estos paquetes dentro de una red(ver referencia \cite{Stallings2004}). 
 La capa de interred, define un paquete de formato y protocolo denominado protocolo IP (Internet protocol). El trabajo de la capa de interred es entregar paquetes IP al destinatario. 
 
 \subsection{capa 3 - Transporte}
@@ -125,17 +125,17 @@ El segundo protocolo de esta capa UDP (protocolo de datagrama de usuario) es un 
 \subsection{capa 4 - Aplicación}
 Contiene todos los protocolos de nivel más alto. Los primeros fueron TELNET, FTP, SMTP, etc. Con el tiempo, se han agregado otros protocolos, por ejemplo, HTTP, DNS, etc. 
 En la siguiente imagen, se muestra la relación entre las capas del modelo TCP/IP
-%\vspace{-1cm}
+\vspace{-0.4cm}
 \begin{figure}[ht]
 	\centering
-	\includegraphics[height=5.0cm]{cap_ap_tcpip}
+	\includegraphics[width=0.7\linewidth,height=3.5cm]{cap_ap_tcpip}
 	\caption{Esquema de interconexión del modelo TCP/IP}
 \end{figure}
 
 
 \section{OSI vs TCP/IP }
 
-Los dos modelos tienen mucho en común. Ambos se basan en un modelo de capas, independientes entre sí. Es importante tener en cuenta que se están comparando los modelos de referencia, no los protocolos de comunicación entre sí. En la siguiente figura se muestra la comparación de las capas:  
+Los dos modelos tienen mucho en común. Ambos se basan en un modelo de capas, independientes entre sí. Es importante tener en cuenta que se están comparando los modelos de referencia, no los protocolos de comunicación. En la siguiente figura se muestra la comparación de las capas:  
 
 \begin{figure}[ht]
 	\centering 
@@ -155,14 +155,14 @@ El modelo OSI, define bien estas tres partes, y las distingue de una manera clar
 
 Una diferencia importante, se observan en la figura \ref{fig:comp_tcposi}, en el que se observa que el modelo TCP/IP tiene cuatro capas, mientas el otro tiene siete. Una ventaja, en el modelo OSI, es que el protocolo de una capa, puede cambiarse con facilidad, sin afectar las demás capas, esto no es así en el modelo TCP/IP. 
 
-Otra diferencia está en área de comunicación orientada a la conexión y no orientada a la conexión. El modelo OSI soporta ambas comunicaciones en la capa de transporte. Em modelo TCP/IP solo tiene un modo en la capa de red(no orientado a la conexión),pero soporta ambos modos en la capa de transporte, lo que da a los usuarios la oportunidad de elegir, en casos de protocolos sencillos de solicitud-respuesta.  
+Otra diferencia está en área de comunicación orientada a la conexión y no orientada a la conexión. El modelo OSI soporta ambas comunicaciones en la capa de transporte. En el  modelo TCP/IP solo tiene un modo en la capa de red(no orientado a la conexión),pero soporta ambos modos en la capa de transporte, lo que da a los usuarios la oportunidad de elegir el modelo de capas, en casos de protocolos sencillos de solicitud-respuesta.  
 
 
 
 
 \section{Protocolo IP} 
 %protocolo IP RFC 1958
-La capa de red, se encarga de llevar todos los paquetes a destino. Podría ocurrir, que existan varios enrutadores en el medio. Esto contrasta con la capa de enlace de datos, que asegura la fiabilidad de un extremo a otro de un cable. El protocolo IP, se encuentra en el estándar RFC 1958, y es de acceso público. Este protocolo se denomina IP por las siglas ''Internet Protocol''. 
+La capa de red, se encarga de llevar todos los paquetes a destino. Podría ocurrir, que existan varios enrutadores en el medio. Esto contrasta con la capa de enlace de datos, que asegura la fiabilidad de un extremo a otro de un cable. El protocolo IP, se encuentra en el estándar RFC 791(ver \cite{RFCIP}), y es de acceso público. Este protocolo se denomina IP por las siglas ``Internet Protocol''. 
 
 La comunicación en internet funciona de la siguiente manera: la capa de transporte, fragmenta los datos de la capa superior, y se los transmite a la capa de red. Los enrutadores, reenvían cada paquete, a través de más de un enrutador, hasta llegar a destino. En el destino, la capa de red entrega los datos a la capa de transporte y se los envía a la capa de aplicación. Cuando todas las piezas llegan finalmente a la máquina de destino, la capa de red las vuelve a ensamblar para formar el datagrama original. Un datagrama es la información que viaja en una red, y está compuesta por números binarios. Si bien, esta definición es bastante burda, es suficiente para el presente trabajo. El datagrama IP, se muestra en la figura siguiente 
 % datagrama Ip 
@@ -175,7 +175,7 @@ La comunicación en internet funciona de la siguiente manera: la capa de transpo
 \end{figure} 
 Este datagrama, se compone de dos partes: encabezado y carga útil. El encabezado, se compone de 20 bytes fija y una parte opcional de longitud variable. Los bits se transmiten de izquierda a derecha, y de arriba hacia abajo en la figura \ref{fig:datIP}. Todos los parámetros, están definidos en el estándar mencionado al principio de esta sección, en este trabajo, solo nos concentramos en dos parámetros: Dirección origen y Dirección destino. Estas son las que debemos utilizar para configurar el software, y que las estaciones de trabajo puedan conectarse a nuestro dispositivo. Estas direcciones, se conocen como direcciones IP. 
 \subsection{Direcciones IP} 
-Si se observa, la figura \ref{fig:datIP}, se observa que hay 32 bits(o 4 bytes) para indicar esta dirección. Estas direcciones están compuestas de una porción de longitud variable para indicar la red en los bits superiores, y de una porción de host en los bits.La porción de red tiene el mismo valor para todos los hosts en una sola red, como una LAN Ethernet. Esto significa que una red corresponde a un bloque contiguo de espacio de direcciones IP.A este bloque se le llama prefijo. 
+Si se observa, la figura \ref{fig:datIP}, se observa que hay 32 bits(o 4 bytes) para indicar esta dirección. Estas direcciones están compuestas de una porción de longitud variable para indicar la red en los bits superiores, y de una porción de host en los bits.La porción de red tiene el mismo valor para todos los hosts en una sola red, como una LAN Ethernet. Esto significa que una red corresponde a un bloque contiguo de espacio de direcciones IP. A este bloque se le llama prefijo. 
 
 Las direcciones IP se escriben en notación decimal con puntos. En este formato, cada uno de los 4 bytes se escribe en decimal, de 0 a 255. Por ejemplo, la dirección hexadecimal 80D00297 de 32 bits se escribe como 128.208.2.151.  
 inferiores. para escribir los prefijos, se proporciona la ip menor en el bloque y tamaño del mismo. El tamaño se determina mediante el número de bits en la porción de red, los restantes bits(bits de host) pueden variar. Esto significa, que el prefijo debe ser potencia de dos. Por convención, el prefijo se escribe después de la ip, con los bits dedicados a los host. Por ejemplo, la siguiente notación 128.208.0.0/24, significa que hay 24 bits para la red, y 8 bits para el host. 
@@ -184,10 +184,10 @@ Como el prefijo que indica la red, puede ser de longitud variable, entonces se d
  
 \section{Protocolo DHCP} 
 
-De la sección anterior, se obtiene que cada computadora, estación de trabajo, o dispositivo que se conecte a la red, debe al menos configurarse la dirección IP, y la máscara de subred, para que puedan intercambiar mensajes entre ellos, o utilizar cualquier servicio disponible en la red. Esto, puede resultar un proceso tedioso, por esto, se define en el estándar RFC 2131 un protocolo de asignación dinámicas de ips, conocido como DHCP(Protocolo de Configuración Dinámica de Host,
+De la sección anterior, se obtiene que cada computadora, estación de trabajo, o dispositivo que se conecte a la red, debe al menos configurarse la dirección IP, y la máscara de subred, para que puedan intercambiar mensajes entre ellos, o utilizar cualquier servicio disponible en la red. Esto, puede resultar un proceso tedioso, por esto, se define en el estándar RFC 2131\cite{RFCDHCP} un protocolo de asignación dinámicas de ips, conocido como DHCP(Protocolo de Configuración Dinámica de Host,
 del inglés Dynamic Host Configuration Protocol). En el estándar, están definidas la forma de comunicación para obtener estos datos, que es básicamente la dirección IP asignada de manera automática.  
 Dentro de cada red, debe existir un servidor DHCP. para iniciar la solicitud, la máquina, envía a través de la red, una solicitud, denominada DHCPDISCOVER.Si el servidor está disponible, envía la dirección en un paquete denominado DHCPOFFER. 
-Un paquete DHCP está conformado por los bits que se muestran en la figura \ref{fig:pqdhcp}: 
+Un paquete DHCP está conformado por los bits que se muestran en la siguiente figura: 
 \begin{figure}[ht]
 	\includegraphics[width=\textwidth,height=10cm]{paqdhcp}
 	\caption{Datagrama para intercambio de mensajes del protocolo DHCP}
@@ -217,8 +217,8 @@ La capa IP no ofrece ninguna garantía de que los datagramas se entregarán de m
 
 \subsection{Servicio TCP}
 	El servicio TCP se obtiene al hacer que tanto el servidor como el receptor creen puntos terminales, llamados sockets. Cada socket tiene un número (dirección) que consiste en la dirección IP del host y un número de 16 bits que es local para ese host, llamado puerto. Un puerto, es definido por la capa de aplicación, que es el punto de acceso a la capa de aplicación. para obtener el servicio TCP, hay que establecer de manera explícita una conexión entre un socket en una máquina y un socket en otra máquina. 
-	Existen puertos que se denominan ''conocidos'', y son casi un estándar, por ejemplo, el puerto 80 para el protocolo HTTP. Los puertos definidos van de 0 a 1024. Los puertos de 1024.Los puertos desde el 1024 hasta el 49151 son puertos que se pueden registrar en IANA, pero las aplicaciones son las que seleccionan sus propios puertos.  
-	Todas las conexiones TCP son full dúplex y de punto a punto. Full dúplex significa que el tráfico puede 	ir en ambas direcciones al mismo tiempo. Punto a punto significa que cada conexión tiene exactamente dos puntos terminales. TCP no soporta la multidifusión ni la difusión. 
+	Existen puertos que se denominan ``conocidos'', y son casi un estándar, por ejemplo, el puerto 80 para el protocolo HTTP. Los puertos definidos van de 0 a 1024. Los puertos de 1024. Los puertos desde el 1024 hasta el 49151 son puertos que se pueden registrar en IANA\footnote{es una organización que se encarga de la numeración y asignación de nombres, y puertos únicos para cada organización que lo solicite}, pero las aplicaciones son las que seleccionan sus propios puertos.  
+	Todas las conexiones TCP son full dúplex y de punto a punto. Full dúplex significa que el tráfico pueden ir en ambas direcciones al mismo tiempo. Punto a punto significa que cada conexión tiene exactamente dos puntos terminales. TCP no soporta la multidifusión ni la difusión. 
 	La entidad TCP emisora y receptora intercambian datos en forma de segmentos. Un segmento TCP consiste en un encabezado fijo de 20 bytes (más una parte opcional), seguido de cero o más bytes de datos. El software de TCP decide qué tan grandes deben ser los segmentos. Puede acumular datos de varias escrituras para formar un segmento, o dividir los datos de una escritura en varios segmentos. Una cabecera está formada de la siguiente manera: 
 	\begin{figure}[ht]
 		\centering 
@@ -242,7 +242,7 @@ Un programa que pueda revisar los paquetes de una red que llegan a una computado
 \end{figure}
 
 
-Como se ve en la figura, se observa IP de origen, Ip de destino, y ambos puertos, y ademas el paquete TCP reensamblado, y el tipo de protocolo utilizado para la comunicación.  
+Como se ve en la figura, se observa IP de origen, Ip de destino, y ambos puertos, y además el paquete TCP reensamblado, y el tipo de protocolo utilizado para la comunicación.  
 
 Este software, se va a utilizar, para comprobar la conexión de los programas para que realicen seguimiento de satélites. Además, se puede comprobar los protocolos implementados por los programas. 
 

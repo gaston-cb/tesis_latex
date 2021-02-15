@@ -44,11 +44,11 @@ Además, permite que observar la posición del sol y la luna en tiempo real.
 Como contra de este software, es que no permite realizar el seguimiento de estrellas, y no puede conectarse a la red, para enviar estos datos a través de la red local. Solo tiene conexión con los puertos(puertos USB) de la PC para obtener los datos. Para poder enviar estos datos, a través de la red, se debe simular un puerto virtual, obtener esos datos, y enviarlos a través de la red local. Es decir, requiere un programa que haga de intermediario. 
 
 \subsection{Stellarium} 
-El software stellarium, posee un seguimiento en tiempo real de estrellas, y está pensado para realizar el seguimiento usando telescopios. Tiene distintos módulos, lo que lo hacen personalizable. Tiene soporte para estrellas, y satélites. Estos datos, pueden enviarse a través de la red, para que los reciba un telescopio, y realice el apuntado del telescopio. Existen pluggins, de este software, que permiten enviar las coordenadas a dispositivos mediante la red. Una imagen del software puede visualizarse en la figura \ref{fig:stelarium_init}  
+El software stellarium, posee un seguimiento en tiempo real de estrellas, y está pensado para realizar el seguimiento usando telescopios. Tiene distintos módulos, lo que lo hacen personalizable. Tiene soporte para estrellas, y satélites. Estos datos, pueden enviarse a través de la red, para que los reciba un telescopio, y realice el apuntado del telescopio. Existen pluggins, de este software, que permiten enviar las coordenadas a dispositivos mediante la red. Una imagen del software puede visualizarse en la siguiente figura:% \ref{fig:stelarium_init}  
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=\linewidth,height= 7cm]{stellarium}
+	\includegraphics[width=\linewidth,height= 5.6cm]{stellarium}
 	\caption{Imagen al abrir el software Stellarium }
 	\label{fig:stelarium_init}
 \end{figure}
@@ -57,7 +57,7 @@ El software stellarium, posee un seguimiento en tiempo real de estrellas, y est�
 
 
 \subsection{Celestia} 
-Celestia es un software, que permite realizar "viajes" a las estrellas. Este software tiene un fin educativo, puede realizar algunas simulaciones, y se puede viajar al "espacio a donde uno desee". Este software no posee ningún tipo de comunicación con el exterior. 
+Celestia es un software, que permite realizar ``viajes'' a las estrellas. Este software tiene un fin educativo, puede realizar algunas simulaciones, y se puede viajar al ``espacio a donde uno desee''. Este software no posee ningún tipo de comunicación con el exterior. 
 \begin{figure}[ht]
 	\centering
 	\includegraphics[scale=0.3]{celestia}
@@ -67,7 +67,7 @@ Celestia es un software, que permite realizar "viajes" a las estrellas. Este sof
 
 
 \subsection{Pass}
-Pass no es una aplicación para PC en sí. Es una página web con todos los satélites encima de un mapa. La página es http://amsat.org.ar/pass. La captura de pantalla se muestra en la figura \ref{fig:iu_pass}.
+Pass no es una aplicación para PC en sí. Es una página web con todos los satélites encima de un mapa. La página es http://amsat.org.ar/pass. La captura de pantalla se muestra en la siguiente figura:% \ref{fig:iu_pass}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\linewidth, height= 6cm]{pass}
@@ -78,7 +78,9 @@ Pass no es una aplicación para PC en sí. Es una página web con todos los sat�
 Éste software, obtiene la geolocalización a partir de la conexión a Internet. A partir, de ellas, obtiene la orientación de la antena. Debido a que obtiene las coordenadas a partir de la conexión a Internet, se tiene un error en el apuntamiento de la antena, ya que estas coordenadas están desfasadas respecto a las reales.    
 
 \subsection{Gpredict}
-%\vspace{-4mm}
+
+El software Gpredict es un software que muestra en tiempo real las ubicaciones de los satélites dentro de un mapa, que permite, la configuración de sistemas receptores y sistemas de rotación para antenas. El mismo es libre, su código fuente está disponible en Internet, como así su programa compilado, el mismo puede usarse en Windows y Linux. Este, provee una base de datos de satélites, y se actualiza con la frecuencia que se configure. Además, soporta envió de datos mediante el uso de una red local, configurando sus parámetros. Una captura de pantalla puede verse en la siguiente figura:  %\ref{fig:iu_gpredict}.
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\linewidth,height=7cm]{gpredict}
@@ -86,13 +88,10 @@ Pass no es una aplicación para PC en sí. Es una página web con todos los sat�
 	\label{fig:iu_gpredict}
 \end{figure}
 
-El software Gpredict es un software que muestra en tiempo real las ubicaciones de los satélites dentro de un mapa, que permite, la configuración de sistemas receptores y sistemas de rotación para antenas. El mismo es libre, su código fuente está disponible en Internet, como así su programa compilado, el mismo puede usarse en Windows y Linux. Este, provee una base de datos de satélites, y se actualiza con la frecuencia que se configure. Además, soporta envió de datos mediante el uso de una red local, configurando sus parámetros. Una captura de pantalla puede verse en la figura \ref{fig:iu_gpredict}.
-
-
 
 \section{Comparativa de interfaces y selección del software}
 Una vez, realizado el análisis sobre cada aplicación, se realiza una tabla comparando sus características(ver tabla \ref{tab:comp_soft})
-\begin{table}[h]
+\begin{table}[htb]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|c|}
 		\hline
@@ -126,16 +125,16 @@ Esta capa de software se relaciona con distintos tipos de radios, y tiene protoc
 
 Esta librería, define cuatro programas para realizar pruebas, estos programas son: 
 \begin{itemize}
-	\item rigctl: Manejo de radios por puerto serie 
-	\item rotctl: Manejo de rotadores por puerto serie
-	\item rigctld: Manejo de radios mediante el protocolo TCP/IP
-	\item rotctld: Manejo de rotadores mediante el protocolo TCP/IP
+	\item rigctl: manejo de radios por puerto serie 
+	\item rotctl: manejo de rotadores por puerto serie
+	\item rigctld: manejo de radios mediante el protocolo TCP/IP
+	\item rotctld: manejo de rotadores mediante el protocolo TCP/IP
 \end{itemize}
 
-Los dos últimos de la tabla anterior, son los que tienen interés dentro de este documento. Al realizar la opción de seguimiento de satélites, internamente Gpredict, llama a ''rotctld'', y mediante un protocolo de comunicación documentado dentro de la documentación oficial de Hamlib, se realiza el intercambio de mensajes entre la aplicación y el rotador. 
+Los dos últimos de la tabla anterior, son los que tienen interés dentro de este documento. Al realizar la opción de seguimiento de satélites, internamente Gpredict, llama a ``rotctld'', y mediante un protocolo de comunicación documentado dentro de la documentación oficial de Hamlib, se realiza el intercambio de mensajes entre la aplicación y el rotador. 
 
 \subsubsection{Protocolo de comunicación} \label{subsub:protocol_com}
-El protocolo de comunicación implementado dentro del programa ''rotctld'' se basa en texto plano, separado por espacios en blanco, y tiene un carácter de fin de mensaje, con el carácter salto de línea, o conocido como '' \textbackslash{}n'' dentro del código ASCII. 
+El protocolo de comunicación implementado dentro del programa ``rotctld'' se basa en texto plano, separado por espacios en blanco, y tiene un carácter de fin de mensaje, con el carácter salto de línea, o conocido como ``\textbackslash{}n'' dentro del código ASCII. 
 
 Existen dos tipos de comandos: los denominados métodos Get y Set. Los primeros obtienen información del rotador, mientras los últimos, le envían información al rotador que es lo que debe realizar. Algunos de los comandos utilizados por este programa(Gpredict en conjunto con rotctld) son los siguientes: 
 
@@ -158,21 +157,22 @@ Existen dos tipos de comandos: los denominados métodos Get y Set. Los primeros 
 
 Además de estos comandos, existen un comando que no encaja en la categoría de Get o Set, es el comando M, que le indica la velocidad de seguimiento de la antena, este no esta disponible en Gpredict. 
 
-Esta librería, además, posee un formato de respuesta, el cual se establece con separadores de espacio en blanco, y terminados en un salto de línea, para el caso de métodos GET. Estos métodos, piden información al rotador, y está definida cada respuesta dentro del manual de HAMLIB. Estas, pueden verse en su manual. 
+Esta librería, además, posee un formato de respuesta, el cual se establece con separadores de espacio en blanco, y terminados en un salto de línea, para el caso de métodos GET. Estos métodos, piden información al rotador, y está definida cada respuesta dentro del manual de HAMLIB. Estas, pueden verse en su manual(vea referencia \cite{HAMLIBDOC}). 
 
 \subsection{Selección de satelites y creación del perfil} 
 
-El software Gpredict, permite seleccionar los satélites a realizar seguimiento mediante la elección de los mismos, y creando lo que se denominan '' módulos''. Cada módulo puede seleccionar los satélites a seguir, además, pueden agregarse satélites a seguir, añadiendo la base de datos manualmente.
+El software Gpredict, permite seleccionar los satélites a realizar seguimiento mediante la elección de los mismos, y creando lo que se denominan ``módulos''. Cada módulo puede seleccionar los satélites a seguir, además, pueden agregarse satélites a seguir, añadiendo la base de datos manualmente.
 
-Al iniciar el software(ver figura \ref{fig:iu_gpredict}) este viene con un módulo predeterminado, que se denomina '' Amateur''. Este viene con algunos satélites precargados. 
+Al iniciar el software(ver figura \ref{fig:iu_gpredict}) este viene con un módulo predeterminado, que se denomina ``Amateur''. Este viene con algunos satélites precargados. 
 
-Para crear un perfil, debe dirigirse a file $\rightarrow$ new module, como muestra en la figura \ref{fig:create_modul_gpred}  
+Para crear un perfil, debe dirigirse a file $\rightarrow$ new module, como se muestra en la siguiente imagen:% \ref{fig:create_modul_gpred}  
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth,height=8cm]{create_module}
 	\caption{Creación de un módulo dentro de Gpredict} 
 	\label{fig:create_modul_gpred}	
 \end{figure}
+
 Al realizar esto, se abre la ventana, dónde selecciona los satélites a seguir. Esta ventana se muestra en la figura \ref{fig:sel_sat}. En esta ventana, seleccionamos los satélites, y lo nombramos al módulo. En este caso, se lo denominamos arduino. 
 
 \begin{figure}[ht]
@@ -182,22 +182,22 @@ Al realizar esto, se abre la ventana, dónde selecciona los satélites a seguir.
 	\label{fig:sel_sat}	
 \end{figure}
 %\vspace{}
-Donde dice ''Ground station'',se debe configurar latitud y longitud de la antena. Luego se presiona OK. Después de esto, ya se creó el módulo. Para abrirlo cuando desee, debe dirigirse a file $\rightarrow$ open module, y elegir ''arduino'' como módulo.
+Donde dice ``Ground station'',se debe configurar latitud y longitud de la antena. Luego se presiona OK. Después de esto, ya se creó el módulo. Para abrirlo cuando desee, debe dirigirse a file $\rightarrow$ open module, y elegir ``arduino'' como módulo.
 \subsection{Configuración del rotador en Gpredict} \label{subs:conf_Gpredict}
-Para configurar el rotador,en la página que se abre al iniciar el programa(ver figura	\ref{fig:iu_gpredict}), debe dirigirse a edit $\rightarrow$ prefences. Al realizar esto, se abre la siguiente ventana: 
+Para configurar el rotador, en la página que se abre al iniciar el programa(ver figura	\ref{fig:iu_gpredict}), debe dirigirse a edit $\rightarrow$ prefences. Al realizar esto, se abre la siguiente ventana: 
 \begin{figure}[H]
 	\includegraphics[height=5cm,width=\textwidth]{select_rot}
 	\caption{Configuración de rotador}
 %	\label{key}
 \end{figure} 
 
-Luego de esto, debe presionar en la parte izquierda de la figura anterior, donde dice ''interfaces''. Al realizar esto, debe presionar, en la pestaña ''rotators''. A continuación se la ventana que se abre al presionar sobre interfaces
+Luego de esto, debe presionar en la parte izquierda de la figura anterior, donde dice ``interfaces''. Al realizar esto, debe presionar, en la pestaña ``rotators''. A continuación se la ventana que se abre al presionar sobre interfaces
 \begin{figure}[H]
 	\includegraphics[height=10cm,width=\textwidth]{rotators_int}
 	\caption{Configuración de rotador}
 \end{figure} 
 
-Luego, debe presionar en la pestaña rotators, y presionar donde dice ''add new'', y se abre una ventana como la que se muestra en la figura \ref{fig:conf_rot_ip}: 
+Luego, debe presionar en la pestaña rotators, y presionar donde dice ``add new'', y se abre una ventana como la que se muestra en la figura \ref{fig:conf_rot_ip}: 
 
 \begin{figure}[h]
 	\includegraphics[height=8cm]{conf_rot}
@@ -205,9 +205,9 @@ Luego, debe presionar en la pestaña rotators, y presionar donde dice ''add new'
 	\label{fig:conf_rot_ip}
 \end{figure} 
 
-Los parámetros a configurar son nombre del rotador(el que desee el usuario), ángulos máximos y mínimos de la antena. Estos parámetros se verán en la fase 3, y algunos en el capítulo siguiente. Además, se observan que se debe definir el host y el puerto. El host, es la IP del dispositivo desarrollado en el presente documento, y el puerto, se define según el gusto del usuario, en nuestro caso, se va a utilizar el puerto por defecto (4533).Luego de rellenar los datos, debe seleccionar OK, y con esto, está configurado el rotador. Se pueden definir tantos rotadores como se deseen, se deben repetir los pasos. 
+Los parámetros a configurar son nombre del rotador(el que desee el usuario), ángulos máximos y mínimos de la antena. Estos parámetros se verán en el siguiente capítulo. Además, se observan que se debe definir el host y el puerto. El host, es la IP del dispositivo desarrollado en el presente documento, y el puerto, se define según el gusto del usuario, en nuestro caso, se va a utilizar el puerto por defecto (4533).Luego de rellenar los datos, debe seleccionar OK, y con esto, está configurado el rotador. Se pueden definir tantos rotadores como se deseen, se deben repetir los pasos. 
 
-Una vez creado el rotador,para visualizar el rotador desde la pantalla principal, debe dirigirse a la parte derecha de la pantalla principal, y presionar ahí. En ese lugar, aparece un menú, debe dirigirse a ''antena control'', como se ve en la figura \ref{fig:ant_ctrl} 
+Una vez creado el rotador,para visualizar el rotador desde la pantalla principal, debe dirigirse a la parte derecha de la pantalla principal, y presionar ahí. En ese lugar, aparece un menú, debe dirigirse a ``antena control'', como se ve en la figura \ref{fig:ant_ctrl} 
 \begin{figure}[H]
 	\includegraphics[height=10cm,width=\linewidth]{antena_control}
 	\caption{Ver el rotador o rotadores configurados} 
@@ -221,11 +221,11 @@ Al realizar este paso, aparece el rotador de antena, que se ve en la siguiente f
 \begin{figure}[H]
 	\centering 
 	\includegraphics[trim=5.4cm 8cm 9.2cm 2.4cm ,clip,width=\linewidth,height=5cm]{antena_gpr_control}
-	\caption{Panel de control del rotador del Gpredict} 
+	\caption{Panel de control del rotador de Gpredict} 
 	\label{fig:pan_ctrl_antena}
 \end{figure}
 
-En esta figura, se observan dos botones, y dos menús, y un mapa de la antena. Estos dos botones son ''track'' y ''engage''. En el menú de track, realizamos el seguimiento automático. El menú, engage, sirve para realizar la calibración de la antena. El sistema de coordenadas empleado por este software es horizontal-azimutal, con el cero en el polo norte. Estas coordenadas son definidas más adelante, en específico en la fase 3, donde se muestra la configuración de este software para el trabajo de este documento.  
+En esta figura, se observan dos botones, y dos menús, y un mapa de la antena. Estos dos botones son ``track'' y ``engage''. En el menú de track, realizamos el seguimiento automático. El menú, engage, sirve para realizar la calibración de la antena. El sistema de coordenadas empleado por este software es horizontal-azimutal, con el cero en el polo norte. Estas coordenadas son definidas en la fase 3, donde se muestra el análisis matemático de estas.  
 
 Las medidas angulares, corresponden a los ángulos de la antena, estos se van a mostrar en el capítulo correspondiente a sistemas de coordenadas. Por ahora, solo basta con conocer la interfaz, luego se ajustan los detalles, para configurar el Gpredict, en base a la antena que tiene la institución, ajustando ángulos y límites de la misma. Esto se realiza en la fase 3, donde se van a mostrar los sistemas de coordenadas, y las relaciones entre ellos. En el próximo capítulo, se muestra cómo debe realizarse el seguimiento de satélites, mediante la comunicación con el dispositivo desarrollado en este documento. 
 
@@ -247,7 +247,7 @@ En esa ventana, debe seleccionarse, la latitud, longitud y altitud del lugar en 
 \subsection{Configuración de la red en Stellarium} \label{sub:conf_stellarium_red}
 
 
-Para poder conectar una PC de la institución, con el dispositivo, debe configurar el puerto(o socket) con el cual se intercambiarán mensajes, y la dirección IP del dispositivo receptor, que será el encargado de mover la antena o telescopio. Para configurar el telescopio, debe dirigirse a configuración, luego presionar en la pestaña pluggins, y en la parte izquierda seleccionar "control del telescopio". A continuación se deja la imagen de este proceso: 
+Para poder conectar una PC de la institución, con el dispositivo, debe configurar el puerto(o socket) con el cual se intercambiarán mensajes, y la dirección IP del dispositivo receptor, que será el encargado de mover la antena o telescopio. Para configurar el telescopio, debe dirigirse a configuración, luego presionar en la pestaña pluggins, y en la parte izquierda seleccionar ``control del telescopio''. A continuación se deja la imagen de este proceso: 
  
 \begin{figure}[h]
 	\includegraphics[width=\textwidth]{conf_tel_red1} 
@@ -255,7 +255,7 @@ Para poder conectar una PC de la institución, con el dispositivo, debe configur
 	\label{fig:stell_conf_red}
 \end{figure}
 
-Una vez, en esta ventana, se debe seleccionar el botón "configurar", debajo a la izquierda de esta ventana, y luego, se abre una ventana cómo la que se muestra a continuación. 
+Una vez, en esta ventana, se debe seleccionar el botón ``configurar'', debajo a la izquierda de esta ventana, y luego, se abre una ventana cómo la que se muestra a continuación. 
 
 \begin{figure}[H]
 	\includegraphics[height=10cm,width=\textwidth]{stell_conf_red_2} 
@@ -270,12 +270,12 @@ Luego, debe presionar donde muestra la imagen anterior para empezar a agregar el
 	\includegraphics[scale=0.5]{stellarium-024}
 	\caption{Ventana de configuración de red del software Stellarium.}
 \end{figure} 
-Donde dice "localhost",debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Se elige J2000.
+Donde dice "localhost",debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Estas coordenadas están relacionadas con la selección de la referencia para las coordenadas ecuatoriales. Estas se discuten en \ref{cap:sist_cord}. Se elige J2000.
 
 Una vez configurado el dispositivo, queda por intentar entender el protocolo, que éste emplea para comunicarse con los dispositivos. 
 
 \subsection{Protocolo de comunicación Stellarium} \label{sub:comun_stell}
-El stellarium, no es capaz de recibir datos en este modo de configuración, pero si es capaz de enviar datos al dispositivo conectado en la red. Este emplea dos números binarios, uno para cada eje. Según su documentación, al configurar un dispositivo, este invoca a un programa denominado "telescope server", el cual trabaja sobre TCP/IP. Este, es el que envía las coordenadas al dispositivo. Los mensajes se basan en bytes, donde están agrupados del siguiente modo: 
+El stellarium, no es capaz de recibir datos en este modo de configuración, pero si es capaz de enviar datos al dispositivo conectado en la red. Este emplea dos números binarios, uno para cada eje. Según su documentación, al configurar un dispositivo, este invoca a un programa denominado ``telescope server'', el cual trabaja sobre TCP/IP. Este, es el que envía las coordenadas al dispositivo. Los mensajes se basan en bytes, donde están agrupados del siguiente modo: 
 
 \begin{itemize}
 	\item LENGTH : 2 bytes - Indica la longitud total del mensaje

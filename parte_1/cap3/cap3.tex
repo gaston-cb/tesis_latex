@@ -11,7 +11,7 @@ Aquí, definimos algunos de los componentes de hardware seleccionados para cumpl
 \end{center}    
 
 \section{Introducción} 
-Se definen el microcontrolador seleccionado, los criterios de selección del mismo, además, se define la interfaz de red, y la interfaz de usuario. Los componentes se han seleccionado en base a los siguientes criterios: 
+Se definen los criterios de selección del microcontrolador, además, se define la interfaz de red y la de usuario. Los componentes se han seleccionado en base a los siguientes criterios: 
 \begin{enumerate}
   \item Compatibilidad entre las partes.  
   \item Disponibilidad de documentación para el desarrollo. 
@@ -24,14 +24,14 @@ Al ser una antena, que debe seguir satélites, se debe tener en cuenta, que los 
 \section{Componentes de hardware} \label{Sec_CompH}
 
 
-La computadora, o microcontrolador, debe tener interfaces, para conectarse con el mundo exterior. El hecho es que requiere realizar la medición de dos posiciones en simultaneo, que son la declinación y la altura. La antena, posee adosado, dos potenciómetros, que cumplen la función de encoders. Por ende, al tener adosado estos dos potenciómetros, el microcontrolador, debe tener como mínimo dos canales o puertos de entrada que posean un conversor analógico-digital cada uno. 
+La computadora, o microcontrolador, debe tener interfaces, para conectarse con el mundo exterior. El hecho es que requiere realizar la medición de dos posiciones en simultaneo, que son el ángulo de acimut y la altura. La antena, posee adosado, dos potenciómetros, que cumplen la función de encoders. Por ende, al tener adosado estos dos potenciómetros, el microcontrolador, debe tener dos canales o puertos de entrada que posean un conversor analógico-digital cada uno. 
 
 La interfaz de red, debe ser independiente del microprocesador o controlador, para cumplir con el requerimiento de escalabilidad, por ende, se debe utilizar alguna solución integrada que se conecte al microcontrolador principal, y puedan intercambiar mensajes entre ellos. 
 
 La interfaz para el estado de la antena, se usará una pantalla, la cual mostrará el estado de la misma. Para ello, se usará un display LCD de 16x2 que se encuentra disponible para su uso.
 
 
-De lo expuesto en los párrafos anteriores, el microcontrolador, debe ser independiente de todo el hardware asociado. Además debe poseer una electrónica asociada a cada motor, que permita encender o apagar cada motor de forma independiente. Además, debe ser capaz de controlar el sentido de giro de cada motor. Dado que estas maniobras las debe realizar el microcontrolador, se requieren de al menos cuatro puertos disponibles sobre el microcontrolador. 
+De lo expuesto en los párrafos anteriores, el microcontrolador, debe ser independiente de todo el hardware asociado. Además debe poseer una electrónica asociada a cada motor, que permita encender o apagar cada motor de forma independiente. Además, debe ser capaz de controlar el sentido de giro de cada motor. Dado que estas maniobras las debe realizar el microcontrolador, se requieren de al menos cuatro puertos disponibles sobre el microcontrolador(dos puertos para cada motor, y con un único puerto, se selecciona el sentido de giro). 
 
 
 \subsection{Interfaz de red - Materiales disponibles}\label{Int_r} 
@@ -82,7 +82,7 @@ Los microcontroladores disponibles dentro de la institución, están embebidos d
 	\item Arduino Uno 
 	\item STM32VL discovery 
 \end{enumerate}
-Donde, de las tres, debemos elegir aquella que tenga un menor valor económico, estudiar las soluciones de software y documentación que posean, y revisar si tienen puertos SPI e I2C para el display usado como interfaz de usuario y el chip Ethernet W5100.  
+Donde, de las tres, debemos elegir aquella que tenga un menor valor económico, estudiar las soluciones de software y documentación que posean, y revisar si tienen puertos SPI e I2C para el display usado como interfaz de usuario y el chip Ethernet W5100. El estudio realizado se basó en las referencias \cite{placastm32vl,arduno,eduuciaaa}  
 
 % comparación de soluciones: 
 \subsubsection{EDU-CIAA}
@@ -176,6 +176,6 @@ Por último, el hardware seleccionado para realizar la segunda fase de esta tesi
 	\item Interfaz de usuario: Display LCD  
 \end{enumerate}
 
-Estos tres componentes, ante cualquier tipo de fallo, están disponibles en el mercado local, y esto facilita el seguimiento del proyecto en caso de algún tipo de fallo en los componentes de hardware. 
+Estos tres componentes, ante cualquier tipo de falla, están disponibles en el mercado local, y esto facilita el seguimiento del proyecto en caso de algún fallo en los componentes de hardware. 
 
 
