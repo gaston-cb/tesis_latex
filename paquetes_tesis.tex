@@ -19,6 +19,7 @@
 \definecolor{c3}{rgb}{0.3,0,0.9} % rojo azuloso
 \hypersetup{ linkcolor={c1}, citecolor={c2}, urlcolor={c3} } % especificamos el color para cada tipo de referencia (imágenes o ecuaciones, citas bibliográficas y paginas de internet
 \usepackage{graphicx} % incluir imágenes.
+
 %\usepackage{natbib}% paquete para hacer referencias a la bibliografía
 \usepackage[nottoc]{tocbibind} %mostrar la bibliografía en la tabla de contenido
 \usepackage{enumerate} %para opciones de enumeración de listas (viñetas y todo eso) \usepackage{todonotes} %para poner notas en el documento, las cuales no se veran en el archivo final.
@@ -87,7 +88,7 @@
 \usepackage{multirow} 
 \usepackage{multicol} 
 \usepackage{appendix}
-
+\usepackage{xpatch}
 \usepackage[flushleft]{threeparttable}
 \usepackage{listings}
 
@@ -126,8 +127,50 @@
 
 %--------------------------------Bibliografia ---------------------------------% 
 
-\usepackage[backend=biber,style=ieee]{biblatex}
-\bibliography{bibliografia/referenciasBib}
+\usepackage[backend=biber,style=ieee,safeinputenc,doi=false]{biblatex}
+\bibliography{bibliografia/referenciasBib,bibliografia/ref_web}
+\renewcommand{\bibpagespunct}{\ifentrytype{online}{\addperiod\addspace
+{\addperiod\addspace}}}
+
+% ------------------formato URL Y TITLE ------------------------------------------%
+\DeclareFieldFormat{url}{disponible en\addcolon\space\url{#1}}
+\DeclareFieldFormat[online]{title}{
+	\ifthenelse{\ifnameundef{author}}{#1}{``\textit{#1}''}
+}
+
+%\DeclareFieldFormat[online]{title}
+%{
+%	\ifnameundef{author}
+%	{	
+%		{#1}
+%	}
+%%	\ifuseauthor { uso aturo {#1} } 
+%	
+%}
+
+
+
+\xpatchbibmacro{maintitle+title}{\newunit\newblock}{\newunit\setunit{\addspace}\newblock}{}{}
+
+% ------------------ Elimina COMMA  ---------------------------------%
+
+\xpatchbibdriver{online}{\usebibmacro{byauthor}\newunit}{\usebibmacro{byauthor}\newunit\setunit{\addspace}}{}{}
+
+
+
+% ------------------ Elimina fecha ---------------------------------%
+
+\xpatchbibdriver{online}
+{\printtext[parens]{\usebibmacro{date}}}
+{\iffieldundef{year}
+	{}
+	{\printtext[parens] \setunit{\addspace}{\usebibmacro{date}}}}
+{}
+{\typeout{There was an error patching biblatex-ieee (specifically, ieee.bbx's @online driver)}}
+
+
+
+
 
 %--------------------------------Fin bibliografía------------------------------%
 
