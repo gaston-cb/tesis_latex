@@ -48,7 +48,7 @@ La conexión del display LCD, requiere de comunicación I2C, el cual utiliza dos
 
 
 Una vez, definidos los puertos a utilizar, se deben conectar los componentes a la placa de desarrollo. Esta conexión, se realiza usando cables denominados ''dupont''en una protoboard. 
-Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se deben conocer su disposición de pines, o en lenguaje de la jerga electrónica, se debe conocer el ``pinout'' de cada componente. La explicación de cada pin disponible de cada dispositivo,se muestra en el apéndice \ref{AP:protSerial}. Se muestra el pinout  de cada dispositivo en la siguiente figura: %\ref{fig:pinoutlcdeth}: 
+Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se deben conocer su disposición de pines, o en lenguaje de la jerga electrónica, se debe conocer el ``pinout'' de cada componente. La explicación de cada pin disponible de cada dispositivo, se muestra en el apéndice \ref{AP:protSerial}. Se muestra el pinout  de cada dispositivo en la siguiente figura: %\ref{fig:pinoutlcdeth}: 
 
 \setlength{\textwidth}{190mm}
 
@@ -73,10 +73,17 @@ Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se
 \end{figure}
 \setlength{\textwidth}{150mm}
 
+\begin{figure}[ht!]
+	\centering 
+	\includegraphics[angle=90,scale=0.8]{esquemáticoCircuito}
+	\caption{Esquema de conexiones entre la placa de desarrollo y los periféricos utilizados} 
+	\label{fig:esq_completo} 
+\end{figure}
+
   
 Para realizar las conexiones, revisando el diagrama de conexiones dentro del apéndice \ref{AP:protSerial}, se debe conocer cuáles son los pines que corresponden a las señales SPI e I2C dentro de la placa de desarrollo. Observando el manual y la hoja de datos(\cite{arduno}), se obtiene que los pines de la placa de desarrollo para conectar los dispositivos es la siguiente: 
 \begin{itemize}
-	\item Chip W5100 
+	\item pines del microcontrolador para conectarse con Chip  W5100:  
 	\begin{itemize}
 		\item Pin 13  SCK 
 		\item Pin 12  MISO 
@@ -84,16 +91,19 @@ Para realizar las conexiones, revisando el diagrama de conexiones dentro del ap�
 		\item Pin 4   Slave Select(SS)
 		\item Pin 3   Reset 	
 	\end{itemize}
-	\item Display LCD   
+	\item Puertos para conectarse con el Display LCD:    
 	\begin{itemize} 
 		\item Pin A5  SCL
 		\item Pin A4  SDA
 	\end{itemize}  
 \end{itemize}  
 
-Por último, ya que no se dispone de la conexión al motor aún, se prueban conectando en los pines A1 y A0, dos potenciómetros,de 10Kohms cada uno, ya que cada motor tiene adosado un potenciómetro que es utilizado como encoder. Para conocer si el sentido de giro es correcto, en los pines 5,6,9 y 10, se conecta una resistencia y un led, cada uno de los led, tiene por finalidad, mostrar si el motor gira en sentido correcto, pero estos no se muestran en el esquemático. El esquema de conexiones se muestra en la figura \ref{fig:esq_completo}.  
+Por último, no se dispone de la conexión al motor aún, se prueban conectando en los pines A1 y A0, dos potenciómetros, de 10Kohms cada uno, ya que cada motor tiene adosado un potenciómetro que es utilizado como encoder. Para conocer si el sentido de giro es correcto, en los pines 5,6,9 y 10, se conecta una resistencia y un led, cada uno de los led, tiene por finalidad, mostrar si el motor gira en sentido correcto, pero estos no se muestran en el esquemático. El esquema de conexiones se muestra en la figura \ref{fig:esq_completo}.  
 
 A continuación, se deja una imagen del armado del circuito en una protoboard, en ella, se incluyen las resistencias y diodos led que no se encuentran en la imagen \ref{fig:esq_completo}. 
+
+
+
 
 \begin{figure}[H]
 	\centering
@@ -102,16 +112,12 @@ A continuación, se deja una imagen del armado del circuito en una protoboard, e
 	\label{fig:proto_1}
 \end{figure}
 
-\begin{figure}[p]
-	\centering 
-	\includegraphics[angle=90,scale=0.8]{esquemáticoCircuito}
-	\caption{Esquema de conexiones entre la placa de desarrollo y los periféricos utilizados} 
-	\label{fig:esq_completo} 
-\end{figure}
 
-Donde se ha conectado los diodos led y los potenciómetros de la siguiente manera: 
+
+\vspace{20mm}
+Donde se han conectado los diodos led y los potenciómetros de la siguiente manera: 
 \begin{itemize}
-	\label{item:prototipo_leds_pote}
+%	\label{item:prototipo_leds_pote}
 	\item led rojo: puerto 9 
 	\item led verde: puerto 10 
 	\item led amarillo: puerto 6 
@@ -124,7 +130,7 @@ Donde se ha conectado los diodos led y los potenciómetros de la siguiente maner
 
 \section{Diagrama general del software}
 
-El software, debe cumplir los requerimientos presentados en el capítulo inicial del presente documento. En principio, debería tener la capacidad de realizar la autocalibración, al inicio de su programa. Por otro lado, en caso  de que no se esté siguiendo ningún satélite o estrella, debería tener la capacidad de volver a la posición de equilibrio de la antena. Esta posición de equilibrio se denomina cenit. 
+El software, debe cumplir los requerimientos presentados en el capítulo inicial del presente documento. En principio, debería tener la capacidad de realizar la autocalibración, al inicio de su programa. Por otro lado, en caso  de que no se esté siguiendo ningún satélite o estrella, debería tener la capacidad de volver a la posición de equilibrio de la antena. Esta posición de equilibrio se denomina cenit. Esto, es un requerimiento 
 
 Cada uno de los motores de la antena, posee adosado un potenciómetro, que gira con el motor, esto funciona como un sistema de encoders, para medir la posición angular en base a la tensión. Esta tensión, se mide sobre los pines A0 y A1 de la placa de desarrollo principal. Esta medida, debe actuar sobre los pines 5 y 6 para un eje, y sobre los pines 10 y 9 para el otro eje. Además, debe saber el sentido de giro al prender el led 5 y 6, o 10 y 9. El sentido de giro debe obtenerse de la función de autocalibración.  
 
@@ -135,7 +141,7 @@ Además, el software debe informar en todo momento al usuario de su estado (medi
 Por lo expuesto en los párrafos anteriores de la presente sección, debe realizarse un sistema temporizado, que lea los puertos analógicos A0 y A1, y realice una acción de control en base a su valor. La acción de control es encender el/los motores en un determinado sentido de giro, y apagarlo cuando llegue a esta. Además, en caso que no esté realizando ningún seguimiento, se debe verificar que la antena se encuentre en el cenit. Esto debe realizarse, ya que podrían existir vientos, y/o condiciones climáticas adversas que puedan mover la antena de su posición de equilibrio(el cenit). 
 
 
-Por lo expuesto en párrafos anteriores, se desarrolla el diagrama de software en la figura  \ref{fig:software_diagrama_general}. En este diagrama, se muestra el software desarrollado en el microcontrolador, y como actúan los distintos puertos del microcontrolador con el hardware. El driver de cada motor, en la figura, se realiza en la fase 4, y es un diseño de hardware. Los encoders 1 y 2 respectivamente, son potenciómetros adosados al eje de cada motor. Estos potenciómetros son de 10Kohms cada uno. Las coordenadas angulares, se denominan ángulo de azimut y altura respectivamente, en astronomía de posición, y por eso se le dio ese nombre. En el capítulo \ref{cap:sist_cord} se tiene una descripción mas detallada de este tipo de coordenadas. 
+Por lo expuesto en párrafos anteriores, se desarrolla el diagrama de software en la figura  \ref{fig:software_diagrama_general}. En este diagrama, se muestra el software desarrollado en el microcontrolador, y como actúan los distintos puertos del microcontrolador con el hardware. El driver de cada motor, en la figura, se realiza en la fase 4, y es un diseño de hardware. Los encoders 1 y 2 respectivamente, son potenciómetros adosados al eje de cada motor. Estos potenciómetros son de 10Kohms cada uno. Las coordenadas angulares, se denominan ángulo de azimut y altura respectivamente, en astronomía de posición, y por eso se le dio ese nombre. En el capítulo \ref{cap:sist_cord} hay una descripción con más detalle de estas coordenadas. 
 
 En la figura se observan dos recuadros, uno denominado ``POLLING'', y otro denominado ``ISR - Esquema de tiempos''. El cuadro de POLLING indica que el puerto SPI se mira todo el tiempo, para conocer si existe uno de los programas de la PC(Gpredict, o Stellarium) quiere realizar un movimiento sobre la antena. 
 
@@ -150,7 +156,7 @@ En la figura se observan dos recuadros, uno denominado ``POLLING'', y otro denom
 
 \vspace{20mm}
 
-El cuadro donde dice ``Buffer'', son las variables globales que interactuan con las funciones del programa. Estas variables globales son: 
+El cuadro donde dice ``Buffer'', son las variables globales que interactúan con las funciones del programa. Estas variables globales son: 
 \begin{itemize}
 	\item mover\_posicion\_az y mover\_posicion\_h: referencia para el control de posición, obtenida a través de los programas Gpredict o Stellarium.  
 	\item altura:Posición del ángulo de altura de la antena. 
@@ -158,23 +164,21 @@ El cuadro donde dice ``Buffer'', son las variables globales que interactuan con 
 	\item movimiento\_motor\_1$[2]$  y movimiento\_motor\_2$[2]$: en esta se guarda el sentido de giro de cada motor. Dado, que se requieren dos pines para controlar el sentido del motor, y el software debe guardar el sentido de giro, al encender un puerto u otro, estos se guardan en esta variable de tipo vector, siendo: 
 		\begin{itemize}
 			\item movimiento\_motor\_1$[0]$: Guarda el pin correspondiente al sentido de giro de acimut, sentido Oeste - Este 
-			\item movimiento\_ motor\_1$[1]$ : idem, salvo que el sentido es contrario.  
+			\item movimiento\_ motor\_1$[1]$ : ídem, salvo que el sentido es contrario.  
 			\item movimiento\_motor\_2$[0]$: Guarda el puerto correspondiente al sentido de giro desde el plano del suelo hasta llegar a 90° respecto a este. 
-			\item movimiento\_motor\_2$[1]$ : Idem, pero guarda el puerto correspondiente al sentido contrario. (a 90° respecto del suelo, hacia el plano del suelo). 			
+			\item movimiento\_motor\_2$[1]$ : ídem, pero guarda el puerto correspondiente al sentido contrario. (a 90° respecto del suelo, hacia el plano del suelo). 			
 		\end{itemize}
 	
 \end{itemize}  
 
-
-
-En este diagrama, se han puesto las funciones principales. Cada función, se compone de distintas variables que sirven de soporte al programa en general. Estas no se han graficado en el diagrama de la figura \ref{fig:software_diagrama_general}. Estas funciones, que sirven de soporte a cada función, se muestran a lo largo del presente capítulo. 
+En este diagrama, se han puesto las funciones principales. Cada función, se compone de distintas variables y funciones auxiliares que sirven de soporte al programa general. Estas no se muestran en el diagrama de la figura \ref{fig:software_diagrama_general}. Estas funciones, que sirven de soporte a cada función, se muestran a lo largo del presente capítulo. 
 
 
 %
 %\setlength{\textheight}{260mm}
 %\setlength{\textheight}{220mm}
 
-El orden del trabajo sobre el software es primero realizar la función de autocalibración. La función de autocalibración, implica que debe llamar a la función mover\_antena(n\_motor,sentido\_giro). En esta sección, se desarrollan ambas funciones. Una vez obtenida y realizada las pruebas sobre la función de autocalibración, se procede a realizar el sistema de control. Esto debe realizarse de esta manera, ya que si no están calibrados los sentidos de giro del motor, el control no sabrá de que forma actuar sobre ellos. Después se continúa con la lectura de los programas Gpredict y Stellarium respectivamente. Luego de esto, se realiza el esquema de polling y el esquema de tiempos o planificación. En la jerga de programación, se denomina ``programación por scheduler''. Luego en la siguiente fase(fase 3), se desarrolla la teoría de coordenadas, y se implementa la función de transformación de coordenadas. La función que escribe en el display, se desarrolla en la parte final del presente capítulo. 
+El orden del trabajo sobre el software es primero realizar la función de autocalibración. La función de autocalibración, implica que debe llamar a la función mover\_antena(n\_motor,sentido\_giro). En esta sección, se desarrollan ambas funciones. Una vez obtenida y realizada las pruebas sobre la función de autocalibración, se procede a realizar el sistema de control. Después se continúa con la lectura de los programas Gpredict y Stellarium respectivamente. Luego de esto, se realiza el esquema de polling y el esquema de tiempos o planificación. En la jerga de programación, se denomina ``programación por scheduler''. Luego en la siguiente fase(fase 3), se desarrolla la teoría de coordenadas, y se implementa la función de transformación de coordenadas. La función que escribe en el display, se desarrolla en la parte final del presente capítulo. 
 
 
 
@@ -186,7 +190,7 @@ El orden del trabajo sobre el software es primero realizar la función de autoca
 
 %
 \section{Función de autocalibración}
-Esta función, es la primera a desarrollar. Se supone que el lector posee conocimientos básicos de programación en C/C++, y cómo debe preparar el entorno para el desarrollo. El entorno elegido es visual Studio Code con el pluggin de PlatformIO. En el apéndice se encuentra como instalarlo y empezar a utilizarlo. 
+Esta función, es la primera que se desarrolla. Se supone que el lector posee conocimientos básicos de programación en C/C++, y cómo debe preparar el entorno para el desarrollo. El entorno elegido es visual Studio Code con el pluggin de PlatformIO. En el apéndice se encuentra como instalarlo y empezar a utilizarlo. 
 
 Antes de realizar la programación, se realiza un archivo, denominado ``pinout\_ard\_uno.h'', el cual tendrá todas las definiciones de puertos, mostrada en la figura \ref{fig:pin_select_ard_uno}. El archivo contiene las sentencias mostradas en el código \ref{cod:pinout_ard_uno.h}: 
 
@@ -237,7 +241,7 @@ Una vez definido los puertos, para realizar esta función de autocalibración, d
 %	\end{minipage}
 	%\caption{Vista de un potenciómetro, y sus respectivas conexiones de tensión, y con el microcontrolador.}	
 \end{SCfigure}
-\vspace{30mm}
+%\vspace{30mm}
 
 %\setlength{\textheight}{240mm}
 
@@ -278,12 +282,11 @@ Por lo expuesto en los párrafos anteriores, la función de autocalibración deb
 	\item Tomar el dato de los puertos analógicos-digitales de los pines A0 y A1. 
 	\item Guardar este dato, y compararlo con el próximo. Si es mayor, gira en un sentido u otro. Esto debe realizarse para ambos ejes. 
 	\item Esperar que llegue al final de su recorrido la antena(ambos ejes). Luego guarda el valor final. Se da cuenta, que llega a su recorrido final, si las últimas tres muestras son idénticas
-   \item invertir los pines del paso 1, y realizar los pasos 2 y 3 respectivamente, pero ahora, guarda el segundo valor final. Luego se comparan ambos, y el programa, puede saber en que sentido giraron los motores. Con estos valores, se calcula la resolución angular del apuntador. 
+   \item invertir los pines del paso 1, y realizar los pasos 2 y 3 respectivamente, pero ahora, guarda el segundo valor final. Luego se comparan ambos, y el programa, puede saber en qué sentido giraron los motores. Con estos valores, se calcula la resolución angular del apuntador. 
 \end{enumerate}
 
-Esta función,se debe realizar al iniciar el equipo.  
-
-Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciómetros la posición actual, y las guarde en las variables azimut y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado ``lectura\_encoders.p''. Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
+Esta función, se debe realizar al iniciar el equipo.  
+Antes, de realizar la función de autocalibración, se ha realizado la función, que obtenga los datos de la posición actual desde los potenciómetros, y las guarde en las variables azimut y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado ``lectura\_encoders.h''. Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h''.  
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame= single]{Arduino}
 #include "Arduino.h" 
@@ -315,21 +318,21 @@ void leer_encoders()
 \end{listing}
 
 La única función definida en este archivo es \mintinline[style=arduino] {Arduino}
-{leer\_encoders()} es devolver el valor leído por el conversor analógico digital, cuando se está autocalibrando. Esta función se muestra en el código \ref{cod:lectura_encoders.cpp}. Si no se esta autocalibrando, deberá devolver las coordenadas correspondientes. En este caso, esa parte, se va programar en la próxima sección. 
+{leer\_encoders()} es devolver el valor leído por el conversor analógico digital, cuando se está autocalibrando. Esta función se muestra en el código \ref{cod:lectura_encoders.cpp}. Si no se está autocalibrando, deberá devolver las coordenadas correspondientes. Esta parte, se encuentra desarrollada en la siguiente sección
 
 Una vez realizado el proceso de lectura de los encoders por parte del microcontrolador, ahora resta la función de autocalibración.  Esta esta divida en dos archivos, uno denominado ``control\_motores.h'' y ``control\_motores.cpp''. 
 
 Esta función de autocalibración, debe ser capaz de mover los motores, por ende, se crea la función \mintinline{Arduino}{mover_antena(char n_motor,sentido)} , donde n\_motor es el motor de azimut si n\_motor es uno, o el motor de altura si toma el valor 2. Esta variable define el número de motor. Los sentidos, se definen  como 0,1, o 2 respectivamente, siendo: 
 \begin{itemize}
 	\item sentido = 0 :  Apagar motor 
-	\item sentido = 1 :  Encender el puerto  \mintinline[style=arduino]{Arduino}{MOTOR_1_S1}(ver código \ref{cod:pinout_ard_uno.h}, idem para las otras variables mencionadas) en alto y \mintinline{Arduino}{MOTOR_1_S2} en estado bajo si el número de motor es 1, si el número de motor es 2,se definen en alto el puerto  \mintinline{Arduino}{MOTOR_2_S1} y en bajo el puerto 
+	\item sentido = 1 :  Encender el puerto  \mintinline[style=arduino]{Arduino}{MOTOR_1_S1}(ver código \ref{cod:pinout_ard_uno.h}, ídem para las otras variables mencionadas) en alto y \mintinline{Arduino}{MOTOR_1_S2} en estado bajo si el número de motor es 1, si el número de motor es 2,se definen en alto el puerto  \mintinline{Arduino}{MOTOR_2_S1} y en bajo el puerto 
 	\mintinline{Arduino}{MOTOR_2_S2} 
 	\item sentido = 2: define los puertos en forma inversa al sentido que los define sentido = 1 
 \end{itemize}
  
-Una vez, se ha definido la función \mintinline{Arduino}{mover_antena(char n\_motor,char sentido)}, se pasa a realizar la función de autocalibración.  El código de la función de\mintinline{Arduino}{mover_antena(char n\_motor,char sentido)},se observa en el apéndice del presente capìtulo.   
+Una vez, se ha definido la función \mintinline{Arduino}{mover_antena(char n\_motor,char sentido)}, se pasa a realizar la función de autocalibración.  El código de la función de \mintinline{Arduino}{mover_antena(char n\_motor,char sentido)},se observa en el apéndice del presente capítulo.   
 
-La función de autocalibración, utiliza las funciones \mintinline{Arduino}{leer_encoders} y \mintinline{Arduino}{mover_antena}, y funciones auxilares. Estas funciones son: 
+La función de autocalibración, utiliza las funciones \mintinline{Arduino}{leer_encoders} y \mintinline{Arduino}{mover_antena}, y funciones auxiliares. Estas funciones son: 
 
 \begin{itemize}
 	\item \mintinline{Arduino}{assign_value_autocal()}  
@@ -340,12 +343,12 @@ La función de autocalibración, utiliza las funciones \mintinline{Arduino}{leer
 
 Además, utiliza variables auxiliares. Estas se denominan: 
 \begin{itemize}
-	\item ult4ad[4]: guarda los ultimos cuatro valores leidos del encoder. En ult4ad[0] y ult4ad[1] guarda los ultimos dos valores del angulo de azimut, y en ult4ad[2] y ult4ad[3] guarda los dos últimos valores del angulo de altura. 
+	\item ult4ad[4]: guarda los últimos cuatro valores leídos del encoder. En ult4ad[0] y ult4ad[1] guarda los últimos dos valores del ángulo de azimut, y en ult4ad[2] y ult4ad[3] guarda los dos últimos valores del ángulo de altura. 
 	\item estado\_autocalibracion[2]: guarda el sentido(1,2, o 0) del motor en el estado actual. El valor de estado\_autocalibracion[0] corresponde al motor de azimut, y el otro al valor de sentido del motor de altura 
-	\item calibracion\_encoders[4]: guarda los valores maximos y minimos leidos por los encoders. calibracion\_encoders[0] y calibracion\_encoders[1] corresponden a los valores del encoder correspondiente al ángulo de azimut. Los otros dos, corresponden al valor del ángulo de altura.   
+	\item calibracion\_encoders[4]: guarda los valores máximos y mínimos leídos por los encoders. calibracion\_encoders[0] y calibracion\_encoders[1] corresponden a los valores del encoder correspondiente al ángulo de azimut. Los otros dos, corresponden al valor del ángulo de altura.   
 \end{itemize}
 
-No se mostrará todo código desarrollado para esta función de autocalibración. En su lugar, se da el diagrama de flujo del funcionamiento de esta función en la figura \ref{fig:flujo_autocalibracion}. La función assignar\_sentidos\_motores() se encarga de guardar los sentidos dentro de la variables buffer motor\_asignacion\_1 y motor\_asignacion\_2, según los criterios de la sección anterior. 
+No se mostrará todo código desarrollado para esta función de autocalibración. En su lugar, se da el diagrama de flujo del funcionamiento de esta función en la figura \ref{fig:flujo_autocalibracion}. La función \mintinline{Arduino}{assignar_sentidos_motores()} se encarga de guardar los sentidos dentro de la variables buffer \mintinline{Arduino}{motor_asignacion_1} y \mintinline{Arduino}{motor_asignacion_2}, según los criterios de la sección anterior. 
 \begin{figure}[ht]
 	\centering
 	\includegraphics{flujo_autocal} ; 
@@ -355,8 +358,8 @@ No se mostrará todo código desarrollado para esta función de autocalibración
 
 La idea del algoritmo es la siguiente: 
 \begin{enumerate}
-	\item Llamar a la función assign\_value\_autocal(). Esta lee los encoders, y pone el sentido = 1 en ambos motores. 
-	\item Luego espera un segundo. signa los valores correspondientes dentro de las variables. Luego le asigna el sentido 1 a cada motor. Además, asigna los valores de calibracion\_encoders[0] y  calibracion\_encoders[1] en uno. 
+	\item Llamar a la función assign\_value\_autocal(). Esta lee los encoders, y pone sentido = 1 en ambos motores. asigna los valores de calibracion\_encoders[0] y  calibracion\_encoders[1] en uno.  
+	\item Luego espera un segundo, este proceso es necesario, para darle tiempo a la antena de realizar algún movimiento. 
 	\item LLama a la función de comparación function\_compare\_autocalibracion(). Esta función, es la encargada de realizar las comparaciones y cambiar el estado de calibracion\_encoders[0] o calibracion\_encoders[1], cuando cambia por primera vez, se cambia a 2, y la tercera vez, cambia a cero. La comparación debe realizarse cada un segundo, para que la antena, tenga el tiempo suficiente de moverse.  
 	\item assignar\_sentidos\_motores(): Toma los valores de calibracion\_encoders, y los compara. En base a eso, asigna los sentidos dentro de las variables asignacion\_motor\_1 y asignacion\_motor\_2 respectivamente. 
 \end{enumerate}
@@ -366,7 +369,7 @@ La función de comparación, en primer lugar, lee los valores actuales de los en
 
 Los códigos de programación, de todas las funciones auxiliares, incluyendo la de autocalibración, se encuentran en el apéndice del presente capítulo. 
 
-Luego, la función de autocalibración,se programó con el código mostrado en \ref{cod:autocalibracion}. 
+Luego, la función de autocalibración, se programó con el código mostrado en \ref{cod:autocalibracion}. 
 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame=single]{Arduino}
