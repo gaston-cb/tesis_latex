@@ -1323,7 +1323,7 @@ Viendo la gran cantidad de memoria de programa que ocupa, se realizó un anális
 \section{Programación del display LCD} 
 
 El entorno arduino, provee una librería específica para el manejo del display con el chip pcf8574. Esta se denomina \mintinline{Arduino}{LyquidCrystal_I2C}. Para utilizarla, se debe incluir en el archivo principal del proyecto. Una vez incluida, se debe crear un objeto LCD, que será el encargado de realizar todas las funciones del display. El objeto LCD se crea de la siguiente forma: 
-\mintinline{Arduino}|LiquidCrystal_I2C lcd (ADRRESS\_LCD_I2C,COLS\_LCD,FILAS\_LCD) ; |
+\mintinline{Arduino}|LiquidCrystal_I2C lcd (ADRRESS\_LCD_I2C,COLS_LCD,FILAS_LCD) ; |
 Donde ADRESS\_LCD tiene el valor 0x27, que es la dirección del display para el uso del I2C(ver apéndice \ref{AP:protSerial}). 
 
 Algunos de los métodos que posee esta clase, son: 

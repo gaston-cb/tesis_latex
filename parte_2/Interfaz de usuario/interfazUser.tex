@@ -275,7 +275,7 @@ Donde dice ``localhost'',debe introducirse la IP del dispositivo que es capaz de
 Una vez configurado el dispositivo, queda por intentar entender el protocolo, que éste emplea para comunicarse con los dispositivos. Si desea conocer más opciones de este programa, puede ver la referencia \cite{stellman}
 
 \subsection{Protocolo de comunicación Stellarium} \label{sub:comun_stell}
-El stellarium, no es capaz de recibir datos en este modo de configuración, pero si es capaz de enviar datos al dispositivo conectado en la red. Este emplea dos números binarios, uno para cada eje. Según su documentación, al configurar un dispositivo, este invoca a un programa denominado ``telescope server'', el cual trabaja sobre TCP/IP. Este, es el que envía las coordenadas al dispositivo. Los mensajes se basan en bytes, donde están agrupados del siguiente modo: 
+El stellarium, no es capaz de recibir datos en este modo de configuración (al menos, por lo investigado hasta el momento), pero si es capaz de enviar datos al dispositivo conectado en la red. Este emplea dos números binarios, uno para cada eje. Según su documentación, al configurar un dispositivo, este invoca a un programa denominado ``telescope server'', el cual trabaja sobre TCP/IP. Este, es el que envía las coordenadas al dispositivo. Los mensajes se basan en bytes, donde están agrupados del siguiente modo: 
 
 \begin{itemize}
 	\item LENGTH : 2 bytes - Indica la longitud total del mensaje

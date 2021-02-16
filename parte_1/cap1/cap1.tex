@@ -63,30 +63,43 @@ En la actualidad, existen diversos programas para realizar el seguimiento de sat
 
 \section{Metodología de trabajo}
 
-El trabajo, se va a dividir en cuatro etapas, denominadas ''fase 1, fase 2, fase 3 y fase 4'' respectivamente. En la primera fase, se va a definir los requerimientos del sistema(capítulo actual), luego se va a proponer una solución a para cumplir estos requerimientos(cap. 2 ), y luego se van a seleccionar algunas piezas electrónicas para la construcción de la solución(cap 3.). 
+El trabajo, se va a dividir en cuatro etapas, denominadas ``fase 1, fase 2, fase 3 y fase 4'' respectivamente. En la primera fase, se va a definir los requerimientos del sistema(capítulo actual), luego se va a proponer una solución a para cumplir estos requerimientos(cap. 2 ), y luego se van a seleccionar algunas piezas electrónicas para la construcción de la solución(cap 3.). 
 
 En la segunda fase, se va a desarrollar el software que debe realizar el sistema de control, tanto para el usuario, como para la computadora que controla la antena. El orden del trabajo, es primero desarrollar el software sobre la computadora, y luego buscar interfaces disponibles, para conectarnos con ese equipo mediante el uso de Internet. 
 
 En la tercera fase, se va a realizar una investigación sobre los sistemas de coordenadas y como se realizan las transformaciones de estas entre sí.
 
-En la cuarta fase, se va a desarrollar el sistema de posicionamiento de los motores, luego se desarrolla la interfaz para conectarse a la computadora que realiza el control del sistema. Luego, una vez desarrollado estas interfaces, se prueba el sistema realizando algún seguimiento, sea a satélites, o a estrellas.  
+En la cuarta fase, se va a desarrollar el sistema de posicionamiento de los motores, luego se desarrolla la interfaz para conectarse a la computadora que realiza el control del sistema. Luego, una vez desarrollado estas interfaces, se prueba el sistema realizando algún seguimiento, sea a satélites, o a estrellas, o realizando algún apuntamiento de tipo manual. Estas fases, y capítulos a lo largo dle texto, se resumen en la siguiente tabla:    
 
 
+\renewcommand{\arraystretch}{1.5}
 
+% tabla 
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|p{8cm}|}
+		\hline
+		Fase & Capítulos & Descripción de la fase \\
+		\hline 
+		\multirow{3}{2cm}{Fase 1} & capítulo 1 & {Definición del proyecto} \\ \cline{2-3}
+		& capítulo 2& Definición de los componentes que requiere el proyecto\\ \cline{2-3}
+		& capítulo 3& Selección de los componentes de hardware, en base a requerimientos\\ \hline 
+%---------------- segunda fase 		
+		\multirow{3}{2cm}{Fase 2} & capítulo 4 & Estudio de redes de computadoras \\ \cline{2-3}
+		& capítulo 5& Software sobre la PC para el usuario final.\\ \cline{2-3}
+		& capítulo 6& Programación del microcontrolador, y conexión con Gpredict y Stellarium\\ \hline 
+		
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+%---------------- tercera fase 		
+	   \multirow{2}{2cm}{Fase 3} & capítulo 7 & Sistemas de coordenadas esféricos\\ \cline{2-3}
+	   & capítulo 8& Implementación de los sistemas de coordenadas esféricos dentro del microcontrolador.\\ \cline{2-3} \hline 
+	   
+%---------------- cuarta fase 		
+	\multirow{2}{2cm}{Fase 4} & capítulo 9 & Desarrollo de un controlador para los motores de la antena\\ \cline{2-3}
+	& capítulo 10& Resultados y conclusiones del trabajo - Futuras versiones\\ \cline{2-3} \hline 
+	\end{tabular}
+	\caption{Resumen del trabajo en cada fase del proyecto}
+\end{table}
 
 
 \section{ Requerimientos del sistema} \label{req_sist}
