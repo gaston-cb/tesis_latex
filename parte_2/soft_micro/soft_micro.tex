@@ -6,9 +6,8 @@
 	\begin{tcolorbox}[colback=gray!5!white, %Color del fondo
 		colframe=gray!75!black,
 		title= \center{\Large{Resumen}} ]
-		Se describe todo el proceso realizado, para programar el software para el microcontrolador ATmega328P seleccionado, bajo el entorno arduino, y todas sus librerías. Además, se muestra cómo deben interconectarse los componentes, y los circuitos correspondientes para realizar las pruebas sobre cada parte del software. Para cada parte del software desarrollado, se han realizado las correspondientes pruebas, y se presentan los resultados en cada sección. Luego una vez, realizadas todas las pruebas, se procede a unir todo el software, y se realiza una prueba final, y se convalidan los resultados. La versión de software presentada en este capítulo, no es la versión final, sino que se agregan más funcionalidades en la siguiente fase(fase 3).   
-		 
-	\end{tcolorbox}
+		Se describe todo el proceso realizado, para programar el software para el microcontrolador ATmega328P seleccionado, bajo el entorno arduino, y todas sus librerías. Además, se muestra cómo deben interconectarse los componentes, y los circuitos correspondientes para realizar las pruebas sobre cada parte del software. Para cada parte del software desarrollado, se han realizado las correspondientes pruebas, y se presentan los resultados en cada sección. Luego una vez, realizadas todas las pruebas, se procede a unir todo el software, y se realiza una prueba final, y se convalidan los resultados. La versión de software presentada en este capítulo, no es la versión final, sino que se agregan más funcionalidades en la siguiente fase(fase 3).   		 
+ 	\end{tcolorbox}
 \end{center}    
 \section{Introdución} 
 	En este capítulo, se aborda una parte del desarrollo del software de todo el proyecto. La parte restante, se aborda en las fases tres y cuatro respectivamente. El software debe ser capaz de responder a los requerimientos planteados en la tabla \ref{tab:requerimientos}. En esta parte del trabajo, dividimos la programación en varias etapas:  	
@@ -31,12 +30,14 @@ En base a los componentes seleccionados, en el capítulo \ref{cap:cap3_sel_hw}, 
 	\label{fig:sistema_general}
 \end{figure}
 
-Este diagrama en bloques muestra cual es el protocolo de comunicación utilizado por cada dispositivo. La conexión entre el bus SPI soportada por el microcontrolador y el chip ethernet, es el modo 0(ver apéndice \ref{AP:protSerial}), y la conexión con el display es mediante el protocolo SPI (descripto en el apéndice \ref{AP:protSerial}). El bloque de drivers de motores, son dos controladores de motores, y dos encoders, pero se ha puesto una única caja, ya que el sistema de control es el mismo en ambos motores. 
+Este diagrama en bloques muestra cual es el protocolo de comunicación utilizado por cada dispositivo. La conexión entre el bus SPI soportada por el microcontrolador y el chip ethernet, es el modo 0(ver apéndice \ref{AP:protSerial}), y la conexión con el display es mediante el protocolo I2C (descripto en el apéndice \ref{AP:protSerial}). El bloque de drivers de motores, son dos controladores de motores, y dos encoders, pero se ha puesto una único bloque, ya que el sistema de control es el mismo en ambos motores. 
 
 \section{Esquema eléctrico de los componentes}
-El lenguaje de programación del entorno arduino es C/C++, y se desarrolla una parte en C y otra parte en C++. El software, debe comunicarse con el display LCD(ver figura \ref{fig:LCD_r}) mediante el protocolo I2C. Este protocolo esta descripto en el apéndice \ref{AP:protSerial}, y con el chip W5100(ver figura \ref{fig:chip_ethernet}) mediante el protocolo SPI(ver apéndice \ref{AP:protSerial}). Por ende, antes de empezar a realizar cualquier tipo de programación, se deben conectar los componentes entre sí, para poder realizar la programación, y las pruebas. No se ha utilizado ningún simulador, ya que se disponen de los materiales y componentes, e instrumental necesario para realizar la medición sobre los elementos directamente.  
+El lenguaje de programación del entorno arduino es C/C++, y se desarrolla una parte en C y otra parte en C++. El software, debe comunicarse con el display LCD(ver figura \ref{fig:LCD_r}) mediante el protocolo I2C y con el chip W5100(ver figura \ref{fig:chip_ethernet}) mediante el protocolo SPI(ver apéndice \ref{AP:protSerial}). Por ende, antes de empezar a realizar cualquier tipo de programación, se deben conectar los componentes entre sí, para poder realizar la programación, y las pruebas. No se ha utilizado ningún simulador, ya que se disponen de los materiales y componentes, e instrumental necesario para realizar la medición sobre los elementos directamente.  
 
-Antes, de realizar cualquier conexión, se realiza un análisis de los pines disponibles en la placa de desarrollo Arduino Uno, para realizar el desarrollo sin cambiar los pines físicos a lo largo de este trabajo. En primer lugar, se consideran los pines que deben ser utilizados para conectar el chip ethernet. Este debe poseer cinco pines, de los cuales, tres son obligatorios, y no pueden cambiarse desde el software, ya que utiliza el puerto SPI físico del microcontrolador que esta en la placa, estos son los pines 11,12 y 13 respectivamente. El pin de Slave Select, y reset, pueden elegirse indistintamente usando cualquier puerto digital. La conexión del LCD, requiere de comunicación I2C, el cual utiliza dos pines de la placa de desarrollo. Estos pines son los llamados A4 y A5 dentro de la placa. Además, de estos, se requiere cuatro pines adicionales, para controlar el sentido de giro de cada motor(dos pines para cada motor). Estos, deben poseer modulación por ancho de pulso, para poder realizar un control de velocidad en próximos desarrollos de este dispositivo. En este informe, solo se realizará un control de tipo ON/OFF. Los pines disponibles que poseen modulación de ancho de pulso son los pines 9-10, 5 y 6. Luego de estos pines, se deben seleccionar dos pines adicionales, para poder medir la posición angular de la antena, de estos pines se eligen los pines A0 y A1 respectivamente. A continuación, se deja la imagen de cuales son aquellos puertos que se han seleccionado.   
+Antes, de realizar cualquier conexión, se realiza un análisis de los pines disponibles en la placa de desarrollo Arduino Uno, para realizar el desarrollo sin cambiar los pines físicos a lo largo de este trabajo. En primer lugar, se consideran los pines que deben ser utilizados para conectar el chip ethernet a la placa de desarrollo. Los puertos SPI físicos del de la placa Arduino UNO son los pines 11,12 y 13. El puerto de Slave Select se selecciona mediante software. El chip ethernet W5100, dispone de cinco puertos para conectarse a un microcontrolador. Estos son, el bus SPI(incluido el slave select), y el de reset. El puerto de Slave Select y reset, pueden conectarse a cualquier puerto del microcontrolador. Los únicos puertos que no pueden cambiarse son aquellos relacionado a las señales del bus SPI. Por ende, en el microcontrolador, los puertos 11,12, y 13, se conectan al chip ethernet W5100, sin opción a cambiarse.    
+
+La conexión del display LCD, requiere de comunicación I2C, el cual utiliza dos pines de la placa de desarrollo. Estos pines son los llamados A4 y A5 dentro de la placa. Además, de estos, se requiere cuatro pines adicionales, para controlar el sentido de giro de cada motor(dos pines por cada motor). Estos, deben poseer modulación por ancho de pulso, para poder realizar un control de velocidad en próximos desarrollos de este dispositivo. En este informe, solo se realizará un control de tipo ON/OFF. Los pines disponibles que poseen modulación de ancho de pulso son los pines 9-10, 5 y 6. Luego de estos pines, se deben seleccionar dos pines adicionales, para poder medir la posición angular de la antena, de estos pines se eligen los pines A0 y A1 respectivamente. A continuación, se deja la imagen de cuales son aquellos puertos que se han seleccionado.   
 
 \begin{figure}[H]
 	\centering
@@ -47,7 +48,7 @@ Antes, de realizar cualquier conexión, se realiza un análisis de los pines dis
 
 
 Una vez, definidos los puertos a utilizar, se deben conectar los componentes a la placa de desarrollo. Esta conexión, se realiza usando cables denominados ''dupont''en una protoboard. 
-Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se deben conocer su disposición de pines, o en lenguaje de la jerga electrónica, se debe conocer el ``pinout'' de cada componente. La explicación de cada pin disponible de cada dispositivo,se muestra en el apéndice \ref{AP:protSerial}. Se muestra el pinout  de cada dispositivo en la figura \ref{fig:pinoutlcdeth}: 
+Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se deben conocer su disposición de pines, o en lenguaje de la jerga electrónica, se debe conocer el ``pinout'' de cada componente. La explicación de cada pin disponible de cada dispositivo,se muestra en el apéndice \ref{AP:protSerial}. Se muestra el pinout  de cada dispositivo en la siguiente figura: %\ref{fig:pinoutlcdeth}: 
 
 \setlength{\textwidth}{190mm}
 
@@ -73,7 +74,7 @@ Para saber cómo se deben conectar el display LCD y el ethernet Shield W5100, se
 \setlength{\textwidth}{150mm}
 
   
-Para realizar las conexiones, revisando el diagrama de conexiones dentro del apéndice \ref{AP:protSerial}, se deben conocer cuáles son los pines que corresponden a las señales SPI e I2C dentro de la placa de desarrollo. Observando el manual y la hoja de datos, obtenemos que los pines de la placa de desarrollo son los siguientes: 
+Para realizar las conexiones, revisando el diagrama de conexiones dentro del apéndice \ref{AP:protSerial}, se debe conocer cuáles son los pines que corresponden a las señales SPI e I2C dentro de la placa de desarrollo. Observando el manual y la hoja de datos(\cite{arduno}), se obtiene que los pines de la placa de desarrollo para conectar los dispositivos es la siguiente: 
 \begin{itemize}
 	\item Chip W5100 
 	\begin{itemize}
@@ -149,7 +150,7 @@ En la figura se observan dos recuadros, uno denominado ``POLLING'', y otro denom
 
 \vspace{20mm}
 
-El cuadro donde dice "Buffer", son las variables globales que interactuan con las funciones del programa. Estas variables globales son: 
+El cuadro donde dice ``Buffer'', son las variables globales que interactuan con las funciones del programa. Estas variables globales son: 
 \begin{itemize}
 	\item mover\_posicion\_az y mover\_posicion\_h: referencia para el control de posición, obtenida a través de los programas Gpredict o Stellarium.  
 	\item altura:Posición del ángulo de altura de la antena. 
@@ -173,7 +174,7 @@ En este diagrama, se han puesto las funciones principales. Cada función, se com
 %\setlength{\textheight}{260mm}
 %\setlength{\textheight}{220mm}
 
-El orden del trabajo sobre el software es primero realizar la función de autocalibración. La función de autocalibración, implica que debe llamar a la función mover\_antena(n\_motor,sentido\_giro). En esta sección, se desarrollan ambas funciones. Una vez obtenida y realizada las pruebas sobre la función de autocalibración, se procede a realizar el sistema de control. Esto debe realizarse de esta manera, ya que si no están calibrados los sentidos de giro del motor, el control no sabrá de que forma actuar sobre ellos. Después se continúa con la lectura de los programas Gpredict y Stellarium respectivamente. Luego de esto, se realiza el esquema de polling y el esquema de tiempos o planificación. En la jerga de programación, se denomina "programación por scheduler". Luego en la siguiente fase(fase 3), se desarrolla la teoría de coordenadas, y se implementa la función de transformación de coordenadas. La función que escribe en el display, se desarrolla en la parte final del presente capítulo. 
+El orden del trabajo sobre el software es primero realizar la función de autocalibración. La función de autocalibración, implica que debe llamar a la función mover\_antena(n\_motor,sentido\_giro). En esta sección, se desarrollan ambas funciones. Una vez obtenida y realizada las pruebas sobre la función de autocalibración, se procede a realizar el sistema de control. Esto debe realizarse de esta manera, ya que si no están calibrados los sentidos de giro del motor, el control no sabrá de que forma actuar sobre ellos. Después se continúa con la lectura de los programas Gpredict y Stellarium respectivamente. Luego de esto, se realiza el esquema de polling y el esquema de tiempos o planificación. En la jerga de programación, se denomina ``programación por scheduler''. Luego en la siguiente fase(fase 3), se desarrolla la teoría de coordenadas, y se implementa la función de transformación de coordenadas. La función que escribe en el display, se desarrolla en la parte final del presente capítulo. 
 
 
 
@@ -187,7 +188,7 @@ El orden del trabajo sobre el software es primero realizar la función de autoca
 \section{Función de autocalibración}
 Esta función, es la primera a desarrollar. Se supone que el lector posee conocimientos básicos de programación en C/C++, y cómo debe preparar el entorno para el desarrollo. El entorno elegido es visual Studio Code con el pluggin de PlatformIO. En el apéndice se encuentra como instalarlo y empezar a utilizarlo. 
 
-Antes de realizar la programación, se realiza un archivo, denominado "pinout\_ard\_uno.h", el cual tendrá todas las definiciones de puertos, mostrada en la figura \ref{fig:pin_select_ard_uno}. El archivo contiene las sentencias mostradas en el código \ref{cod:pinout_ard_uno.h}: 
+Antes de realizar la programación, se realiza un archivo, denominado ``pinout\_ard\_uno.h'', el cual tendrá todas las definiciones de puertos, mostrada en la figura \ref{fig:pin_select_ard_uno}. El archivo contiene las sentencias mostradas en el código \ref{cod:pinout_ard_uno.h}: 
 
 
 \begin{listing}[ht]
@@ -216,7 +217,7 @@ Antes de realizar la programación, se realiza un archivo, denominado "pinout\_a
 		
 \end{minted}
 	\vspace{-5mm}
-	\caption{definición de los puertos del microcontrolador. El nombre del archivo es "pinout\_ard\_uno.h".}
+	\caption{definición de los puertos del microcontrolador. El nombre del archivo es ``pinout\_ard\_uno.h''.}
 	\label{cod:pinout_ard_uno.h} 
 \end{listing}
 Donde las variables \mintinline{C++}{TIMERS_CLOCKS} y \mintinline{C++}{DEBUG}(resaltadas en la \ref{cod:pinout_ard_uno.h}) son utilizados para realizar compilaciones condicionales, mientras se desarrolla.Las compilaciones condicionales se explican en el apéndice \ref{ap:ard_uno_env} .
@@ -282,7 +283,7 @@ Por lo expuesto en los párrafos anteriores, la función de autocalibración deb
 
 Esta función,se debe realizar al iniciar el equipo.  
 
-Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciómetros la posición actual, y las guarde en las variables azimut y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado "lectura\_encoders.p". Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
+Antes, de realizar la función de autocalibración, se ha realizado la función, que lea desde los potenciómetros la posición actual, y las guarde en las variables azimut y altura, respectivamente. Para esta función, se han creado dos archivos: uno denominado ``lectura\_encoders.cpp'' y otro denominado ``lectura\_encoders.p''. Este último, tiene los prototipos de las funciones compartidas, que deben ser accedidas desde otra parte del código. El archivo ``lectura\_encoders.cpp", tiene las funciones propias de su funcionamiento, y el comportamiento de las funciones definidas en ``lectura\_encoders.h". 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame= single]{Arduino}
 #include "Arduino.h" 
@@ -400,7 +401,7 @@ Serial.print(movimiento_motor_2[1],DEC);
 #endif    	
 }
 \end{minted}
-\caption{Código de la función de autocalibración. Esta definido en el archivo "control\_motores.cpp"}
+\caption{Código de la función de autocalibración. Esta definido en el archivo ``control\_motores.cpp''}
 \label{cod:autocalibracion}
 
 \end{listing}
@@ -536,7 +537,7 @@ Además de esto, se debe calcular la resolución angular del dispositivo para ca
 Cabe destacar, que como magnitud del error, se ha utilizado la resolución, para realizar pruebas. En realidad, se debe tener en cuenta el ángulo sólido de la antena para realizar el control. Esta discusión, sobre el ángulo sólido de una antena parabólica, rebasa el alcance del presente trabajo.
 El esquema de control se muestra en la figura  \ref{fig:sist_control_real}. 
 
-En esta parte, se programa el recuadro de la parte "control\_motores(ref1,ref2)" de la figura \ref{fig:sist_control_real}. El control, mira una señal de error, donde la señal de error en la figura viene dada por $e[k]$. Hay dos señales de error, estas las denominados $e_1 $ y $e_2$ .Estas señales de error vienen dadas por: 
+En esta parte, se programa el recuadro de la parte ``control\_motores(ref1,ref2)'' de la figura \ref{fig:sist_control_real}. El control, mira una señal de error, donde la señal de error en la figura viene dada por $e[k]$. Hay dos señales de error, estas las denominados $e_1 $ y $e_2$ .Estas señales de error vienen dadas por: 
 \begin{equation}
 	\begin{split}
 		e_1[k]&=ref_1 - \text{azimut}  \\
@@ -551,7 +552,7 @@ En esta parte, se programa el recuadro de la parte "control\_motores(ref1,ref2)"
 	\label{fig:sist_control_real}
 \end{figure}
 
- En base a esta señal de error, que es entrada para el bloque "control ON/OFF", decide hacia donde debe moverse el motor. El sistema se para siempre que la señal de error sea menor que la resolución de cada eje. Este sistema en próximas versiones, se va a cambiar el bloque "controlONOFF" por un controlador denominado PID. 
+ En base a esta señal de error, que es entrada para el bloque ``control ON/OFF'', decide hacia donde debe moverse el motor. El sistema se para siempre que la señal de error sea menor que la resolución de cada eje. Este sistema en próximas versiones, se va a cambiar el bloque ``controlONOFF'' por un controlador denominado PID. 
 
  El control ON/OFF, actúa según la siguiente tabla, donde para seleccionar el sentido, se basa en las variables movimiento\_motor\_1 y movimiento\_motor\_2, que se obtienen de la función de autocalibración. 
  
@@ -630,7 +631,7 @@ En la tabla \ref{tab:result_control}, se observa que, la función de control res
 	\end{tabular}
 	\begin{tablenotes}
 	 	\small 
-	 	\item Los valores de los puertos en on y off,están definidas en el archivo "pinout\_ard\_uno.h", cuyo código se muestra en el código  \ref{cod:pinout_ard_uno.h}.
+	 	\item Los valores de los puertos en on y off,están definidas en el archivo ``pinout\_ard\_uno.h'', cuyo código se muestra en el código  \ref{cod:pinout_ard_uno.h}.
 	 	
 	 	\item [1] En el caso del motor de altura, al ser la referencia el máximo valor angular, el error, no puede darse que $e < -res_h $  
 	\end{tablenotes}
@@ -694,7 +695,7 @@ donde
 	&f_{clk \_ I/0} : \text{frecuencia del reloj utilizado por el microcontrolador.} & 		
 \end{flalign}
 
-Esta ecuación para calcular la frecuencia, es la frecuencia de una onda cuadrada, en el caso de la imagen \ref{fig:ctc_isr}, es el periodo enumerado con "1", en la imagen. Por este motivo, para conocer la frecuencia de la interrupción, se debe multiplicar por dos, al valor que brinda esta ecuación. 
+Esta ecuación para calcular la frecuencia, es la frecuencia de una onda cuadrada, en el caso de la imagen \ref{fig:ctc_isr}, es el periodo enumerado con ``1'', en la imagen. Por este motivo, para conocer la frecuencia de la interrupción, se debe multiplicar por dos, al valor que brinda esta ecuación. 
 
 
 El valor de $f_{clk \_ I/0}$ es 16 Mhz, que es la frecuencia de reloj utilizada por la placa Arduino UNO. En este caso, buscamos que el valor sea entero, o múltiplo de 10. Para realizar esto, se utilizaron varias pruebas. Se concluyeron los siguientes valores
@@ -816,7 +817,7 @@ La segunda prueba, se observa en la imagen \ref{fig:osc_m2}, donde, se ha parado
 
 \section{Conexión del software con Gpredict y Stellarium} 
 
-En esta sección, se muestran los componentes principales del software desarrollado para comunicarse con estos programas, y como obtener la posición hacia donde debe ir la antena. En la figura \ref{fig:sist_control_real}, se observa un recuadro, que dice "decidir referencia". En esta parte del desarrollo, trata, de ver la forma de decidir esa referencia. Las referencias provienen de tres fuentes posibles: 
+En esta sección, se muestran los componentes principales del software desarrollado para comunicarse con estos programas, y como obtener la posición hacia donde debe ir la antena. En la figura \ref{fig:sist_control_real}, se observa un recuadro, que dice ``decidir referencia''. En esta parte del desarrollo, trata, de ver la forma de decidir esa referencia. Las referencias provienen de tres fuentes posibles: 
 \begin{itemize}
 	\item Gpredict.  
 	\item Stellarium. 
@@ -931,7 +932,7 @@ Por último, se observa en la sección target y settings, los botones engage y t
 	\caption{comportamiento al oprimir los botones track y engage}
 \end{table}
 
-De la tabla anterior, se observa, que la comunicación mediante el protocolo TCP/IP, se debe oprimir el boton Engage. Si se oprime este botón, la coordenada enviada, será la que aparece en la parte del panel donde dice "azimut y elevación". Si se oprime track, y luego engage, la coordenada enviada por TCP/IP, será aquella en la cual, se encuentre el satélite seleccionado. 
+De la tabla anterior, se observa, que la comunicación mediante el protocolo TCP/IP, se debe oprimir el boton Engage. Si se oprime este botón, la coordenada enviada, será la que aparece en la parte del panel donde dice ``azimut y elevación''. Si se oprime ``track'', y luego ``engage'', la coordenada enviada por TCP/IP, será aquella en la cual, se encuentre el satélite seleccionado. 
 
 \subsection{Programación del microcontrolador} 
 
@@ -1007,7 +1008,7 @@ Para el stellarium, debe configurarse el software, según la sección \ref{sub:c
 	\label{fig:conf_net_stell}
 \end{figure}  
 
-Una vez configurado, debe presionar ``control + 0'' o en la barra inferior, debe buscar el icono que le diga "mover el telescopio a las coordenadas definidas. Una vez allí, se le abrirá una ventana con la opción de "configurar telescopio". Debe abrir esa ventana, y le aparecerá el telescopio configurado recientemente. Puede configurar más de un telescopio si así lo desea. Aparecerá una ventana como la que se muestra en la figura \ref{fig:rotador_stellarium_conn}. 
+Una vez configurado, debe presionar ``control + 0'' o en la barra inferior, debe buscar el icono que le diga ``mover el telescopio a las coordenadas definidas''. Una vez allí, se le abrirá una ventana con la opción de ``configurar telescopio''. Debe abrir esa ventana, y le aparecerá el telescopio configurado recientemente. Puede configurar más de un telescopio si así lo desea. Aparecerá una ventana como la que se muestra en la figura \ref{fig:rotador_stellarium_conn}. 
  
 
 \begin{figure}[ht!]
@@ -1114,7 +1115,7 @@ La herramienta seleccionada para realizar este análisis es el software WireShar
 
 \subsubsection{Conexión con Gpredict.} 
 
-Una vez, configurado el software Gpredict, para conectarse, se debe abrir el panel de control del rotador, y se debe oprimir el boton ``engage" para calibrar la antena. Si la conexión funciona, dentro de los cuadros de azimut y elevación, se obtienen la posición de la antena (donde dice ``read'' en la figura \ref{fig:panel_control_gpr}). Esta posición, aparece como una cruz roja en el polar plot. El punto rojo, es la posición a la que se debe dirigir la antena, la cual es la coordenada azimut y altura, marcada con números más grandes en la imagen \ref{fig:panel_control_gpr}. 
+Una vez, configurado el software Gpredict, para conectarse, se debe abrir el panel de control del rotador, y se debe oprimir el boton ``engage'' para calibrar la antena. Si la conexión funciona, dentro de los cuadros de azimut y elevación, se obtienen la posición de la antena (donde dice ``read'' en la figura \ref{fig:panel_control_gpr}). Esta posición, aparece como una cruz roja en el polar plot. El punto rojo, es la posición a la que se debe dirigir la antena, la cual es la coordenada azimut y altura, marcada con números más grandes en la imagen \ref{fig:panel_control_gpr}. 
 
 
 \begin{figure}[ht]
@@ -1182,7 +1183,7 @@ Además, se revisa la conexión mediante el software wireshark. Los resultados d
 
 En esta sección se procede a unir todas las partes desarrolladas en esta etapa. Esta unión, se realiza utilizando el esquema de la figura \ref{fig:sistema_general}. La primera parte, debe realizar la función de autocalibración, luego debe iniciar el control de la antena, para volverla a su posición de equilibrio.  
 
-Para realizar el control de la antena, se debe llamar a la función \mintinline{Arduino}{Leer_encoders()}, acto seguido, a la función de control, \mintinline{Arduino}{controlMotores(ref1, ref2)}. Esto debe realizarse periódicamente, por ende, dentro de la programación del scheduler deben ponerse ambas funciones. El tiempo de control seleccionado es 10ms. Estas funciones, se encuentran dentro del archivo "timer.cpp". Para inicializar dichas funciones, se debe realizar el código mostrado en \ref{cod:control_scheduler}. 
+Para realizar el control de la antena, se debe llamar a la función \mintinline{Arduino}{Leer_encoders()}, acto seguido, a la función de control, \mintinline{Arduino}{controlMotores(ref1, ref2)}. Esto debe realizarse periódicamente, por ende, dentro de la programación del scheduler deben ponerse ambas funciones. El tiempo de control seleccionado es 10ms. Estas funciones, se encuentran dentro del archivo ``timer.cpp''. Para inicializar dichas funciones, se debe realizar el código mostrado en \ref{cod:control_scheduler}. 
 
 \begin{listing}[ht]
 	\begin{minted}[linenos,frame=single,escapeinside=||]{Arduino}

@@ -242,7 +242,7 @@ Este programa, es libre, y está pensado en el apuntamiento de telescopios. Pose
 	\label{fig:stell_poss_conf}
 \end{figure}
 
-En esa ventana, debe seleccionarse, la latitud, longitud y altitud del lugar en el que se encuentra el telescopio o antena. 
+En esa ventana, debe seleccionarse, la latitud, longitud y altitud del lugar en el que se encuentra el telescopio o antena. Esta guía ha sido basada en la referencia \cite{mgpredict}, que es el manual oficial del software. 
 
 \subsection{Configuración de la red en Stellarium} \label{sub:conf_stellarium_red}
 
@@ -270,9 +270,9 @@ Luego, debe presionar donde muestra la imagen anterior para empezar a agregar el
 	\includegraphics[scale=0.5]{stellarium-024}
 	\caption{Ventana de configuración de red del software Stellarium.}
 \end{figure} 
-Donde dice "localhost",debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Estas coordenadas están relacionadas con la selección de la referencia para las coordenadas ecuatoriales. Estas se discuten en \ref{cap:sist_cord}. Se elige J2000.
+Donde dice ``localhost'',debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Estas coordenadas están relacionadas con la selección de la referencia para las coordenadas ecuatoriales. Estas se discuten en \ref{cap:sist_cord}. Se elige J2000.
 
-Una vez configurado el dispositivo, queda por intentar entender el protocolo, que éste emplea para comunicarse con los dispositivos. 
+Una vez configurado el dispositivo, queda por intentar entender el protocolo, que éste emplea para comunicarse con los dispositivos. Si desea conocer más opciones de este programa, puede ver la referencia \cite{stellman}
 
 \subsection{Protocolo de comunicación Stellarium} \label{sub:comun_stell}
 El stellarium, no es capaz de recibir datos en este modo de configuración, pero si es capaz de enviar datos al dispositivo conectado en la red. Este emplea dos números binarios, uno para cada eje. Según su documentación, al configurar un dispositivo, este invoca a un programa denominado ``telescope server'', el cual trabaja sobre TCP/IP. Este, es el que envía las coordenadas al dispositivo. Los mensajes se basan en bytes, donde están agrupados del siguiente modo: 
