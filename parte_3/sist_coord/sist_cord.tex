@@ -1,3 +1,30 @@
 \renewcommand{\chaptername}{Sistemas de coordenadas astronómicas}
 \chapter{Sistemas de coordenadas astronómicas} \label{cap:sist_cord} 
 \markright{Sistemas de coordenadas astronómicas} 
+\begin{center}
+	\begin{tcolorbox}[colback=gray!5!white, %Color del fondo
+		colframe=blue!75!black,
+		title= \center{\Large{Resumen}} ]
+	Se explican, los fundamentos de las coordenadas astronómicas. Además, se explican algunos de los sistemas de coordenadas utilizados en astronomía. Esta descripción es necesaria, para poder realizar la transformación de coordenadas dentro del microcontrolador, en caso que se este siguiendo una estrella o satélite,mediante el programa Stellarium,
+	\end{tcolorbox}
+\end{center}    
+
+\section{introducción} 
+
+En este capítulo se describe como realizar la transformación de coordenadas. El microcontrolador, recibe las coordenadas en coordenadas ecuatoriales horarias(con el software Stellarium), y debe realizar la transformación de coordenadas a ecuatoriales locales, luego debe realizarse otra transformación, al sistema horizontal local, dado el tipo de montura(altazimutal) que posee la antena. El presente texto, intenta explicar cuáles son los sistemas de coordenadas usados en astronomía, y necesarios para el presente trabajo. Existen más sistemas de coordenadas, pero rebasan el alcance del proyecto, el lector interesado puede ver la referencia \cite{Baume2014}. Para ello, se debe empezar conociendo conceptos básicos de la trigonometría esférica, esfera celeste, etc. Al lector que este familiarizado con estos temas, puede omitir este capítulo. 
+
+\section{Esfera - Elementos fundamentales} 
+
+
+La superficie más usada a lo largo del presente capítulo es la esfera. Por este motivo, se va a definir una esfera, en conjunto con sus elementos fundamentales. A partir de esto, obtendremos algunos resultados de una materia denominada trigonometría esférica. Esta, se plantea en la superficie de una esfera, a partir de los elementos básicos de ella, por ello, el concepto de esfera y sus elementos es importante para comprender el resto del capítulo. Cabe recordar, que una esfera también puede escribirse en coordenadas esféricas.  
+
+  
+Definición de esfera[1] Conjunto de puntos del espacio equidistantes de otro punto fijo. 
+Sobre esta definición, al punto fijo, se lo conoce como centro de la esfera y lo vamos a denotar con la letra O. La distancia desde O a cualquier punto, se denomina radio de la esfera (R)  
+Si a la esfera, le hacemos pasar un plano, según este plano contenga a O, o no, podemos definir dos tipos de círculos o circunferencias: 
+\begin{itemize}
+\item Circunferencia máxima (o circulo máximo): Circunferencia que se obtiene al cortar la esfera con el plano que contiene a O 
+\item Circunferencia menor (o circulo menor): Si el centro de la esfera(O) no esta contenida en el plano que corta a la esfera. 
+\end{itemize}
+
+Ahora, para definir las posiciones de un punto, sobre la esfera, es necesario definir círculos de referencia, usando círculos menores y mayores. Si se tiene un círculo máximo, y se traza una recta perpendicular al plano del circulo máximo, y que pase por O, esta recta, corta a la esfera en dos puntos, denominados polos. Además de estos elementos, se tienen los siguientes: 

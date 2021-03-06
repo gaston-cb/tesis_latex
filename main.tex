@@ -45,20 +45,45 @@
 %-----------fin segunda fase---------------------% 
 
 % tercera fase 
-\part{Física de los satelites y sistemas de coordenadas astronómicas}
+\part{Sistemas de coordenadas astronómicas}
 %\include{parte_3/ley_kepler/ley_kepler.tex}
 \include{parte_3/sist_coord/sist_cord}
 
 % cuarta fase 
 \part{Sistema electrónico de posicionamiento - Construcción de prototipo y resultados}
+\chapter{construcción del manejador de los motores} \label{cap:driver_motores}
 
 %\backmatter 
 %apendices 
+
+
+
+\titleformat{\chapter}[display] { \normalfont} { apéndice \thechapter:  \chaptername}{-6ex} % sep
+{
+	\rule{\textwidth}{1pt}
+	\vspace{-2ex}
+	\bfseries
+	\centering
+	\Huge
+} % before-code
+[
+\vspace{-3ex}%
+% \rule{\textwidth}{0.2pt}
+] 
+
+
+
+
 \renewcommand{\appendixname}{Apéndice}
 \renewcommand{\appendixtocname}{Apéndice}
 \renewcommand{\appendixpagename}{Apéndice}
 
 
+\fancyhf{}
+\lhead{apéndice \thechapter}
+\fancyhead[RO]{\rightmark{} $|$ \thepage}
+%\fancyhead[RO]{sección\rightmark$|$\thepage$|$ }
+\pagestyle{fancy}
 
 \appendix
 \clearpage

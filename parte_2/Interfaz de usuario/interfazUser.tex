@@ -3,23 +3,23 @@
 \renewcommand{\chaptername}{interfaz de usuario}
 
 \chapter{Interfaz De usuario} % \label{cap:int_user}
-\markright {Interfaz de usuario	}
+%\markright {Interfaz de usuario	}
 \begin{center}
 	\begin{tcolorbox}[colback=gray!5!white, %Color del fondo
 		colframe=blue!75!black,
-		title= \center{\Large{resumen}} ]
-		Se van a definir las interfaces sobre las computadoras de la institución. Estas interfaces, se basan en software existente. Para seleccionar las interfaces, se realiza una comparación de todos estos. Luego de esto, se va a mostrar cómo realizar la configuración de los dos software seleccionados.   
+		title= \center{\Large{Resumen}} ]
+		Se definen las interfaces sobre las computadoras de la institución. Estas interfaces, se basan en software existente. Para seleccionar las interfaces, se realiza una comparación de varios programas. Luego de esto, se muestra cómo realizar la configuración de las aplicaciones seleccionados.   
 	\end{tcolorbox}
 \end{center}    
 
 
 
-\section{introducción}
-En esta sección, analizamos los programas que son capaces de mostrar las posiciones de los satélites en tiempos real. Luego de un análisis, se seleccionan dos de estos mismos. Los programas existentes deben tener capacidad de enviar las posiciones de los satélites usando la red local de la institución. Luego del análisis de los programas, se muestran cuáles deben ser los pasos a seguir para poder configurar dichos programas.  
+\section{Introducción}
+En esta sección, analizamos los programas que son capaces de mostrar las posiciones de los satélites en tiempo real. Luego de un análisis, se seleccionan dos de estos mismos. Los programas existentes deben tener capacidad de enviar las posiciones de los satélites usando la red local de la institución. Luego del análisis de los programas, se muestran cuáles deben ser los pasos a seguir para poder configurar dichos programas.  
 
 \section{Interfaz de Usuario}
 
-La figura \ref{fig:fig_ssgen}, se observa que hay estaciones de trabajo. En esta sección, definimos el software de seguimiento de satélites, para las estaciones de trabajo del lugar. Algunos de los software que se analizan fueron obtenidos desde la página web de la AMSAT (asociación mundial de satélites de radioaficionados),y otros desde la investigación a través de Internet. 
+En la figura \ref{fig:fig_ssgen}, se observa que hay estaciones de trabajo. En esta sección, definimos el software de seguimiento de satélites, para las estaciones de trabajo del lugar. Algunos de los software que se analizan fueron obtenidos desde la página web de la AMSAT (asociación mundial de satélites de radioaficionados), y otros desde la investigación a través de Internet. 
 Los distintos programas que se analizan son: 
 \begin{itemize}
 	\item Gpredict 
@@ -41,10 +41,10 @@ Además, permite que observar la posición del sol y la luna en tiempo real.
 	\caption{Captura de pantalla del software Orbitron }
 \end{figure}
 
-Como contra de este software, es que no permite realizar el seguimiento de estrellas, y no puede conectarse a la red, para enviar estos datos a través de la red local. Solo tiene conexión con los puertos(puertos USB) de la PC para obtener los datos. Para poder enviar estos datos, a través de la red, se debe simular un puerto virtual, obtener esos datos, y enviarlos a través de la red local. Es decir, requiere un programa que haga de intermediario. 
+Como contra de este software, es que no permite realizar el seguimiento de estrellas, y no puede conectarse a la red, para enviar estos datos a través de la red local. Solo tiene conexión con los puertos (puertos USB) de la PC para obtener los datos. Para poder enviar estos datos, a través de la red, se debe simular un puerto virtual, obtener esos datos, y enviarlos a través de la red local. Es decir, requiere un programa que haga de intermediario. 
 
 \subsection{Stellarium} 
-El software stellarium, posee un seguimiento en tiempo real de estrellas, y está pensado para realizar el seguimiento usando telescopios. Tiene distintos módulos, lo que lo hacen personalizable. Tiene soporte para estrellas, y satélites. Estos datos, pueden enviarse a través de la red, para que los reciba un telescopio, y realice el apuntado del telescopio. Existen pluggins, de este software, que permiten enviar las coordenadas a dispositivos mediante la red. Una imagen del software puede visualizarse en la siguiente figura:% \ref{fig:stelarium_init}  
+El software Stellarium, posee un seguimiento en tiempo real de estrellas, y está pensado para realizar el seguimiento usando telescopios. Tiene distintos módulos, lo que lo hacen personalizable. Tiene soporte para estrellas, y satélites. Estos datos, pueden enviarse a través de la red, para que los reciba un telescopio, y realice el apuntado del telescopio. Existen pluggins, de este software, que permiten enviar las coordenadas a dispositivos mediante la red. Una imagen del software puede visualizarse en la siguiente figura:% \ref{fig:stelarium_init}  
 
 \begin{figure}[ht]
 	\centering
@@ -67,7 +67,7 @@ Celestia es un software, que permite realizar ``viajes'' a las estrellas. Este s
 
 
 \subsection{Pass}
-Pass no es una aplicación para PC en sí. Es una página web con todos los satélites encima de un mapa. La página es http://amsat.org.ar/pass. La captura de pantalla se muestra en la siguiente figura:% \ref{fig:iu_pass}.
+Pass no es una aplicación para PC en sí. Es una página web con todos los satélites representados en un mapa. La página es http://amsat.org.ar/pass. La captura de pantalla se muestra en la siguiente figura:% \ref{fig:iu_pass}.
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\linewidth, height= 6cm]{pass}
@@ -75,7 +75,7 @@ Pass no es una aplicación para PC en sí. Es una página web con todos los sat�
 	\label{fig:iu_pass}
 \end{figure}
 
-Éste software, obtiene la geolocalización a partir de la conexión a Internet. A partir, de ellas, obtiene la orientación de la antena. Debido a que obtiene las coordenadas a partir de la conexión a Internet, se tiene un error en el apuntamiento de la antena, ya que estas coordenadas están desfasadas respecto a las reales.    
+Este sitio web, obtiene la geolocalización a partir de la conexión a Internet. A partir, de ellas, obtiene la orientación de la antena. Debido a que obtiene las coordenadas a partir de la conexión a Internet, se tiene un error en el apuntamiento de la antena, ya que estas coordenadas están desfasadas respecto a las reales.    
 
 \subsection{Gpredict}
 
@@ -116,12 +116,12 @@ De la tabla, se observa que hay dos programas que pueden usarse sin ningún comp
 
 \section{Software Gpredict} 
 El software Gpredict, se basa en el software libre. Su código fuente está disponible para descargarse y compilarse, o puede descargarse directamente el archivo binario compilado. Tiene soporte para entornos Windows y Linux. Su lenguaje es C, y se basa en la librería GTK para el entorno gráfico. El software, posee un código que calcula las futuras posiciones de los satélites, en base a modelos matemáticos dentro de su código, estas se actualizan según se actualice su base de datos de satélites. Estas bases de datos se actualizan con frecuencia predeterminada por el usuario.  
-Para el soporte de red, su software basa su comunicación en la librería llamada HAMLIB, disponible en varios lenguajes de programación para usarse. Esta librería, propone su propio protocolo de comunicación a través de la red, además tiene funciones relacionadas al ajuste de los receptores de comunicaciones mediante la conexión a la red local.   
+Para el soporte de red, su software basa su comunicación en la librería llamada HAMLIB, disponible en varios lenguajes de programación para usarse. Esta librería, tiene su propio protocolo de comunicación a través de la red, además tiene funciones relacionadas al ajuste de los receptores de comunicaciones mediante la conexión a la red local.   
 
 \subsection{Libreria Hamlib}
-Hamlib es una capa de software dedicada al manejo de radios y rotadores \footnote{Un rotador es un dispositivo que es capaz de mover la antena en la dirección que se le ordene.}de tipo comercial, y no comercial. Esta capa de software actúa por debajo de las interfaces gráficas, y aplicaciones de usuario. El software principal(en este caso Gpredict), llama a esta librería para comunicarse con los dispositivos de radio o rotadores. 
+Hamlib es una capa de software dedicada al manejo de radios y rotadores \footnote{Un rotador es un dispositivo que es capaz de mover la antena en la dirección que se le ordene.}de tipo comercial, y no comercial. Esta capa de software actúa por debajo de las interfaces gráficas, y aplicaciones de usuario. El software principal (en este caso Gpredict), llama a esta librería para comunicarse con los dispositivos de radio o rotadores. 
 
-Esta capa de software se relaciona con distintos tipos de radios, y tiene protocolos comerciales(algunos, se debe ver la lista de dispositivos soportados) ya implementados. Además, permite la incorporación de dispositivos que aún no estén implementados, ya que puede descargarse su código fuente desde Internet. 
+Esta capa de software se relaciona con distintos tipos de radios, y tiene protocolos comerciales (algunos, se debe ver la lista de dispositivos soportados) ya implementados. Además, permite la incorporación de dispositivos que aún no estén implementados, ya que puede descargarse su código fuente desde Internet. 
 
 Esta librería, define cuatro programas para realizar pruebas, estos programas son: 
 \begin{itemize}
@@ -165,7 +165,7 @@ El software Gpredict, permite seleccionar los satélites a realizar seguimiento 
 
 Al iniciar el software(ver figura \ref{fig:iu_gpredict}) este viene con un módulo predeterminado, que se denomina ``Amateur''. Este viene con algunos satélites precargados. 
 
-Para crear un perfil, debe dirigirse a file $\rightarrow$ new module, como se muestra en la siguiente imagen:% \ref{fig:create_modul_gpred}  
+Para crear un módulo, debe dirigirse a file $\rightarrow$ new module, como se muestra en la siguiente imagen:% \ref{fig:create_modul_gpred}  
 \begin{figure}[ht]
 	\centering
 	\includegraphics[width=\textwidth,height=8cm]{create_module}
@@ -227,15 +227,14 @@ Al realizar este paso, aparece el rotador de antena, que se ve en la siguiente f
 
 En esta figura, se observan dos botones, y dos menús, y un mapa de la antena. Estos dos botones son ``track'' y ``engage''. En el menú de track, realizamos el seguimiento automático. El menú, engage, sirve para realizar la calibración de la antena. El sistema de coordenadas empleado por este software es horizontal-azimutal, con el cero en el polo norte. Estas coordenadas son definidas en la fase 3, donde se muestra el análisis matemático de estas.  
 
-Las medidas angulares, corresponden a los ángulos de la antena, estos se van a mostrar en el capítulo correspondiente a sistemas de coordenadas. Por ahora, solo basta con conocer la interfaz, luego se ajustan los detalles, para configurar el Gpredict, en base a la antena que tiene la institución, ajustando ángulos y límites de la misma. Esto se realiza en la fase 3, donde se van a mostrar los sistemas de coordenadas, y las relaciones entre ellos. En el próximo capítulo, se muestra cómo debe realizarse el seguimiento de satélites, mediante la comunicación con el dispositivo desarrollado en este documento. 
-
+Las medidas angulares, corresponden a los ángulos de la antena, estos se van a mostrar en el capítulo correspondiente a sistemas de coordenadas. Por ahora, solo basta con conocer la interfaz, luego se ajustan los detalles, para configurar el Gpredict, en base a la antena que tiene la institución, ajustando los ángulos y los límites de la misma. Esto se realiza en el siguiente capítulo, también, se muestra cómo se comunica Gpredict con el dispositivo desarrollado en el presente texto. 
 
 
  
 \section{Software Stellarium} 
 
 
-Este programa, es libre, y está pensado en el apuntamiento de telescopios. Posee seguimiento de estrellas y satélites. Debido a que el apuntamiento de los telescopios, y/o antenas, depende de la posición del observador en la tierra, se debe configurar la posición geográfica dentro del software, para que se pueda realizar el apuntamiento de forma correcta. Para elegir la posición, dentro del software stellarium, oprimiendo el boton F6 o moviendo el cursor del mouse hacia la izquierda, y seleccionando posición, se abre la siguiente ventana de configuración: 
+Este programa, es libre, y está pensado en el apuntamiento de telescopios. Posee seguimiento de estrellas y satélites. Debido a que el apuntamiento de los telescopios, y/o antenas, depende de la posición del observador en la tierra, se debe configurar la posición geográfica dentro del software, para que se pueda realizar el apuntamiento de forma correcta. Para elegir la posición, dentro del software stellarium, oprimiendo el botón F6 o moviendo el cursor del mouse hacia la izquierda, y seleccionando posición, se abre la siguiente ventana de configuración: 
 \begin{figure}[ht]
 	\includegraphics[width=\textwidth]{stel_sel_pos} 
 	\caption{configuración de coordenadas locales dentro de stellarium} 
@@ -249,9 +248,9 @@ En esa ventana, debe seleccionarse, la latitud, longitud y altitud del lugar en 
 
 Para poder conectar una PC de la institución, con el dispositivo, debe configurar el puerto(o socket) con el cual se intercambiarán mensajes, y la dirección IP del dispositivo receptor, que será el encargado de mover la antena o telescopio. Para configurar el telescopio, debe dirigirse a configuración, luego presionar en la pestaña pluggins, y en la parte izquierda seleccionar ``control del telescopio''. A continuación se deja la imagen de este proceso: 
  
-\begin{figure}[h]
+\begin{figure}[H]
 	\includegraphics[width=\textwidth]{conf_tel_red1} 
-	\caption{configuración de coordenadas locales dentro de stellarium} 
+	\caption{Abrir el pluggin control del telescopio en Stellarium} 
 	\label{fig:stell_conf_red}
 \end{figure}
 
@@ -259,18 +258,19 @@ Una vez, en esta ventana, se debe seleccionar el botón ``configurar'', debajo a
 
 \begin{figure}[H]
 	\includegraphics[height=10cm,width=\textwidth]{stell_conf_red_2} 
-	\caption{configuración de coordenadas locales dentro de stellarium} 
+	\caption{Añadir un telescopio dentro del software Stellarium} 
 	\label{fig:stell_conf_red_2}
 \end{figure}
 
-Luego, debe presionar donde muestra la imagen anterior para empezar a agregar el primer dispositivo. Se realiza un click sobre el símbolo recuadrado en rojo de la figura anterior, se abre la siguiente ventana, donde deben elegirse los parámetros para configurar el dispositivo hacia cual enviará los datos.
+Luego, debe presionar donde muestra la imagen anterior para empezar a agregar el primer dispositivo. Se realiza un clic sobre el símbolo recuadrado en rojo de la figura anterior, se abre la siguiente ventana, donde deben elegirse los parámetros para configurar el dispositivo hacia cual enviará los datos.
 %\begin{wrapfigure}[21]{l}{0.4\textwidth}
-\begin{figure}
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[scale=0.5]{stellarium-024}
 	\caption{Ventana de configuración de red del software Stellarium.}
 \end{figure} 
-Donde dice ``localhost'',debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Estas coordenadas están relacionadas con la selección de la referencia para las coordenadas ecuatoriales. Estas se discuten en \ref{cap:sist_cord}. Se elige J2000.
+
+Donde dice ``localhost'',debe introducirse la IP del dispositivo que es capaz de realizar el movimiento de la antena, el nombre, es a elección del usuario, y hay dos tipos de coordenadas: J2000 y fecha de equinoccio. Estas coordenadas están relacionadas con la selección de la referencia para las coordenadas ecuatoriales. Estas se discuten en el capítulo \ref{cap:sist_cord}. Se elige J2000.
 
 Una vez configurado el dispositivo, queda por intentar entender el protocolo, que éste emplea para comunicarse con los dispositivos. Si desea conocer más opciones de este programa, puede ver la referencia \cite{stellman}
 
@@ -285,5 +285,5 @@ El stellarium, no es capaz de recibir datos en este modo de configuración (al m
 	\item status: 4bytes con signo. Si status = 0 -> OK, si status<0 hay algún error.  
 \end{itemize}
 
-Cabe destacar, que internet, o las redes, son protocolos big-endian, mientras que el microcontrolador atMEGA328p(arduino UNO) es little-endian. Esto se debe solucionar reordenando los bits de llegada hacia el dispositivo. Además, debe realizar una transformación de coordenadas para poder realizar el apuntamiento de la antena. 
+Cabe destacar, que internet, o las redes, son protocolos Big-Endian, mientras que el microcontrolador atMEGA328p(arduino UNO) es Little-Endian. Big-Endian y litle Endian, se refiere al modo de leer los datos dentro de un registro o posición de memoria dentro de un microprocesador. Esto es similar a los lenguajes, que se leen de izquierda a derecha o de derecha a izquierda. Por ejemplo, suponga el número binario 0111 0000, en el sentido usual, se lee en hexadecimal como 70. Este caso se denomina Litle-Endian. En caso de que se represente como Big-Endian se escribe como 07 en hexadecimal. Dada esta situación, los bits que llegan al microcontrolador, se deben reorganizar para que se interpreten correctamente. 
 
