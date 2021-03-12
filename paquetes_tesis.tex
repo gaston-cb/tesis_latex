@@ -4,19 +4,24 @@
 \usepackage{array}
 \usepackage{caption}
 
-%\captionsetup[subfigure]{justification=centering}
 \usepackage{subcaption}
 \usepackage[onehalfspacing]{setspace} %cambiar interlineado
 \usepackage{amsmath}% para hacer referencia a una ecuación incluyendo la sección donde se encuentra
+\usepackage{amsfonts}
 \numberwithin{equation}{section}
 \usepackage{amssymb} %fuente especial para matemáticas
 \usepackage[colorlinks=true,breaklinks=true]{hyperref} %para poder navegar a travez de nuestras referencias dentro de nuestro documento. Este hipertexto estará resaltado con color
+\usepackage{amsthm}
 \usepackage{xcolor} % con las siguientes líneas podemos definir el color de las referencias
+\usepackage{colortbl}
 \usepackage{tikz}
 \definecolor{c1}{rgb}{0,0,1} % azul
 \usepackage{lipsum}
 \definecolor{c2}{rgb}{0,0.3,0.9} % azul clarito
-\definecolor{c3}{rgb}{0.3,0,0.9} % rojo azuloso
+\definecolor{c3}{rgb}{0.3,0,0.9} % rojo azuloso 
+\definecolor{verd}{HTML}{29B229} %verde 
+\definecolor{falso}{HTML}{434141} %gris 
+
 \hypersetup{ linkcolor={c1}, citecolor={c2}, urlcolor={c3} } % especificamos el color para cada tipo de referencia (imágenes o ecuaciones, citas bibliográficas y paginas de internet
 \usepackage{graphicx} % incluir imágenes.
 
@@ -91,6 +96,8 @@
 \usepackage{xpatch}
 \usepackage[flushleft]{threeparttable}
 \usepackage{listings}
+
+
 
 \usemintedstyle{arduino}
 
@@ -180,6 +187,21 @@
 \lhead{fase \thepart }
 \fancyhead[RO]{\rightmark{} $|$ \thepage}
 \pagestyle{fancy}
+
+
+\newtheorem*{defin_esphere}{Definición de esfera \cite{Baume2014}}
+
+%% comandos matematicos -------------------- 
+\newcommand{\annoterel}[2]{%
+	\overset{%
+		\substack{\hidewidth\text{#1}\hidewidth\\\downarrow}%
+	}{#2}%
+}
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
 
 
 \title{sistema de posicionamiento}
